@@ -48,15 +48,21 @@ export const ModelViewer = ({ item, height }: { item: TypeSingleProduct, height?
                 shadow-intensity="1"
                 ar
                 autoplay
-                ar-modes="webxr scene-viewer quick-look"
+                ar-modes="scene-viewer webxr quick-look"
                 auto-rotate
                 camera-controls
                 camera-orbit="0deg 90deg 0deg 8.37364m"
                 alt="3D model"
 
-                style={{ height: `${height || "65vh"}` , borderRadius : "5px" }}
+                style={{ height: `${height || "65vh"}`  , borderRadius: "5px" }}
             >
 
+
+
+ 
+                {/* <div className="poster" slot="poster">
+                    <img className="pre-prompt" src="/glb/prompt.svg" />
+                </div> */}
 
 
                 <div className="progress-bar" slot="progress-bar">
@@ -68,9 +74,7 @@ export const ModelViewer = ({ item, height }: { item: TypeSingleProduct, height?
                 <div id="ar-prompt">
                     <img src="https://modelviewer.dev/shared-assets/icons/hand.png" />
                 </div>
-                <div className="poster" slot="poster">
-                    <img className="pre-prompt" src="/glb/prompt.svg" />
-                </div>
+
 
 
             </model-viewer>

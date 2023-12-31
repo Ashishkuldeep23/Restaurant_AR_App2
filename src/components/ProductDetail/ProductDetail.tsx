@@ -74,11 +74,11 @@ const ProductDetail = () => {
             <div className="flex flex-col justify-center items-center text-center rounded mx-1 my-5 ">
 
 
-                <div className=" border rounded flex justify-between items-center flex-col sm:flex-row  w-11/12  sm:w-4/5">
+                <div className=" border rounded flex justify-between items-center flex-col sm:flex-row  w-10/12 sm:w-4/5">
 
 
 
-                    <ModelViewer item={item} height={"85vh"} />
+                    <ModelViewer item={item} height={"75vh"} />
 
 
 
