@@ -2,7 +2,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
-import { gettingTokenInCookieAndLocalHost } from "../App";
+// import { gettingTokenInCookieAndLocalHost } from "../App";
 
 
 
@@ -15,9 +15,9 @@ export const fetchAllProduct = createAsyncThunk("product/fetchAllProduct", async
 
     let option: RequestInit = {
         credentials: 'include',
-        headers: {
-            "token": `${gettingTokenInCookieAndLocalHost()}`
-        }
+        // headers: {
+        //     "token": `${gettingTokenInCookieAndLocalHost()}`
+        // }
 
     }
 
@@ -31,9 +31,9 @@ export const fetchAllProduct = createAsyncThunk("product/fetchAllProduct", async
 export const fetchOneProduct = createAsyncThunk("product/fetchOneProduct" ,async (id:string) => {
     let option: RequestInit = {
         credentials: 'include',
-        headers: {
-            "token": `${gettingTokenInCookieAndLocalHost()}`
-        }
+        // headers: {
+        //     "token": `${gettingTokenInCookieAndLocalHost()}`
+        // }
 
     }
 
