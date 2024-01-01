@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 const QRCodeGenerator = () => {
 
 
-    const [url , setUrl] = useState("")
+    const [url, setUrl] = useState("")
 
 
     useEffect(() => {
@@ -17,9 +17,13 @@ const QRCodeGenerator = () => {
 
         setUrl(locationObj?.href)
 
-    } , [])
+    }, [])
 
-      return <QRCode value={`${url}`} />;
+    return (<QRCode
+        value={`${url}`}
+        fgColor="#0766AD"
+        size={150}
+    />);
 
 };
 
