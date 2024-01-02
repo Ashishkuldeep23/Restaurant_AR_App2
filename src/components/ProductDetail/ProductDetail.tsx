@@ -8,7 +8,7 @@ import { fetchOneProduct, productState } from "../../Slices/productSlice"
 import { removerUnderScore } from "../All_products/Single_product"
 import { ModelViewer } from "../ModelViewer/ModelViewer"
 import QRCodeGenerator from "../QrGenerator/QrGenerator"
-
+import './style.css'
 
 
 interface ModelViewerJSX {
@@ -64,6 +64,11 @@ const ProductDetail = () => {
         } else {
             alert("ID not getting from url bar.")
         }
+
+
+        // // // Scroll window ---->
+
+        window.scroll(0 , 0)
 
     }, [])
 
@@ -162,11 +167,18 @@ const ProductDetail = () => {
 
                     <div className=" w-full md:w-2/4 relative">
 
-
-
-
                         {/* Gas logo ----> */}
-                        <p className=" absolute text-2xl right-2 md:right-5">🥪</p>
+                        <div className="gas_box absolute right-2  scale-75 ">
+                            <div className="group">
+                                <div className="overlap-group">
+                                    <div className="rectangle" />
+                                    <div className="div" />
+                                    <div className="rectangle-2" />
+                                    <div className="rectangle-3" />
+                                    <img className="vector" alt="Vector" src="/images/vector-1.svg" />
+                                </div>
+                            </div>
+                        </div>
 
                         {/* items name  */}
                         <div className="flex">
@@ -194,7 +206,6 @@ const ProductDetail = () => {
 
 
                 </div>
-
 
 
             </div>

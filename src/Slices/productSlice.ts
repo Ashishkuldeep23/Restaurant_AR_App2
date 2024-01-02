@@ -46,14 +46,9 @@ export const fetchOneProduct = createAsyncThunk("product/fetchOneProduct" ,async
 
 
 
-type OptionObj = {
-    optionName: string[],
-    // // [key , value] ex : ["color" , "white"]
-    optionVerity: string[],
-    // // [key , value] ex : ["RAM-ROM" , "4-64"]
-    optionStock: number,
-    optionPrice: number,
-    optionId: string
+type TypeCustomizations = {
+    sizes:{name: string,additionalPrice: number}[],
+    crusts: {name: string,additionalPrice: number}[]
 }
 
 
@@ -69,11 +64,9 @@ export type TypeSingleProduct = {
 
     discountPercentage: number,
 
-    option ?: OptionObj[],
+    customizations ?: TypeCustomizations,
 
     model: string,
-
-
 
     review ?: [],
 
@@ -81,7 +74,6 @@ export type TypeSingleProduct = {
         totalPerson: number,
         totalStars: number
     },
-
 
     likes: number,
     
@@ -124,7 +116,10 @@ const initialState : TypeProductInitial = {
     
         discountPercentage: 0,
     
-        option : [],
+        customizations : {
+            sizes : [] ,
+            crusts : []
+        },
     
         model: '',
     

@@ -3,10 +3,12 @@
 import "@google/model-viewer";
 import { useEffect } from "react";
 import { TypeSingleProduct } from "../../Slices/productSlice"
+import "./style.css"
+
 
 // import React from 'react'
 
-export const ModelViewer = ({ item, height }: { item: TypeSingleProduct, height?: string }) => {
+export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string }) => {
 
 
 
@@ -37,7 +39,7 @@ export const ModelViewer = ({ item, height }: { item: TypeSingleProduct, height?
 
 
             <model-viewer
-                id={`three_D_model${item.name}`}
+                id={`three_D_model`}
                 // src={`./models/${item.name}.glb`}
                 src={`${item.model}`}
                 ios-src={`./models/${item.name}.glb`}
@@ -53,8 +55,6 @@ export const ModelViewer = ({ item, height }: { item: TypeSingleProduct, height?
                 camera-controls
                 camera-orbit="0deg 90deg 0deg 8.37364m"
                 alt="3D model"
-
-                style={{ height: `${height || "65vh"}`  , borderRadius: "5px" }}
             >
 
 
