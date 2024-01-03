@@ -28,7 +28,7 @@ export const fetchAllProduct = createAsyncThunk("product/fetchAllProduct", async
 
 
 
-export const fetchOneProduct = createAsyncThunk("product/fetchOneProduct" ,async (id:string) => {
+export const fetchOneProduct = createAsyncThunk("product/fetchOneProduct", async (id: string) => {
     let option: RequestInit = {
         credentials: 'include',
         // headers: {
@@ -46,9 +46,12 @@ export const fetchOneProduct = createAsyncThunk("product/fetchOneProduct" ,async
 
 
 
-type TypeCustomizations = {
-    sizes:{name: string,additionalPrice: number}[],
-    crusts: {name: string,additionalPrice: number}[]
+export type TypeSingleCustomeArrOfObj= { name: string, additionalPrice: number }[]
+
+
+export  type TypeCustomizationsObj = {
+    sizes: TypeSingleCustomeArrOfObj,
+    crusts: TypeSingleCustomeArrOfObj
 }
 
 
@@ -64,11 +67,9 @@ export type TypeSingleProduct = {
 
     discountPercentage: number,
 
-    customizations ?: TypeCustomizations,
-
     model: string,
 
-    review ?: [],
+    review?: [],
 
     rating: {
         totalPerson: number,
@@ -76,78 +77,99 @@ export type TypeSingleProduct = {
     },
 
     likes: number,
-    
+
     dislikes: number,
 
     likedUserIds: string[],
 
     dislikedUserIds: string[],
 
+    // // These keys added after some code --->
+
+    customizations?: TypeCustomizationsObj,
+
+    isNonVeg?: boolean
+
 
 }
 
 
 type TypeProductInitial = {
-    isLoading:  boolean,
-    isError: boolean ,
-    isFullFilled:  boolean,
-    isForgotFullFilled:  boolean,
+    isLoading: boolean,
+    isError: boolean,
+    isFullFilled: boolean,
+    isForgotFullFilled: boolean,
     errMsg: string,
-    allProroductData : TypeSingleProduct[],
-    singleProduct : TypeSingleProduct
+    allProroductData: TypeSingleProduct[],
+    singleProduct: TypeSingleProduct,
+    currenProduct: TypeSingleProduct
 }
 
 
-const initialState : TypeProductInitial = {
+
+const initialOneProducData: TypeSingleProduct = {
+    id: '',
+
+    name: '',
+
+    category: '',
+
+    price: 0,
+
+    discountPercentage: 0,
+
+    model: '',
+
+    review: [],
+
+    rating: {
+        totalPerson: 0,
+        totalStars: 0
+    },
+
+
+    likes: 0,
+
+    dislikes: 0,
+
+    likedUserIds: [],
+
+    dislikedUserIds: [],
+
+    customizations: {
+        sizes: [],
+        crusts: []
+    },
+
+    isNonVeg : false
+}
+
+
+
+const initialState: TypeProductInitial = {
     isLoading: false,
     isError: false,
     isFullFilled: false,
     isForgotFullFilled: false,
     errMsg: "",
     allProroductData: [],
-    singleProduct : {
-        id: '',
-
-        name: '',
-    
-        category: '',
-    
-        price: 0,
-    
-        discountPercentage: 0,
-    
-        customizations : {
-            sizes : [] ,
-            crusts : []
-        },
-    
-        model: '',
-    
-    
-    
-        review : [],
-    
-        rating: {
-            totalPerson: 0,
-            totalStars: 0
-        },
-    
-    
-        likes: 0,
-        
-        dislikes: 0,
-    
-        likedUserIds: [],
-    
-        dislikedUserIds: [],
-    }
+    singleProduct: initialOneProducData,
+    currenProduct: initialOneProducData
 }
 
 const productSlice = createSlice({
 
     name: "user",
     initialState,
-    reducers: {},
+    reducers: {
+
+        setCurentProduct: (state, action) => {
+
+            state.singleProduct = action.payload
+
+        }
+
+    },
 
     extraReducers: (builder) => {
         builder
@@ -188,7 +210,7 @@ const productSlice = createSlice({
 
                 } else {
 
-                    
+
                     state.allProroductData = action.payload.data
 
                 }
@@ -248,8 +270,9 @@ const productSlice = createSlice({
 
                 } else {
 
-                    
+                    // // // Now set same product at two palces ---->
                     state.singleProduct = action.payload.data
+                    state.currenProduct = action.payload.data
 
                 }
 
@@ -279,7 +302,7 @@ const productSlice = createSlice({
 
 
 
-export const { } = productSlice.actions
+export const { setCurentProduct } = productSlice.actions
 
 export const productState = () => useSelector((state: RootState) => state.productReducer)
 

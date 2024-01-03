@@ -7,6 +7,7 @@ import { ProductDetailScreen } from "./Screens/ProductDetailScreen"
 import { useDispatch } from "react-redux"
 import { AppDispatch } from "./store"
 import { getUserDataWithToken } from "./Slices/userSlice"
+import Modal from "./components/Modal/Modal"
 
 
 
@@ -23,6 +24,8 @@ export const gettingTokenInCookieAndLocalHost = () => {
   let checkInCookie = document.cookie
   let allCookies = checkInCookie.split(";")
 
+  // console.log("token")
+
 
   for (let cookie of allCookies) {
 
@@ -33,6 +36,10 @@ export const gettingTokenInCookieAndLocalHost = () => {
       let actualToken = tokenArr[1]
 
       token = actualToken
+
+
+      // console.log(token)
+      
 
       break
 
@@ -49,12 +56,13 @@ export const gettingTokenInCookieAndLocalHost = () => {
 
 
 
-
 function App() {
 
 
   const dispatch = useDispatch<AppDispatch>()
 
+
+  gettingTokenInCookieAndLocalHost()
 
 
   useEffect(() => {
@@ -79,55 +87,64 @@ function App() {
 
   return (
 
-    <Routes >
-
-      <Route
-        path="/"
-        element={<HomePage />}
-      />
+    <>
 
 
-      <Route
-        path="/login"
-        element={<LoginScreen />}
-      />
-
-      <Route
-        path="/user-login/:token/newuser"
-        element={<GoogleSuccessPage />}
-      />
+      {/* Above from routes will avilable for all pages ---> */}
+      < Modal />
 
 
-      <Route
-        path="/product/:id"
-        element={<ProductDetailScreen />}
+      <Routes >
 
-      />
-
-
-
-      {/* Not found Page ------> */}
+        <Route
+          path="/"
+          element={<HomePage />}
+        />
 
 
-      <Route
-        path="*"
-        element={
-          <>
-            <div
-              style={{ height: "99vh" }}
-              className=" flex flex-col justify-center items-center "
-            >
-              <h1 className=" text-center text-3xl text-red-500">Page not Found, Go to Home please.</h1>
-              <Link to="/"><button className="border my-3 rounded text-white bg-green-500 px-2">GoTo Home 🏠</button></Link>
-            </div>
-          </>
-        }
-      />
+        <Route
+          path="/login"
+          element={<LoginScreen />}
+        />
+
+        <Route
+          path="/user-login/:token/newuser"
+          element={<GoogleSuccessPage />}
+        />
+
+
+        <Route
+          path="/product/:id"
+          element={<ProductDetailScreen />}
+
+        />
 
 
 
-    </Routes>
+        {/* Not found Page ------> */}
 
+
+        <Route
+          path="*"
+          element={
+            <>
+              <div
+                style={{ height: "99vh" }}
+                className=" flex flex-col justify-center items-center "
+              >
+                <h1 className=" text-center text-3xl text-red-500">Page not Found, Go to Home please.</h1>
+                <Link to="/"><button className="border my-3 rounded text-white bg-green-500 px-2">GoTo Home 🏠</button></Link>
+              </div>
+            </>
+          }
+        />
+
+
+
+      </Routes>
+
+
+    </>
 
   )
 }

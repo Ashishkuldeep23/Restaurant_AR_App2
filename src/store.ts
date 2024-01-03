@@ -3,6 +3,7 @@ import { configureStore } from "@reduxjs/toolkit"
 
 import userRedcer from './Slices/userSlice'
 import productReducer from './Slices/productSlice'
+import modalReducer from './Slices/ModalSlice'
 
 
 export const store = configureStore({
@@ -10,12 +11,13 @@ export const store = configureStore({
     reducer: {
         userRedcer,
         productReducer,
+        modalReducer
     },
 
-
-    // middleware: (getDefaultMiddleware) => getDefaultMiddleware({
-    //     serializableCheck: false,
-    // }),
+    // // // This will solve err in modal code (Sending JSX in action and use that jsx as value of state)
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+        serializableCheck: false,
+    }),
 
 })
 

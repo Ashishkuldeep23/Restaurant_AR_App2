@@ -16,6 +16,7 @@ export default {
   },
 
   plugins: [
+    require("@headlessui/react"),
     require('tailwindcss'),
     require('autoprefixer'),
   ],

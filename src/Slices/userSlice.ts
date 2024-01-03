@@ -187,9 +187,15 @@ const userSlice = createSlice({
                         // localStorage.setItem("userToken", JSON.stringify(token))
 
 
-                        // // TODO : and also we can set the token in cookie of browser 
+                        // // TODO : and also we can set the token in cookie of browser with expire -->
 
-                        document.cookie = `token=${token}`
+                        let exdays = 10
+
+                        const d = new Date();
+                        d.setTime(d.getTime() + (exdays*24*60*60*60));
+                        let expires = "expires="+ d.toUTCString();
+
+                        document.cookie = `token=${token};${expires}; path=/;`
 
                     }
 

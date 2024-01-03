@@ -3,14 +3,10 @@
 
 import { useEffect } from "react"
 import { Single_Product } from "./Single_product"
-import { fetchAllProduct, productState } from "../../Slices/productSlice"
+import { fetchAllProduct, productState, setCurentProduct } from "../../Slices/productSlice"
 import { useDispatch } from "react-redux"
 import { AppDispatch } from "../../store"
-
-
-
-
-
+import { useNavigate } from "react-router-dom"
 
 
 
@@ -19,6 +15,7 @@ import { AppDispatch } from "../../store"
 
 const All_products = () => {
 
+    const navgate = useNavigate()
 
     const isLoading = productState().isLoading
 
@@ -28,6 +25,7 @@ const All_products = () => {
 
 
 
+    // console.log(allProductData)
 
 
     useEffect(() => {
@@ -38,6 +36,23 @@ const All_products = () => {
         // getallProductData()
 
     }, [])
+
+
+    // // // set first product ----->
+
+    useEffect(()=>{
+
+        if(allProductData.length > 0){
+            setCurentProduct(allProductData[0])
+
+            // // Now navigate to product show page 
+            // // TODO : Change the logic after ---->
+
+            navgate(`/product/${allProductData[0].id}`)
+
+        }
+
+    } , [allProductData])
 
 
 
