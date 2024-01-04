@@ -48,6 +48,8 @@ const ProductDetail = () => {
 
     const item = productState().currenProduct
 
+    const isLoading = productState().isLoading
+
     const params = useParams()
 
     const dispatch = useDispatch<AppDispatch>()
@@ -58,7 +60,14 @@ const ProductDetail = () => {
 
     const [choossenCustomizations, setChoossenCustomizations] = useState<TypeCustomizationsObj>({ sizes: [], crusts: [] })
 
-    const [totalPriceOfItem , setTotalPriceOfItem] = useState(item.price)
+
+    type SelectedType = {
+        sizes: number, crusts: number
+    }
+
+    const [selectedIndex, setSelectedIndex] = useState<SelectedType>({ sizes: -1, crusts: -1 })
+
+    const [totalPriceOfItem, setTotalPriceOfItem] = useState(item.price)
 
 
 
@@ -151,19 +160,49 @@ const ProductDetail = () => {
 
 
 
-    function customizeClickHandler(key: string, name: string, additionalPrice: number) {
+    function customizeClickHandler(key: string, name: string, additionalPrice: number, i: number) {
 
         // console.log(key, name, additionalPrice)
 
         setChoossenCustomizations({ ...choossenCustomizations, [key]: [{ name: [name], additionalPrice: [additionalPrice] }] })
 
+        // selectedIndex
+
+
+        if (key === "sizes") {
+            setSelectedIndex({ ...selectedIndex, sizes: i })
+        }
+
+        if (key === "crusts") {
+            setSelectedIndex({ ...selectedIndex, crusts: i })
+
+        }
+
     }
 
 
-    // // Update total price of item ---->
-    useEffect(()=>{
 
-        if(choossenCustomizations.sizes.length !== 0 || choossenCustomizations.crusts.length !==0){
+    // function checkSelectedOrNot(name : string){
+    //     let isSelected = false
+    //     if (choossenCustomizations.sizes.length !== 0 || choossenCustomizations.crusts.length !== 0) {
+    //         for (let key in choossenCustomizations) {
+    //             let value = choossenCustomizations[key as keyof TypeCustomizationsObj]
+    //             // console.log("v" , value)
+    //             // console.log('k' , key)
+    //             if(value[0]?.name === name){
+    //                 isSelected = true
+    //             }
+    //         }
+    //     }
+    //     return isSelected
+    // }
+
+
+
+    // // Update total price of item ---->
+    useEffect(() => {
+
+        if (choossenCustomizations.sizes.length !== 0 || choossenCustomizations.crusts.length !== 0) {
             // alert()
 
             // if(choossenCustomizations.sizes.length > 0){
@@ -184,12 +223,12 @@ const ProductDetail = () => {
 
             let allAdditionalPrice = 0;
 
-            for(let key in choossenCustomizations){
+            for (let key in choossenCustomizations) {
                 // console.log(key)
 
                 let value = choossenCustomizations[key as keyof TypeCustomizationsObj]
 
-                if(value.length > 0){
+                if (value.length > 0) {
                     allAdditionalPrice += +value[0]?.additionalPrice
                 }
 
@@ -202,14 +241,14 @@ const ProductDetail = () => {
         }
 
 
-    } , [choossenCustomizations])
+    }, [choossenCustomizations])
 
 
 
     // // // set the new price on refresh -->
-    useEffect(()=>{
+    useEffect(() => {
         setTotalPriceOfItem(item.price)
-    } ,[item])
+    }, [item])
 
 
 
@@ -253,14 +292,32 @@ const ProductDetail = () => {
 
     return (
         <>
+
+            {/** Loading component ---->  */}
+
+            <div className=" absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-100 z-10">
+                {
+                    isLoading
+                    &&
+                    <div role="status">
+                        <svg aria-hidden="true" className="inline w-20 h-20  text-gray-200 animate-spin fill-red-600 opacity-100 " viewBox="0 0 100 101" fill="none" >
+                            <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
+                            <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill" />
+                        </svg>
+                    </div>
+                }
+            </div>
+
+
+
             <div className="flex flex-col justify-center items-center text-center rounded mx-1 my-5 pb-24">
 
 
                 {/* md is breakpoint for leptop and mobile ----> */}
 
-                <div className=" border rounded flex justify-between items-center flex-col md:flex-row  w-10/12 md:w-4/5">
+                <div className=" mt-5 border rounded flex justify-between items-center flex-col md:flex-row w-full md:w-4/5">
 
-                    <ModelViewer item={item} height={"70vh"} />
+                    <ModelViewer item={item} />
 
                     <div className=" w-full md:w-1/4 flex items-center justify-center flex-col-reverse md:flex-col">
 
@@ -275,141 +332,146 @@ const ProductDetail = () => {
                         </div>
 
 
-                        {/* Here give the toggel UI (Var) */}
-                        {
-                            !showSizingPart
-
-                                ?
+                        <div className="w-full md:h-60  md:overflow-y-scroll">
 
 
-                                <div>
+                            {/* Here give the toggel UI (Var) */}
+                            {
+                                !showSizingPart
 
-                                    {/* Starts div --> */}
+                                    ?
+
 
                                     <div>
-                                        <p className=" my-1 text-xs shadow-lg inline-flex px-1 py-0.5 rounded-md">⭐⭐⭐⭐⭐</p>
-                                    </div>
 
-                                    {/* Discription div --> */}
-                                    <div >
+                                        {/* Starts div --> */}
 
-                                        {/* item name div */}
+                                        <div>
+                                            <p className=" my-1 text-xs shadow-lg inline-flex px-1 py-0.5 rounded-md">⭐⭐⭐⭐⭐</p>
+                                        </div>
 
-                                        <NameWithLeftRight />
+                                        {/* Discription div --> */}
+                                        <div >
+
+                                            {/* item name div */}
+
+                                            <NameWithLeftRight />
 
 
-                                        {/* <Link to={`/product/${item.id}`}> */}
-                                        {/* <button
+                                            {/* <Link to={`/product/${item.id}`}> */}
+                                            {/* <button
                                         className="border my-1 px-4 rounded font-bold text-white bg-blue-600 hover:bg-blue-400"
                                             >Product details</button> */}
-                                        {/* </Link> */}
-                                        {/* <p style={{ lineBreak: "anywhere" }} >{item.description}</p> */}
+                                            {/* </Link> */}
+                                            {/* <p style={{ lineBreak: "anywhere" }} >{item.description}</p> */}
 
 
-                                        {/* Pice div */}
-                                        <div>
+                                            {/* Pice div */}
+                                            <div>
 
-                                            <p
-                                                className="bg-orange-400 inline-flex px-4 py-1 rounded shadow-md text-white border font-bold  font-serif hover:scale-x-125 hover:scale-y-110 hover:cursor-pointer transition-all"
-                                                onClick={() => { setShowSizingPart(!showSizingPart) }}
-                                            > <span className=" text-xs">₹</span>{item.price || '200'} ADD</p>
+                                                <p
+                                                    className="bg-orange-400 inline-flex px-4 py-1 rounded shadow-md text-white border font-bold  font-serif hover:scale-x-125 hover:scale-y-110 hover:cursor-pointer transition-all"
+                                                    onClick={() => { setShowSizingPart(!showSizingPart) }}
+                                                > <span className=" text-xs">₹</span>{item.price || '200'} ADD</p>
+
+                                            </div>
+
+                                            {/* <p>Some details</p> */}
 
                                         </div>
 
-                                        {/* <p>Some details</p> */}
-
                                     </div>
 
-                                </div>
+                                    :
 
-                                :
+                                    <div className=" relative w-full px-2 my-3  bg-gray-200 text-start">
 
-                                <div className=" relative w-full px-2 my-3  bg-gray-200 text-start">
-
-                                    <button
-                                        className=" absolute -top-10 left-0 border-2 bg-white mt-1 p-1 rounded-full"
-                                        onClick={() => { setShowSizingPart(!showSizingPart) }}
-                                    >🔙</button>
+                                        <button
+                                            className=" absolute -top-6 left-0 border-2 bg-white mt-1 p-1 rounded-full"
+                                            onClick={() => { setShowSizingPart(!showSizingPart) }}
+                                        >🔙</button>
 
 
-                                    <p>Selected option : {JSON.stringify(choossenCustomizations)}</p>
-                                    <p>Total Pric of item : ₹{totalPriceOfItem}</p>
+                                        {/* <p>Selected option : {JSON.stringify(choossenCustomizations)}</p> */}
+                                        <p>Total Pric of item : ₹{totalPriceOfItem}</p>
 
 
-                                    {
-                                        item.customizations
-                                        &&
-                                        Object.keys(item?.customizations).map((ele, i) => {
-                                            return <div key={i} className=" my-1  rounded w-full  bg-white shadow-xl">
+                                        {
+                                            item.customizations
+                                            &&
+                                            Object.keys(item?.customizations).map((ele, i) => {
+                                                return <div key={i} className=" my-2  rounded w-full  bg-white shadow-md shadow-gray-700">
 
-                                                {/* Heading --> */}
-                                                <p className=" px-1 flex flex-col border-b-2 border-gray-200">
-                                                    <span className="text-xl capitalize">{ele}</span>
-                                                    <span className="text-xs capitalize">Select one</span>
-                                                </p>
+                                                    {/* Heading --> */}
+                                                    <p className=" px-1 flex flex-col border-b-2 border-gray-200">
+                                                        <span className="text-xl capitalize">{ele}</span>
+                                                        <span className="text-xs capitalize">Select one</span>
+                                                    </p>
 
-                                                <div className=" px-10 flex justify-evenly">
-                                                    {/* Options map on given arr */}
+                                                    <div className=" px-10 flex justify-evenly">
+                                                        {/* Options map on given arr */}
 
-                                                    {
+                                                        {
 
-                                                        item?.customizations
-                                                            &&
+                                                            item?.customizations
+                                                                &&
 
-                                                            item?.customizations[ele as keyof TypeCustomizationsObj].length > 0
-                                                            ?
-                                                            item?.customizations[ele as keyof TypeCustomizationsObj].map((el, i) => {
-                                                                return <div
-                                                                    className=" text-center"
-                                                                    key={i}
-                                                                    onClick={() => { customizeClickHandler(ele, el.name, el.additionalPrice) }}
-                                                                >
-                                                                    <p className="capitalize">{el.name || "Regular"}</p>
-                                                                    <p
-                                                                        className=" font-serif  font-bold"
+                                                                item?.customizations[ele as keyof TypeCustomizationsObj].length > 0
+                                                                ?
+                                                                item?.customizations[ele as keyof TypeCustomizationsObj].map((el, i) => {
+                                                                    return <div
+                                                                        className={` text-center ${ele === "sizes" ? (i === selectedIndex.sizes) && "text-orange-400" : (i === selectedIndex.crusts) && "text-orange-400"}  `}
+                                                                        key={i}
+                                                                        onClick={() => { customizeClickHandler(ele, el.name, el.additionalPrice, i) }}
                                                                     >
-                                                                        <span
-                                                                            className=" text-sm"
-                                                                        >{(ele === 'sizes') && '₹'}</span>
-                                                                        {
-                                                                            (ele === 'sizes') ? (item.price + el.additionalPrice) : `+${el.additionalPrice}` || 99
-                                                                        }
-                                                                    </p>
-                                                                </div>
-                                                            })
+                                                                        <p className="capitalize px-0.5">{el.name || "Regular"}</p>
+                                                                        <p
+                                                                            className=" font-serif  font-bold"
+                                                                        >
+                                                                            <span
+                                                                                className=" text-sm"
+                                                                            >{(ele === 'sizes') && '₹'}</span>
+                                                                            {
+                                                                                (ele === 'sizes') ? (item.price + el.additionalPrice) : `+${el.additionalPrice}` || 99
+                                                                            }
+                                                                        </p>
+                                                                    </div>
+                                                                })
 
-                                                            :
-                                                            <>
-                                                                {/* I'm dummy data */}
-                                                                <div>
-                                                                    <p>Regular</p>
-                                                                    <p className=" font-serif  font-bold"> <span className=" text-sm">₹</span>99</p>
-                                                                </div>
-                                                                <div>
-                                                                    <p>Medium</p>
-                                                                    <p className=" font-serif  font-bold"> <span className=" text-sm">₹</span>199</p>
-                                                                </div>
-                                                                <div>
-                                                                    <p>Large</p>
-                                                                    <p className=" font-serif  font-bold"> <span className=" text-sm">₹</span>299</p>
-                                                                </div>
-                                                            </>
+                                                                :
+                                                                <>
+                                                                    {/* I'm dummy data */}
+
+                                                                    <div>
+                                                                        <p className="px-0.5">DRegular</p>
+                                                                        <p className=" font-serif  font-bold"> <span className=" text-sm">₹</span>99</p>
+                                                                    </div>
+                                                                    <div>
+                                                                        <p className="px-0.5">DMedium</p>
+                                                                        <p className=" font-serif  font-bold"> <span className=" text-sm">₹</span>199</p>
+                                                                    </div>
+                                                                    <div>
+                                                                        <p className="px-0.5">DLarge</p>
+                                                                        <p className=" font-serif  font-bold"> <span className=" text-sm">₹</span>299</p>
+                                                                    </div>
+                                                                </>
 
 
-                                                    }
+                                                        }
 
 
+
+                                                    </div>
 
                                                 </div>
+                                            })
 
-                                            </div>
-                                        })
-
-                                    }
+                                        }
 
 
-                                </div>
-                        }
+                                    </div>
+                            }
+                        </div>
 
 
 
@@ -454,7 +516,7 @@ const ProductDetail = () => {
                         </div>
 
 
-                        {/* items name  */}
+                        {/* Cart items name  */}
                         <div className="flex">
                             <p className=" capitalize px-1.5"><span className="text-xl font-medium font-serif">P</span>izza</p>
                             <p className=" capitalize px-1.5"><span className="text-xl font-medium font-serif">P</span>aneer</p>
@@ -472,6 +534,7 @@ const ProductDetail = () => {
                             <div className="flex justify-around md:justify-center">
                                 <button
                                     className="rounded bg-yellow-400 px-3 uppercase font-semibold text-md mx-1"
+                                    onClick={() => { navigate("/billing") }}
                                 >VIEW BILL</button>
 
                                 <button

@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux"
 import { AppDispatch } from "./store"
 import { getUserDataWithToken } from "./Slices/userSlice"
 import Modal from "./components/Modal/Modal"
+import { BillingPage } from "./Screens/BillingPage"
 
 
 
@@ -117,6 +118,12 @@ function App() {
           path="/product/:id"
           element={<ProductDetailScreen />}
 
+        />
+
+
+        <Route
+          path="/billing"
+          element={<BillingPage />}
         />
 
 

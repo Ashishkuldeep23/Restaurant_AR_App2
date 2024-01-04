@@ -39,6 +39,7 @@ export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string
 
 
             <model-viewer
+                // Size of model is controlled by CSS. 
                 id={`three_D_model`}
                 // src={`./models/${item.name}.glb`}
                 src={`${item.model}`}
