@@ -65,7 +65,7 @@ const ProductDetail = () => {
         sizes: number, crusts: number
     }
 
-    const [selectedIndex, setSelectedIndex] = useState<SelectedType>({ sizes: -1, crusts: -1 })
+    const [selectedIndex, setSelectedIndex] = useState<SelectedType>({ sizes: 0, crusts: -1 })
 
     const [totalPriceOfItem, setTotalPriceOfItem] = useState(item.price)
 
@@ -164,19 +164,24 @@ const ProductDetail = () => {
 
         // console.log(key, name, additionalPrice)
 
-        setChoossenCustomizations({ ...choossenCustomizations, [key]: [{ name: [name], additionalPrice: [additionalPrice] }] })
+        // // // Set choossenCustomizations OBJ after click read --->
+        setChoossenCustomizations({ ...choossenCustomizations, [key]: [{ name: name, additionalPrice: additionalPrice }] })
 
         // selectedIndex
 
 
-        if (key === "sizes") {
-            setSelectedIndex({ ...selectedIndex, sizes: i })
-        }
+        // // // Here set Index Number according to fiels click ---->
 
-        if (key === "crusts") {
-            setSelectedIndex({ ...selectedIndex, crusts: i })
+        setSelectedIndex({ ...selectedIndex, [key]: i })
 
-        }
+        // if (key === "sizes") {
+        //     setSelectedIndex({ ...selectedIndex, sizes: i })
+        // }
+
+        // if (key === "crusts") {
+        //     setSelectedIndex({ ...selectedIndex, crusts: i })
+
+        // }
 
     }
 
@@ -240,6 +245,13 @@ const ProductDetail = () => {
 
         }
 
+        else {
+
+
+
+
+        }
+
 
     }, [choossenCustomizations])
 
@@ -247,7 +259,24 @@ const ProductDetail = () => {
 
     // // // set the new price on refresh -->
     useEffect(() => {
+
+        // // // Updating Price ---->
         setTotalPriceOfItem(item.price)
+
+
+
+        // // // Update choosenCat obj --->
+        const nameOfSize = item.customizations?.sizes[0]?.name || ''
+
+        const additionalPriceOfSize = item.customizations?.sizes[0]?.additionalPrice || 0
+
+
+        if (nameOfSize || additionalPriceOfSize) {
+
+            setChoossenCustomizations({ ...choossenCustomizations, sizes: [{ name: nameOfSize, additionalPrice: additionalPriceOfSize }] })
+
+        }
+
     }, [item])
 
 
@@ -295,7 +324,7 @@ const ProductDetail = () => {
 
             {/** Loading component ---->  */}
 
-            <div className=" absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-100 z-10">
+            <div className=" fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-100 z-10">
                 {
                     isLoading
                     &&
@@ -331,7 +360,7 @@ const ProductDetail = () => {
 
                         </div>
 
-
+                        {/* Main UI with details --> */}
                         <div className="w-full md:h-60  md:overflow-y-scroll">
 
 
@@ -393,7 +422,8 @@ const ProductDetail = () => {
 
 
                                         {/* <p>Selected option : {JSON.stringify(choossenCustomizations)}</p> */}
-                                        <p>Total Pric of item : ₹{totalPriceOfItem}</p>
+                                        <p className=" text-center  font-semibold capitalize"><span>{choossenCustomizations?.sizes[0]?.name}</span>/<span>{choossenCustomizations?.crusts[0]?.name}</span> </p>
+                                        <p className="font-semibold text-center">Total Pric of item : ₹{totalPriceOfItem}</p>
 
 
                                         {
@@ -403,11 +433,58 @@ const ProductDetail = () => {
                                                 return <div key={i} className=" my-2  rounded w-full  bg-white shadow-md shadow-gray-700">
 
                                                     {/* Heading --> */}
-                                                    <p className=" px-1 flex flex-col border-b-2 border-gray-200">
+                                                    <p className=" px-1 flex flex-col border-b-2 border-gray-200 relative">
                                                         <span className="text-xl capitalize">{ele}</span>
-                                                        <span className="text-xs capitalize">Select one</span>
+                                                        {/* <span className="text-xs capitalize">Select one</span> */}
+
+
+                                                        {
+
+                                                            ele === "sizes"
+                                                                ?
+
+                                                                choossenCustomizations?.sizes?.length <= 0
+                                                                &&
+                                                                <span className="text-xs capitalize">Select one</span>
+
+                                                                // <span className=" absolute right-2 bottom-2 capitalize">{choossenCustomizations?.sizes[0]?.name}</span>
+
+                                                                :
+                                                                choossenCustomizations?.crusts?.length <= 0
+                                                                &&
+                                                                <span className="text-xs capitalize">Select one</span>
+
+                                                        }
+
+
+                                                        {
+
+                                                            ele === "sizes"
+                                                                ?
+
+                                                                <span className=" absolute right-2 bottom-0 capitalize">{choossenCustomizations?.sizes[0]?.name}</span>
+
+                                                                :
+                                                                <span className="absolute right-2 bottom-0 ">
+                                                                    <span className=" capitalize">{choossenCustomizations?.crusts[0]?.name}</span>
+
+                                                                    {
+                                                                        choossenCustomizations?.crusts[0]?.name
+                                                                        &&
+                                                                        <span
+                                                                            onClick={(e) => { e.stopPropagation(); setSelectedIndex({ ...selectedIndex, crusts: -1 }); setChoossenCustomizations({ ...choossenCustomizations, crusts: [] }) }}
+                                                                            className=" ml-3 px-1 rounded font-bold text-white bg-red-500 hover:bg-red-300"
+                                                                        >X</span>
+                                                                    }
+
+                                                                </span>
+
+                                                        }
+
+
                                                     </p>
 
+                                                    {/* Alll Avilable option will shown here --> */}
                                                     <div className=" px-10 flex justify-evenly">
                                                         {/* Options map on given arr */}
 
@@ -468,6 +545,25 @@ const ProductDetail = () => {
 
                                         }
 
+
+                                        {/* Add to cart main button */}
+
+                                        <div className=" bg-white px-1 py-1.5 mt-4 rounded flex justify-around items-start">
+                                            <div className=" bg-orange-200 w-20 mx-0.5 rounded flex justify-around font-bold">
+                                                <span className="text-red-500">-</span>
+                                                <span>1</span>
+                                                <span className="text-red-500">+</span>
+
+                                            </div>
+
+                                            <div>
+
+                                                <button 
+                                                className=" bg-orange-400 text-white mx-0.5 font-serif font-semibold px-2 rounded "
+                                                onClick={()=>{alert("Ready to add into cart..")}}
+                                                >Add to Table - ₹219</button>
+                                            </div>
+                                        </div>
 
                                     </div>
                             }

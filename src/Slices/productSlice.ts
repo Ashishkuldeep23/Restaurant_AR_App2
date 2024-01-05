@@ -87,7 +87,6 @@ export type TypeSingleProduct = {
     // // These keys added after some code --->
 
     customizations?: TypeCustomizationsObj,
-
     isNonVeg?: boolean
 
 
@@ -118,7 +117,7 @@ const initialOneProducData: TypeSingleProduct = {
 
     discountPercentage: 0,
 
-    model: '',
+    model: 'https://res.cloudinary.com/dlvq8n2ca/image/upload/v1704005444/hnvnf1bfodpwdinkuccq.glb',
 
     review: [],
 
@@ -159,7 +158,7 @@ const initialState: TypeProductInitial = {
 
 const productSlice = createSlice({
 
-    name: "user",
+    name: "product",
     initialState,
     reducers: {
 
