@@ -128,7 +128,7 @@ export const BillComponent = () => {
                                     </li>
                                     <li className=" mt-auto py-3 border-t-2 border-dashed flex justify-around font-semibold">
                                         <span className=" text-center w-32">To Pay</span>
-                                        <span className=" font-serif">₹{+gstPrice + totalPrice}</span>
+                                        <span className=" font-serif">₹{(+gstPrice + totalPrice).toFixed(2)}</span>
                                     </li>
                                 </ul>
 
