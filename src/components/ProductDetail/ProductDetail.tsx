@@ -695,12 +695,12 @@ function NameWithLeftRight() {
                                 (item.name === ele.name)
                                     ?
                                     <p
-                                        className={` animate__animated  animate__bounce  md:my-2 px-1 mx-2 uppercase text-xl font-bold   border-2 border-b-4 rounded-lg shadow-lg  hover:scale-110 transition-all ${!item?.isNonVeg ? "border-green-400 " : "border-red-600 "} `}
+                                        className={` animate__animated  animate__bounce  md:my-2 px-1 mx-2 uppercase text-xl font-bold   border-2 border-b-4 rounded-lg shadow-lg  hover:scale-110 transition-all ${!item?.isNonVeg ? "border-green-400 " : "border-red-600 "} hover:cursor-pointer `}
                                     >{removerUnderScore(item.name)}</p>
                                     :
                                     <p
                                         key={ele.id}
-                                        className="font-bold uppercase px-2"
+                                        className="font-bold uppercase px-2 hover:cursor-pointer hover:border rounded"
                                         onClick={() => { dispatch(fetchOneProduct(ele.id)); navigate(`/product/${ele.id}`) }}
                                     >{ele.name || "item"}</p>
 

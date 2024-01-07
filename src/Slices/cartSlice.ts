@@ -137,23 +137,21 @@ const cartSlice = createSlice({
 
 
             let findItemsInCart = cCartState.cartData.filter((ele) => {
-                
-                if(ele.id === item.id){
 
-                    if(ele.customizations.sizes[0]?.name === item.customizations.sizes[0]?.name ){
+                if (ele.id === item.id) {
 
-                        if(ele.customizations?.crusts[0]?.name !== item.customizations?.crusts[0]?.name){
+                    if (ele.customizations.sizes[0]?.name === item.customizations.sizes[0]?.name) {
 
-                        // }else{
+                        if (ele.customizations?.crusts[0]?.name !== item.customizations?.crusts[0]?.name) {
                             return ele
                         }
 
-                        
-                    }else{
+
+                    } else {
                         return ele
                     }
 
-                }else{
+                } else {
                     return ele
                 }
             })
@@ -161,7 +159,13 @@ const cartSlice = createSlice({
             // console.log(findItemsInCart)
 
 
+            let newTotalPrice = findItemsInCart.reduce((acc, item) => acc + item.price, 0)
+
+            // console.log(newTotalPrice)
+
+
             state.cartData = findItemsInCart
+            state.totalPrice = newTotalPrice
 
 
 
