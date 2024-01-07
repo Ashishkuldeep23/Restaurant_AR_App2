@@ -13,8 +13,6 @@ import { v4 as uuid } from 'uuid';
 
 
 
-
-
 const ProductDetail = () => {
 
     const navigate = useNavigate()
@@ -205,11 +203,11 @@ const ProductDetail = () => {
                 // setChoossenCustomizations({ ...choossenCustomizations, sizes: [{ name: nameOfSize, additionalPrice: additionalPriceOfSize }] })
 
 
-                setChoossenCustomizations({ crusts : [] , sizes: [{ name: nameOfSize, additionalPrice: additionalPriceOfSize }] })
+                setChoossenCustomizations({ crusts: [], sizes: [{ name: nameOfSize, additionalPrice: additionalPriceOfSize }] })
 
 
                 // //  update index also ---->
-                setSelectedIndex({sizes : 0 , crusts : -1})
+                setSelectedIndex({ sizes: 0, crusts: -1 })
             }
 
         } else {

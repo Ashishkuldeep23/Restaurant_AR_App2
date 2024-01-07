@@ -1,12 +1,43 @@
 
-// import "@google/model-viewer/lib/model-viewer";
-import "@google/model-viewer";
+import "@google/model-viewer/lib/model-viewer";
+// import "@google/model-viewer";
 import { useEffect } from "react";
 import { TypeSingleProduct } from "../../Slices/productSlice"
 import "./style.css"
 
 
 // import React from 'react'
+
+
+
+interface ModelViewerJSX {
+    src: string;
+    poster?: string;
+    iosSrc?: string;
+    seamlessPoster?: boolean;
+    autoplay?: boolean;
+    environmentImage?: string;
+    exposure?: string;
+    interactionPromptThreshold?: string;
+    shadowIntensity?: string;
+    ar?: boolean;
+    arModes?: string;
+    autoRotate?: boolean;
+    cameraControls?: boolean;
+    cameraOrbit?: string;
+    alt?: string;
+    sx?: any;
+}
+declare global {
+    namespace JSX {
+        interface IntrinsicElements {
+            "model-viewer": ModelViewerJSX &
+            React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>;
+        }
+    }
+}
+
+
 
 export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string }) => {
 
@@ -60,7 +91,7 @@ export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string
 
 
 
- 
+
                 {/* <div className="poster" slot="poster">
                     <img className="pre-prompt" src="/glb/prompt.svg" />
                 </div> */}

@@ -125,7 +125,47 @@ const cartSlice = createSlice({
 
             // // And also update total price ---->
 
-        } ,
+        },
+
+
+        removeItemsInCart(state, action) {
+
+            let item = action.payload as CardDataInter
+
+
+            let cCartState = current(state)
+
+
+            let findItemsInCart = cCartState.cartData.filter((ele) => {
+                
+                if(ele.id === item.id){
+
+                    if(ele.customizations.sizes[0]?.name === item.customizations.sizes[0]?.name ){
+
+                        if(ele.customizations?.crusts[0]?.name !== item.customizations?.crusts[0]?.name){
+
+                        // }else{
+                            return ele
+                        }
+
+                        
+                    }else{
+                        return ele
+                    }
+
+                }else{
+                    return ele
+                }
+            })
+
+            // console.log(findItemsInCart)
+
+
+            state.cartData = findItemsInCart
+
+
+
+        },
 
 
     },
@@ -138,7 +178,7 @@ const cartSlice = createSlice({
 
 
 
-export const { addItemInCart, } = cartSlice.actions
+export const { addItemInCart, removeItemsInCart } = cartSlice.actions
 
 
 export const cartState = () => useSelector((state: RootState) => state.cartReducer)

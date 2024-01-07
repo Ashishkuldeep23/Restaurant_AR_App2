@@ -2,14 +2,17 @@
 // import React from 'react'
 import { v4 as uuid } from 'uuid';
 import { useEffect, useState } from "react"
-import { cartState } from "../../Slices/cartSlice"
+import { cartState, removeItemsInCart } from "../../Slices/cartSlice"
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../store';
 // import { Navigate } from "react-router-dom"
 
 export const BillComponent = () => {
 
+    const dispatch = useDispatch<AppDispatch>()
+
 
     const { cartData, totalPrice, GST } = cartState()
-
 
     const [gstPrice, setGstPrice] = useState<string>("0")
 
@@ -23,19 +26,14 @@ export const BillComponent = () => {
 
             setGstPrice(gstPriceInNumber)
 
+        } else {
+
+            // to user on pervious page ---->
+            history.back()
         }
 
 
     }, [])
-
-
-
-    if (cartData.length <= 0) {
-
-        // to user on pervious page ---->
-        return history.back()
-
-    }
 
 
 
@@ -73,7 +71,7 @@ export const BillComponent = () => {
 
                                                     <button
                                                         className=' invisible group-hover:visible absolute left-0 px-0.5 rounded mt-0.5 bg-red-300 text-white font-bold'
-                                                        onClick={() => { alert('Working on this...') }}
+                                                        onClick={() => { dispatch(removeItemsInCart(ele)); }}
                                                     >X</button>
 
                                                     <span className=" capitalize flex flex-col text-center w-2/5">
@@ -87,12 +85,12 @@ export const BillComponent = () => {
                                             :
                                             <>
                                                 {/* Dummy data ---> */}
-                                                <li className=" flex justify-around font-semibold">
+                                                <li className=" flex justify-around font-semibold border-b">
                                                     <span className=" text-center capitalize">DButter Roti</span>
                                                     <span>4</span>
                                                     <span className=" font-serif">₹0</span>
                                                 </li>
-                                                <li className=" flex justify-around  font-semibold">
+                                                <li className=" flex justify-around  font-semibold border-b">
                                                     <span className=" text-center capitalize">DJira Rice</span>
                                                     <span>3</span>
                                                     <span className=" font-serif">₹0</span>
