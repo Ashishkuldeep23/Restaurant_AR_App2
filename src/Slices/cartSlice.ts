@@ -20,13 +20,13 @@ export type CardDataInter = {
 
 
 
-
 type InitailData = {
 
     // userId: string,
     cartData: CardDataInter[],
     whenCreated: string,
     totalPrice: number;
+    itemClicked : number;
     // totalItems: number
 
 
@@ -36,14 +36,14 @@ type InitailData = {
 
 
 
-
 const initialState: InitailData = {
     // userId: "",
     cartData: [],
     whenCreated: "",
     totalPrice: 0,
     // totalItems: 0,
-    GST: 12
+    GST: 12,
+    itemClicked : -1
 }
 
 
@@ -172,6 +172,10 @@ const cartSlice = createSlice({
         },
 
 
+        setItemsClicked(state , action){
+            state.itemClicked = action.payload
+        }
+
     },
 
     extraReducers: () => {
@@ -182,7 +186,7 @@ const cartSlice = createSlice({
 
 
 
-export const { addItemInCart, removeItemsInCart } = cartSlice.actions
+export const { addItemInCart, removeItemsInCart , setItemsClicked } = cartSlice.actions
 
 
 export const cartState = () => useSelector((state: RootState) => state.cartReducer)

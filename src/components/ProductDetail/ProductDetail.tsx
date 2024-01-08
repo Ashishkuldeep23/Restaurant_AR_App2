@@ -8,7 +8,7 @@ import { removerUnderScore } from "../All_products/Single_product"
 import { ModelViewer } from "../ModelViewer/ModelViewer"
 import QRCodeGenerator from "../QrGenerator/QrGenerator"
 import { setChildrenModal, setOpenMoadl } from "../../Slices/ModalSlice"
-import { CardDataInter, addItemInCart, cartState } from "../../Slices/cartSlice"
+import { CardDataInter, addItemInCart, cartState, setItemsClicked } from "../../Slices/cartSlice"
 import { v4 as uuid } from 'uuid';
 
 
@@ -560,7 +560,7 @@ const ProductDetail = () => {
 
 
                         {/* Cart items name  */}
-                        <div className="flex">
+                        <div className="flex overflow-y-auto w-10/12 sm:w-11/12">
 
 
 
@@ -571,8 +571,12 @@ const ProductDetail = () => {
                                     <>
 
                                         {
-                                            cartData.map((ele) => {
-                                                return <p className=" capitalize px-1.5" key={uuid()}>{cartItemsNameFormate(ele.name)}</p>
+                                            cartData.map((ele , i) => {
+                                                return <p
+                                                    className=" mx-0.5 border border-black rounded capitalize px-1.5 hover:cursor-pointer"
+                                                    key={uuid()}
+                                                    onClick={()=>{navigate("/billing"); dispatch(setItemsClicked(i))}}
+                                                >{cartItemsNameFormate(ele.name)}</p>
                                             })
                                         }
 
@@ -581,13 +585,13 @@ const ProductDetail = () => {
                                     :
 
                                     <>
-                                        <p className=" capitalize px-1.5"><span className="text-xl font-medium font-serif">P</span>izza</p>
-                                        <p className=" capitalize px-1.5"><span className="text-xl font-medium font-serif">P</span>aneer</p>
-                                        <p className=" capitalize px-1.5"><span className="text-xl font-medium font-serif">R</span>oti</p>
+                                        <p className="mx-0.5 border border-black rounded capitalize px-1.5"><span className="text-xl font-medium font-serif">P</span>izza</p>
+                                        <p className="mx-0.5 border border-black rounded capitalize px-1.5"><span className="text-xl font-medium font-serif">P</span>aneer</p>
+                                        <p className="mx-0.5 border border-black rounded capitalize px-1.5"><span className="text-xl font-medium font-serif">R</span>oti</p>
                                         {/* <p className=" capitalize px-1.5"><span className="text-xl font-medium font-serif">B</span>uttor</p> */}
                                         {/* <p className=" capitalize px-1.5"><span className="text-xl font-medium font-serif">R</span>ice</p> */}
-                                        <p className=" capitalize px-1.5"><span className="text-xl font-medium font-serif">D</span>uumy</p>
-                                        <p className=" capitalize px-1.5"><span className="text-xl font-medium font-serif">C</span>art</p>
+                                        <p className=" mx-0.5 border border-black rounded capitalize px-1.5"><span className="text-xl font-medium font-serif">D</span>uumy</p>
+                                        <p className=" mx-0.5 border border-black rounded capitalize px-1.5"><span className="text-xl font-medium font-serif">C</span>art</p>
                                     </>
 
                             }
@@ -606,7 +610,11 @@ const ProductDetail = () => {
 
                                 <button
                                     className="rounded bg-yellow-400 px-3 uppercase font-semibold text-md mx-1 relative"
-                                    onClick={() => { (cartData.length > 0) ? navigate("/billing") : alert("Add item for billing.") }}
+                                    onClick={() => { 
+                                        (cartData.length > 0) ? navigate("/billing") : alert("Add item for billing.");
+
+                                        dispatch(setItemsClicked(-1))
+                                    }}
                                 >
                                     {
                                         cartData.length > 0

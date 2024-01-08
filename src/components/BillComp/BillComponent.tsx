@@ -5,6 +5,7 @@ import { useEffect, useState } from "react"
 import { cartState, removeItemsInCart } from "../../Slices/cartSlice"
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../store';
+import { Link } from 'react-router-dom';
 // import { Navigate } from "react-router-dom"
 
 export const BillComponent = () => {
@@ -12,7 +13,7 @@ export const BillComponent = () => {
     const dispatch = useDispatch<AppDispatch>()
 
 
-    const { cartData, totalPrice, GST } = cartState()
+    const { cartData, totalPrice, GST, itemClicked } = cartState()
 
     const [gstPrice, setGstPrice] = useState<string>("0")
 
@@ -41,12 +42,12 @@ export const BillComponent = () => {
     return (
         <>
 
-            <div className="w-full h-fullAk flex flex-col justify-center items-center rounded px-1 sm:px-5 py-10 ">
-
+            <div className=" relative w-full h-fullAk flex flex-col justify-center items-center rounded px-1 sm:px-5 py-10 ">
+                <Link to={'/'}>
+                    <button className=' border bg-yellow-200 rounded px-1 py-0.5 absolute right-2 top-2 font-bold'>Home</button>
+                </Link>
 
                 <div className="border rounded p-1 bg-gray-100 " >
-
-
 
                     {/* Cart Details ----> */}
                     <div className=" flex flex-col sm:flex-row  justify-center">
@@ -66,8 +67,8 @@ export const BillComponent = () => {
                                     {
                                         cartData.length > 0
                                             ?
-                                            cartData.map((ele) => {
-                                                return <li key={uuid()} className="group flex  justify-around font-semibold border-b relative">
+                                            cartData.map((ele, i) => {
+                                                return <li key={uuid()} className={`group flex  justify-around font-semibold border-b relative ${i === itemClicked && "border-red-300 border-2 rounded"} `}>
 
                                                     <button
                                                         className=' invisible group-hover:visible absolute left-0 px-0.5 rounded mt-0.5 bg-red-300 text-white font-bold'
@@ -144,8 +145,6 @@ export const BillComponent = () => {
                         <p className=" font-semibold">Finished your Dinner ?</p>
                         <button className="bg-yellow-300 w-full rounded font-bold">I will pay at Counter</button>
                     </div>
-
-
 
 
                 </div>
