@@ -48,6 +48,7 @@ const All_products = () => {
             // // Now navigate to product show page 
             // // TODO : Change the logic after ---->
 
+            // // BeDefaul sending on first page ---->
             navgate(`/product/${allProductData[0].id}`)
 
         }

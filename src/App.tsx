@@ -63,8 +63,6 @@ function App() {
   const dispatch = useDispatch<AppDispatch>()
 
 
-  gettingTokenInCookieAndLocalHost()
-
 
   useEffect(() => {
 
