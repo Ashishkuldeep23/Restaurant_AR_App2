@@ -40,7 +40,7 @@ export const gettingTokenInCookieAndLocalHost = () => {
 
 
       // console.log(token)
-      
+
 
       break
 
@@ -127,8 +127,6 @@ function App() {
 
 
         {/* Not found Page ------> */}
-
-
         <Route
           path="*"
           element={

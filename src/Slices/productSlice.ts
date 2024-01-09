@@ -46,10 +46,10 @@ export const fetchOneProduct = createAsyncThunk("product/fetchOneProduct", async
 
 
 
-export type TypeSingleCustomeArrOfObj= { name: string, additionalPrice: number }[]
+export type TypeSingleCustomeArrOfObj = { name: string, additionalPrice: number }[]
 
 
-export  type TypeCustomizationsObj = {
+export type TypeCustomizationsObj = {
     sizes: TypeSingleCustomeArrOfObj,
     crusts: TypeSingleCustomeArrOfObj
 }
@@ -117,7 +117,9 @@ const initialOneProducData: TypeSingleProduct = {
 
     discountPercentage: 0,
 
-    model: 'https://res.cloudinary.com/dlvq8n2ca/image/upload/v1704005444/hnvnf1bfodpwdinkuccq.glb',
+    // model: 'https://res.cloudinary.com/dlvq8n2ca/image/upload/v1704005444/hnvnf1bfodpwdinkuccq.glb',
+
+    model: '',
 
     review: [],
 
@@ -140,7 +142,7 @@ const initialOneProducData: TypeSingleProduct = {
         crusts: []
     },
 
-    isNonVeg : false
+    isNonVeg: false
 }
 
 

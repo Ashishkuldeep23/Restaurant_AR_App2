@@ -76,18 +76,20 @@ export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string
                 // // // // item.model having URL of model ---->
                 // src={`${item.model}`}
                 // ios-src={`${item.model}`}
-                // seamless-poster
-                // environment-image="neutral"
-                // exposure="1.0"
-                // interaction-prompt-threshold="0"
-                // shadow-intensity="1"
                 // ar
                 // autoplay
                 // ar-modes="scene-viewer webxr quick-look"
                 // auto-rotate
                 // camera-controls
-                // camera-orbit="0deg 90deg 0deg 8.37364m"
                 // alt="3D model"
+
+                // seamless-poster
+                // environment-image="neutral"
+                // exposure="1.0"
+                // interaction-prompt-threshold="0"
+                // shadow-intensity="1"
+                // camera-orbit="0deg 90deg 0deg 8.37364m"
+
 
 
                 // // // src="./models/momo.glb" camera-controls ar-modes="scene-viewer webxr quick-look" ar autoplay 
@@ -95,24 +97,23 @@ export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string
 
 
 
-                id={`three_D_model`}
                 // src={`./models/${item.name}.glb`}
                 // // // item.model having URL of model ---->
+                id={`three_D_model`}
                 src={`${item.model}`}
                 camera-controls
                 ar-modes="scene-viewer webxr quick-look"
                 ar
                 autoplay
+                auto-rotate
+                alt="3D model"
+                seamless-poster
+                environment-image="neutral"
+                exposure="1.0"
+                interaction-prompt-threshold="0"
+                shadow-intensity="1"
+                camera-orbit="0deg 90deg 0deg 8.37364m"
 
-
-                // seamless-poster
-                // environment-image="neutral"
-                // exposure="1.0"
-                // interaction-prompt-threshold="0"
-                // shadow-intensity="1"
-                // auto-rotate
-                // camera-orbit="0deg 90deg 0deg 8.37364m"
-                // alt="3D model"
 
             >
 
