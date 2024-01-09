@@ -73,8 +73,9 @@ export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string
                 // Size of model is controlled by CSS. 
                 id={`three_D_model`}
                 // src={`./models/${item.name}.glb`}
+                // // // item.model having URL of model ---->
                 src={`${item.model}`}
-                ios-src={`./models/${item.name}.glb`}
+                ios-src={`${item.model}`}
                 seamless-poster
                 environment-image="neutral"
                 exposure="1.0"

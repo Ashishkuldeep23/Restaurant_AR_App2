@@ -571,11 +571,11 @@ const ProductDetail = () => {
                                     <>
 
                                         {
-                                            cartData.map((ele , i) => {
+                                            cartData.map((ele, i) => {
                                                 return <p
                                                     className=" mx-0.5 border border-black rounded capitalize px-1.5 hover:cursor-pointer"
                                                     key={uuid()}
-                                                    onClick={()=>{navigate("/billing"); dispatch(setItemsClicked(i))}}
+                                                    onClick={() => { navigate("/billing"); dispatch(setItemsClicked(i)) }}
                                                 >{cartItemsNameFormate(ele.name)}</p>
                                             })
                                         }
@@ -609,11 +609,11 @@ const ProductDetail = () => {
 
 
                                 <button
-                                    className="rounded bg-yellow-400 px-3 uppercase font-semibold text-md mx-1 relative"
-                                    onClick={() => { 
+                                    className="rounded bg-yellow-400 px-1 uppercase font-semibold text-md mx-1 relative flex"
+                                    onClick={() => {
                                         (cartData.length > 0) ? navigate("/billing") : alert("Add item for billing.");
-
-                                        dispatch(setItemsClicked(-1))
+                                        // navigate("/billing");
+                                        dispatch(setItemsClicked(-1));
                                     }}
                                 >
                                     {
@@ -621,6 +621,12 @@ const ProductDetail = () => {
                                         &&
                                         <span className=" bg-red-500 px-0.5 text-white absolute rounded-full -top-2 -left-1.5">{cartData.length}</span>
                                     }
+
+                                    <img
+                                        loading="lazy"
+                                        src="https://cdn.builder.io/api/v1/image/assets/TEMP/c93b38e740d6c1968ec9ece527f627f0b2678cb8256d0eefc4ac2e546dd9bd33?"
+                                        className="aspect-square object-contain object-center w-full overflow-hidden max-w-[24px]"
+                                    />
                                     VIEW BILL</button>
 
 
@@ -738,13 +744,13 @@ function MenuWithLogic({ setShowSizingPart }: { setShowSizingPart: React.Dispatc
     const item = productState().currenProduct
 
 
+    // // // This fn hold everything about Model (Logic , Menu UI).
     function menuClickHandler(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
 
         e.stopPropagation();
 
-        // alert()
 
-
+        // // // Group products by category ---->
         const groupByData: any = {}
 
         for (let item of allProductData) {
@@ -760,7 +766,7 @@ function MenuWithLogic({ setShowSizingPart }: { setShowSizingPart: React.Dispatc
 
         // console.log(groupByData)
 
-
+        // // // category click handler ---->
         function categoryClickHandler(category: string) {
 
             // console.log(category)
@@ -796,8 +802,7 @@ function MenuWithLogic({ setShowSizingPart }: { setShowSizingPart: React.Dispatc
         }
 
 
-
-
+        // // // Model actual UI ---->
         let innerHTML = <div>
 
             <ul>
@@ -828,14 +833,21 @@ function MenuWithLogic({ setShowSizingPart }: { setShowSizingPart: React.Dispatc
 
 
 
-
-
     return (
         <>
             <button
                 onClick={(e) => { menuClickHandler(e) }}
-                className="rounded bg-yellow-400 px-3 uppercase font-semibold text-md mx-1"
-            >MENU CARD</button>
+                className="rounded bg-yellow-400 px-1 uppercase font-semibold text-md mx-1 flex"
+            >
+
+                <img
+                    loading="lazy"
+                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/d7752c772004441a8bad2226356a475f69d2366b290b52382113297bf4ada2de?"
+                    className="aspect-[0.91] object-contain object-center w-full overflow-hidden max-w-[20px]"
+                />
+
+                MENU CARD
+            </button>
         </>
     )
 

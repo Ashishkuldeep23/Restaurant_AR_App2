@@ -64,7 +64,7 @@ export default function Modal() {
                                     {/* Below div will hold children ---> main content */}
                                     <div
                                         className={` bg-white rounded px-4 pb-4 pt-5 sm:p-6 sm:pb-4 border flex flex-col items-center  overflow-hidden`}
-                                        onClick={(e)=>{e.stopPropagation()}}
+                                        onClick={(e) => { e.stopPropagation() }}
                                     >
 
                                         {
@@ -77,12 +77,18 @@ export default function Modal() {
 
                                     <button
                                         type="button"
-                                        
-                                        className=" justify-center  px-2 py-1 text-sm shadow-sm ring-1 ring-inset ring-gray-600   sm:mt-0 absolute right-0.5 bottom-4 rounded-l-md bg-gray-600 text-white z-10 inline-flex  mt-10 font-bold"
+
+                                        className=" inline-flex items-center justify-center  px-1.5 py-1 text-sm shadow-sm ring-1 ring-inset ring-gray-600   sm:mt-0 absolute right-0.5 bottom-4 rounded-l-md bg-gray-800 text-white z-10  mt-10 font-bold transition-all"
                                         ref={cancelButtonRef}
                                     >
-                                        <span className=' px-1 '>X</span>
-                                        <span className=' '>Close</span>
+
+                                        <img
+                                            loading="lazy"
+                                            src="https://cdn.builder.io/api/v1/image/assets/TEMP/34c83228ba3a6f21d5e5c3ae0491192103e4736eddc747a2fabc3b61ca8aa19c?"
+                                            className="aspect-square object-contain object-center w-full fill-neutral-200 overflow-hidden max-w-[16px]"
+                                        />
+
+                                        <span className='ml-0.5' >Close</span>
                                     </button>
 
                                 </div>
