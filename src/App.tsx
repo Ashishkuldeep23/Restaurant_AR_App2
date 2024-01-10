@@ -9,6 +9,7 @@ import { AppDispatch } from "./store"
 import { getUserDataWithToken } from "./Slices/userSlice"
 import Modal from "./components/Modal/Modal"
 import { BillingPage } from "./Screens/BillingPage"
+import { cartState, loadCartData } from "./Slices/cartSlice"
 
 
 
@@ -62,6 +63,18 @@ function App() {
 
   const dispatch = useDispatch<AppDispatch>()
 
+  const { cartData } = cartState()
+
+
+
+  // // // set Cart data into backend ----------------->
+  useEffect(()=>{
+    if(cartData.length > 0){
+      localStorage.setItem("AR_Cart" , JSON.stringify(cartData))
+    }
+
+  } , [cartData])
+
 
 
   useEffect(() => {
@@ -77,6 +90,15 @@ function App() {
       dispatch(getUserDataWithToken(checkToken))
     }
 
+
+
+    // // // Load Cart data in slice --->
+
+    let getCartDataFromLoacl = localStorage.getItem("AR_Cart")
+
+    if(getCartDataFromLoacl){
+      dispatch(loadCartData(JSON.parse(getCartDataFromLoacl)))
+    }
 
 
 

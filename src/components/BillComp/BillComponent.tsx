@@ -70,17 +70,33 @@ export const BillComponent = () => {
                                             cartData.map((ele, i) => {
                                                 return <li key={uuid()} className={`group flex  justify-around font-semibold border-b relative ${i === itemClicked && "border-red-300 border-2 rounded"} `}>
 
-                                                    <button
-                                                        className=' invisible group-hover:visible absolute left-0 px-0.5 rounded mt-0.5 bg-red-300 text-white font-bold'
-                                                        onClick={() => { dispatch(removeItemsInCart(ele)); }}
-                                                    >X</button>
+                                                    <span className='absolute rounded mt-0.5 left-0 border'>
+                                                        <button
+
+                                                            className='border invisible group-hover:visible rounded px-0.5 bg-red-400 text-white font-bold'
+                                                            onClick={() => { dispatch(removeItemsInCart(ele)); }}
+                                                        >X</button>
+                                                    </span>
 
                                                     <span className=" capitalize flex flex-col text-center w-2/5">
-                                                        <span className=''>{ele.name}</span>
+                                                        <span>{ele.name}</span>
                                                         <span className=' text-xs ' style={{ fontSize: ".6rem" }}>{ele.customizations.sizes[0].name}/{ele.customizations?.crusts[0]?.name || ''} </span>
                                                     </span>
-                                                    <span>{ele.quantity}</span>
-                                                    <span className=" font-serif">₹{ele.quantity * ele.price}</span>
+                                                    <span className=' flex items-center'>{ele.quantity}</span>
+
+                                                    <span className=" capitalize flex flex-col text-center justify-center">
+                                                        <span className=" font-serif">₹{ele.quantity * ele.price}</span>
+
+                                                        {
+                                                            ele.quantity > 1
+                                                            &&
+                                                            <span className=' text-xs ' style={{ fontSize: ".6rem" }}>
+                                                                {ele.quantity} X <span className=" font-serif font-thin">₹{ele.price}</span>
+                                                            </span>
+                                                        }
+
+                                                    </span>
+
                                                 </li>
                                             })
                                             :

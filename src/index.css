@@ -74,6 +74,13 @@ model-viewer>#ar-prompt>img {
 
 
 
+
+
+#three_D_model{
+  filter: drop-shadow(1px 1px 100px #A1EEBD);
+}
+
+
 /* View in your space code -----> */
 
 #ar-button {

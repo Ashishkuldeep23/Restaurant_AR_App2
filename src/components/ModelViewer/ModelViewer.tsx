@@ -1,7 +1,7 @@
 
 import "@google/model-viewer/lib/model-viewer";
 // import "@google/model-viewer";
-import { useEffect } from "react";
+// import { useEffect } from "react";
 import { TypeSingleProduct } from "../../Slices/productSlice"
 import "./style.css"
 
@@ -43,24 +43,24 @@ export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string
 
 
 
-    useEffect(() => {
-        // Dynamically load the model-viewer script
-        const modelViewerScript = document.createElement('script');
-        modelViewerScript.type = 'module';
-        modelViewerScript.src = 'https://unpkg.com/@google/model-viewer';
-        document.head.appendChild(modelViewerScript);
+    // useEffect(() => {
+    //     // Dynamically load the model-viewer script
+    //     const modelViewerScript = document.createElement('script');
+    //     modelViewerScript.type = 'module';
+    //     modelViewerScript.src = 'https://unpkg.com/@google/model-viewer';
+    //     document.head.appendChild(modelViewerScript);
 
-        // Dynamically load the focus-visible script
-        const focusVisibleScript = document.createElement('script');
-        focusVisibleScript.src = 'https://unpkg.com/focus-visible/dist/focus-visible.js';
-        document.head.appendChild(focusVisibleScript);
+    //     // Dynamically load the focus-visible script
+    //     const focusVisibleScript = document.createElement('script');
+    //     focusVisibleScript.src = 'https://unpkg.com/focus-visible/dist/focus-visible.js';
+    //     document.head.appendChild(focusVisibleScript);
 
-        // Clean up the scripts when the component is unmounted
-        return () => {
-            document.head.removeChild(modelViewerScript);
-            document.head.removeChild(focusVisibleScript);
-        };
-    }, []);
+    //     // Clean up the scripts when the component is unmounted
+    //     return () => {
+    //         document.head.removeChild(modelViewerScript);
+    //         document.head.removeChild(focusVisibleScript);
+    //     };
+    // }, []);
 
 
 
@@ -101,6 +101,7 @@ export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string
                 // // // item.model having URL of model ---->
                 id={`three_D_model`}
                 src={`${item.model}`}
+                ios-src={`${item.model}`}
                 camera-controls
                 ar-modes="scene-viewer webxr quick-look"
                 ar

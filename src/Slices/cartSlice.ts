@@ -171,10 +171,16 @@ const cartSlice = createSlice({
 
         },
 
-
+        // // // This fn will set which cart index clicek from footer --->
         setItemsClicked(state , action){
             state.itemClicked = action.payload
+        },
+
+        loadCartData(state , action){
+            let cartData = action.payload as CardDataInter[]
+            state.cartData = cartData
         }
+
 
     },
 
@@ -186,7 +192,7 @@ const cartSlice = createSlice({
 
 
 
-export const { addItemInCart, removeItemsInCart , setItemsClicked } = cartSlice.actions
+export const { addItemInCart, removeItemsInCart , setItemsClicked , loadCartData} = cartSlice.actions
 
 
 export const cartState = () => useSelector((state: RootState) => state.cartReducer)

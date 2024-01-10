@@ -590,7 +590,7 @@ const ProductDetail = () => {
                                         <p className="mx-0.5 border border-black rounded capitalize px-1.5"><span className="text-xl font-medium font-serif">R</span>oti</p>
                                         {/* <p className=" capitalize px-1.5"><span className="text-xl font-medium font-serif">B</span>uttor</p> */}
                                         {/* <p className=" capitalize px-1.5"><span className="text-xl font-medium font-serif">R</span>ice</p> */}
-                                        <p className=" mx-0.5 border border-black rounded capitalize px-1.5"><span className="text-xl font-medium font-serif">D</span>uumy</p>
+                                        <p className=" mx-0.5 border border-black rounded capitalize px-1.5"><span className="text-xl font-medium font-serif">D</span>ummy</p>
                                         <p className=" mx-0.5 border border-black rounded capitalize px-1.5"><span className="text-xl font-medium font-serif">C</span>art</p>
                                     </>
 
