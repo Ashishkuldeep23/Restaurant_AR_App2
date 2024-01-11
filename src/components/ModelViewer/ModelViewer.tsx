@@ -102,13 +102,12 @@ export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string
                 id={`three_D_model`}
                 src={`${item.model}`}
                 ios-src={`${item.model}`}
-                camera-controls
+                camera-controls={true}
                 ar-modes="scene-viewer webxr quick-look"
-                ar
-                autoplay
-                auto-rotate
-                alt="3D model"
-                seamless-poster
+                ar={true}
+                autoplay={true}
+                auto-rotate={true}
+                alt="3Dmodel"
                 environment-image="neutral"
                 exposure="1.0"
                 interaction-prompt-threshold="0"
