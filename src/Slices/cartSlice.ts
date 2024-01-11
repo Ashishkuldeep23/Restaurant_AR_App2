@@ -10,7 +10,7 @@ export type CardDataInter = {
     category: string,
     price: number,
     quantity: number;
-    model: string,
+    // model: string,
     customizations: {
         sizes: { name: string, additionalPrice: number }[],
         crusts: { name: string, additionalPrice: number }[]

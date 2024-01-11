@@ -54,7 +54,7 @@ export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string
         modelViewerScript.src = 'https://unpkg.com/@google/model-viewer/dist/model-viewer-legacy.js';
         document.head.appendChild(modelViewerScript);
 
-        // Dynamically load the focus-visible script
+        // // Dynamically load the focus-visible script
         const focusVisibleScript = document.createElement('script');
         focusVisibleScript.src = 'https://unpkg.com/focus-visible/dist/focus-visible.js';
         document.head.appendChild(focusVisibleScript);
@@ -104,21 +104,28 @@ export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string
                 // src={`./models/${item.name}.glb`}
                 // // // item.model having URL of model ---->
                 id={`three_D_model`}
-                src={`${item.model}`}
-                ios-src={`${item.model}`}
-                camera-controls={true}
+                src={`${item.model.src.toString()}`}
+                ios-src={`${item.model.iosSrc.toString()}`}
+                // camera-controls={true}
                 ar-modes="scene-viewer webxr quick-look"
-                ar={true}
-                autoplay={true}
-                auto-rotate={true}
+                // ar={true}
+                // autoplay={true}
+                // auto-rotate={true}
                 alt="3Dmodel"
                 environment-image="neutral"
                 exposure="1.0"
                 interaction-prompt-threshold="0"
                 shadow-intensity="1"
-            // camera-orbit="0deg 90deg 0deg 8.37364m"
+                // camera-orbit="0deg 90deg 0deg 8.37364m"
 
 
+                // // // Gihub code ---->
+                seamless-poster
+                ar
+                autoplay
+                auto-rotate
+                camera-controls
+                camera-orbit="0deg 90deg 0deg 8.37364m"
             >
 
 

@@ -92,9 +92,9 @@ const ProductDetail = () => {
 
 
 
-        const { id, name, category, model, isNonVeg } = item
+        const { id, name, category,  isNonVeg } = item
 
-        let sendCartData: CardDataInter = { id, name, category, model, isNonVeg: isNonVeg || false, customizations: choossenCustomizations, quantity: quantityOfProduct, price: totalPriceOfItem }
+        let sendCartData: CardDataInter = { id, name, category,  isNonVeg: isNonVeg || false, customizations: choossenCustomizations, quantity: quantityOfProduct, price: totalPriceOfItem }
 
         dispatch(addItemInCart(sendCartData))
 
@@ -540,7 +540,6 @@ const ProductDetail = () => {
                 {/* Footer of page details */}
 
                 <div className=" w-full py-1.5 bg-slate-100 fixed bottom-0 flex justify-center">
-
 
 
                     <div className=" w-full md:w-2/4 relative">

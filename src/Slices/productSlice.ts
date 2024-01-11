@@ -67,7 +67,10 @@ export type TypeSingleProduct = {
 
     discountPercentage: number,
 
-    model: string,
+    model: {
+        src : string,
+        iosSrc : string
+    },
 
     review?: [],
 
@@ -119,7 +122,10 @@ const initialOneProducData: TypeSingleProduct = {
 
     // model: 'https://res.cloudinary.com/dlvq8n2ca/image/upload/v1704005444/hnvnf1bfodpwdinkuccq.glb',
 
-    model: '',
+    model:  {
+        src : "https://res.cloudinary.com/dlvq8n2ca/image/upload/v1704005444/hnvnf1bfodpwdinkuccq.glb",
+        iosSrc : "https://res.cloudinary.com/dlvq8n2ca/image/upload/v1704005444/hnvnf1bfodpwdinkuccq.glb"
+    },
 
     review: [],
 
