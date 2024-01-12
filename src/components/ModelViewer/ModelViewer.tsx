@@ -50,8 +50,7 @@ export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string
 
     useEffect(() => {
 
-        console.log("Log just to avoid err ->",item)
-
+        // console.log("Log just to avoid err ->",item)
 
         // Dynamically load the model-viewer script
         const modelViewerScript = document.createElement('script');
@@ -109,10 +108,10 @@ export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string
                 // src={`./models/${item.name}.glb`}
                 // // // item.model having URL of model ---->
                 id={`three_D_model`}
-                // src={`${item.model.src.toString()}`}
-                src={`/models/french.glb`}
-                // ios-src={`${item.model.iosSrc.toString()}`}
-                ios-src={`models/french.usdz`}
+                src={`${item.model.src}`}
+                // ios-src={`${item.model.iosSrc}`}
+                // src={`/models/french.glb`}
+                // ios-src={`models/french.usdz`}
                 // camera-controls={true}
                 ar-modes="scene-viewer webxr quick-look"
                 // ar={true}
@@ -122,17 +121,17 @@ export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string
                 environment-image="neutral"
                 exposure="1.0"
                 interaction-prompt-threshold="0"
-                shadow-intensity="1"
-                // camera-orbit="0deg 90deg 0deg 8.37364m"
+                shadow-intensity="1.2"
 
 
                 // // // Gihub code ---->
+                ar-scale="fixed"
                 seamless-poster
                 ar
                 autoplay
                 auto-rotate
                 camera-controls
-                camera-orbit="0deg 90deg 0deg 1.37364m"
+                camera-orbit="0deg 90deg 0deg 1m"
             >
 
 

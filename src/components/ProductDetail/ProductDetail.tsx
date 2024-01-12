@@ -610,8 +610,8 @@ const ProductDetail = () => {
                                 <button
                                     className="rounded bg-yellow-400 px-1 uppercase font-semibold text-md mx-1 relative flex"
                                     onClick={() => {
-                                        (cartData.length > 0) ? navigate("/billing") : alert("Add item for billing.");
-                                        // navigate("/billing");
+                                        // (cartData.length > 0) ? navigate("/billing") : alert("Add item for billing.");
+                                        navigate("/billing");
                                         dispatch(setItemsClicked(-1));
                                     }}
                                 >

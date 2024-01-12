@@ -67,13 +67,13 @@ function App() {
 
 
 
-  // // // set Cart data into backend ----------------->
-  useEffect(()=>{
-    if(cartData.length > 0){
-      localStorage.setItem("AR_Cart" , JSON.stringify(cartData))
-    }
+  // // // setting Cart data into backend ----------------->
+  useEffect(() => {
+    // if (cartData.length > 0) {
+      localStorage.setItem("AR_Cart", JSON.stringify(cartData))
+    // }
 
-  } , [cartData])
+  }, [cartData])
 
 
 
@@ -96,7 +96,7 @@ function App() {
 
     let getCartDataFromLoacl = localStorage.getItem("AR_Cart")
 
-    if(getCartDataFromLoacl){
+    if (getCartDataFromLoacl) {
       dispatch(loadCartData(JSON.parse(getCartDataFromLoacl)))
     }
 

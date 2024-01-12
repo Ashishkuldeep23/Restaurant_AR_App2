@@ -132,7 +132,6 @@ const cartSlice = createSlice({
 
             let item = action.payload as CardDataInter
 
-
             let cCartState = current(state)
 
 

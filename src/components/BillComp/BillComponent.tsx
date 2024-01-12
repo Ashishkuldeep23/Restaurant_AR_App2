@@ -5,10 +5,12 @@ import { useEffect, useState } from "react"
 import { cartState, removeItemsInCart } from "../../Slices/cartSlice"
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../store';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 // import { Navigate } from "react-router-dom"
 
 export const BillComponent = () => {
+
+    const navigate = useNavigate()
 
     const dispatch = useDispatch<AppDispatch>()
 
@@ -21,21 +23,52 @@ export const BillComponent = () => {
 
     useEffect(() => {
 
-        if (cartData.length > 0) {
+        // if (cartData.length > 0) {
 
-            let gstPriceInNumber = (totalPrice * (GST / 100)).toFixed(2)
+        // // // Calculate the GST price and set into Redux state
+        let gstPriceInNumber = (totalPrice * (GST / 100)).toFixed(2)
+        setGstPrice(gstPriceInNumber)
 
-            setGstPrice(gstPriceInNumber)
+        // } else {
 
-        } else {
-
-            // to user on pervious page ---->
-            history.back()
-        }
+        // to user on pervious page ---->
+        // history.back()
+        // }
 
 
     }, [totalPrice])
 
+
+
+    if (cartData.length <= 0) {
+        return (
+            <>
+                <div className=' py-24 sm:py-36 w-full flex justify-center items-center '>
+                    <div className=' flex flex-col items-center'>
+
+                        <img
+                            className=' rounded-full sm:w-1/2 '
+                            src="https://i.pinimg.com/originals/2e/ac/fa/2eacfa305d7715bdcd86bb4956209038.png"
+                            alt=""
+                        />
+
+                        <div className=' w-full flex flex-col items-center relative -top-5'>
+
+                            <p className=' font-semibold'>Your cart is <span className='text-orange-500'>Empty</span></p>
+                            <p>No data found in your cart</p>
+
+                            <button
+                                onClick={() => { navigate("/") }}
+                                className=' py-1 px-3 my-1 font-semibold rounded-full bg-orange-500 text-white'
+                            >Go to Home</button>
+                        </div>
+
+                    </div>
+                </div>
+
+            </>
+        )
+    }
 
 
 
