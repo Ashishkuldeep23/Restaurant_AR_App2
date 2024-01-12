@@ -2,7 +2,7 @@
 import "@google/model-viewer/lib/model-viewer";
 // import "@google/model-viewer";
 // import { useEffect } from "react";
-import { TypeSingleProduct } from "../../Slices/productSlice"
+// import { TypeSingleProduct } from "../../Slices/productSlice"
 import "./style.css"
 import { useEffect } from "react";
 
@@ -44,7 +44,8 @@ declare global {
 
 
 
-export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string }) => {
+// export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string }) => {
+export const ModelViewer = () => {
 
 
     useEffect(() => {
@@ -104,8 +105,10 @@ export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string
                 // src={`./models/${item.name}.glb`}
                 // // // item.model having URL of model ---->
                 id={`three_D_model`}
-                src={`${item.model.src.toString()}`}
-                ios-src={`${item.model.iosSrc.toString()}`}
+                // src={`${item.model.src.toString()}`}
+                src={`/models/french.glb`}
+                // ios-src={`${item.model.iosSrc.toString()}`}
+                ios-src={`models/french.usdz`}
                 // camera-controls={true}
                 ar-modes="scene-viewer webxr quick-look"
                 // ar={true}
@@ -125,7 +128,7 @@ export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string
                 autoplay
                 auto-rotate
                 camera-controls
-                camera-orbit="0deg 90deg 0deg 8.37364m"
+                camera-orbit="0deg 90deg 0deg 1.37364m"
             >
 
 
