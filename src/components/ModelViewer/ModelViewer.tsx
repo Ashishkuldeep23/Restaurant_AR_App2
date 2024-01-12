@@ -2,7 +2,7 @@
 import "@google/model-viewer/lib/model-viewer";
 // import "@google/model-viewer";
 // import { useEffect } from "react";
-// import { TypeSingleProduct } from "../../Slices/productSlice"
+import { TypeSingleProduct } from "../../Slices/productSlice"
 import "./style.css"
 import { useEffect } from "react";
 
@@ -44,11 +44,15 @@ declare global {
 
 
 
-// export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string }) => {
-export const ModelViewer = () => {
+export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string }) => {
+// export const ModelViewer = () => {
 
 
     useEffect(() => {
+
+        console.log("Log just to avoid err ->",item)
+
+
         // Dynamically load the model-viewer script
         const modelViewerScript = document.createElement('script');
         modelViewerScript.type = 'module';
