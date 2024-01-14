@@ -10,6 +10,7 @@ import { getUserDataWithToken } from "./Slices/userSlice"
 import Modal from "./components/Modal/Modal"
 import { BillingPage } from "./Screens/BillingPage"
 import { cartState, loadCartData } from "./Slices/cartSlice"
+import { ChefPage } from "./Screens/ChefPage"
 
 
 
@@ -67,21 +68,9 @@ function App() {
 
 
 
-  // // // setting Cart data into backend ----------------->
-  useEffect(() => {
-    // if (cartData.length > 0) {
-      localStorage.setItem("AR_Cart", JSON.stringify(cartData))
-    // }
-
-  }, [cartData])
-
-
-
   useEffect(() => {
 
     // console.log("Call dispatch for home page ---->")
-
-
 
     // // // Calling user data if user login -->
     let checkToken = gettingTokenInCookieAndLocalHost()
@@ -93,16 +82,22 @@ function App() {
 
 
     // // // Load Cart data in slice --->
-
     let getCartDataFromLoacl = localStorage.getItem("AR_Cart")
-
     if (getCartDataFromLoacl) {
       dispatch(loadCartData(JSON.parse(getCartDataFromLoacl)))
     }
 
-
-
   }, [])
+
+
+  // // // setting Cart data into backend ----------------->
+  useEffect(() => {
+    // if (cartData.length !== 0) {
+    localStorage.setItem("AR_Cart", JSON.stringify(cartData))
+    // }
+
+  }, [cartData])
+
 
 
 
@@ -144,6 +139,12 @@ function App() {
         <Route
           path="/billing"
           element={<BillingPage />}
+        />
+
+
+        <Route
+          path="/chef"
+          element={<ChefPage />}
         />
 
 

@@ -189,10 +189,10 @@ const userSlice = createSlice({
 
                         // // TODO : and also we can set the token in cookie of browser with expire -->
 
-                        let exdays = 10
+                        let exdays = 20
 
                         const d = new Date();
-                        d.setTime(d.getTime() + (exdays*24*60*60*60));
+                        d.setTime(d.getTime() + (exdays*24*60*60*60*1000));
                         let expires = "expires="+ d.toUTCString();
 
                         document.cookie = `token=${token};${expires}; path=/;`
