@@ -108,29 +108,26 @@ export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string
                 // src={`./models/${item.name}.glb`}
                 // // // item.model having URL of model ---->
                 id={`three_D_model`}
-                src={`${item.model.src}`}
+                // src={`${item.model.src}`}
                 // ios-src={`${item.model.iosSrc}`}
-                // src={`/models/french.glb`}
+                src={`/models/cake.glb`}
                 // ios-src={`models/french.usdz`}
                 // camera-controls={true}
                 ar-modes="scene-viewer webxr quick-look"
-                // ar={true}
-                // autoplay={true}
-                // auto-rotate={true}
                 alt="3Dmodel"
-                environment-image="neutral"
+                // environment-image="neutral"
                 exposure="1.0"
-                interaction-prompt-threshold="0"
-                shadow-intensity="1.2"
+                // interaction-prompt-threshold="0"
+                shadow-intensity="1.1"
 
 
                 // // // Gihub code ---->
                 ar-scale="fixed"
+                camera-controls
+                autoplay
                 seamless-poster
                 ar
-                autoplay
                 auto-rotate
-                camera-controls
                 camera-orbit="0deg 90deg 0deg 1m"
             >
 
@@ -146,7 +143,7 @@ export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string
                     <div className="update-bar"></div>
                 </div>
                 <button slot="ar-button" id="ar-button">
-                    View in your space
+                    View {item.name} in your space
                 </button>
                 <div id="ar-prompt">
                     <img src="https://modelviewer.dev/shared-assets/icons/hand.png" />
