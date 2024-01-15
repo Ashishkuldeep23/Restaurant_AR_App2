@@ -1,7 +1,7 @@
 import './style.css'
 import { Fragment, useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
-import { useNavigate, useParams } from "react-router-dom"
+import {  useNavigate, useParams } from "react-router-dom"
 import { AppDispatch } from "../../store"
 import { TypeCustomizationsObj, TypeSingleProduct, fetchAllProduct, fetchOneProduct, productState } from "../../Slices/productSlice"
 import { removerUnderScore } from "../All_products/Single_product"
@@ -10,6 +10,7 @@ import QRCodeGenerator from "../QrGenerator/QrGenerator"
 import { setChildrenModal, setOpenMoadl } from "../../Slices/ModalSlice"
 import { CardDataInter, addItemInCart, cartState, setItemsClicked } from "../../Slices/cartSlice"
 import { v4 as uuid } from 'uuid';
+import { CartData, ConfirmOrderWithTable } from '../BillComp/BillComponent'
 
 
 
@@ -92,9 +93,9 @@ const ProductDetail = () => {
 
 
 
-        const { id, name, category,  isNonVeg } = item
+        const { id, name, category, isNonVeg } = item
 
-        let sendCartData: CardDataInter = { id, name, category,  isNonVeg: isNonVeg || false, customizations: choossenCustomizations, quantity: quantityOfProduct, price: totalPriceOfItem }
+        let sendCartData: CardDataInter = { id, name, category, isNonVeg: isNonVeg || false, customizations: choossenCustomizations, quantity: quantityOfProduct, price: totalPriceOfItem }
 
         dispatch(addItemInCart(sendCartData))
 
@@ -566,33 +567,20 @@ const ProductDetail = () => {
                             {
 
                                 cartData.length > 0
-                                    ?
-                                    <>
+                                &&
+                                <>
 
-                                        {
-                                            cartData.map((ele, i) => {
-                                                return <p
-                                                    className=" mx-0.5 border border-black rounded capitalize px-1.5 hover:cursor-pointer"
-                                                    key={uuid()}
-                                                    onClick={() => { navigate("/billing"); dispatch(setItemsClicked(i)) }}
-                                                >{cartItemsNameFormate(ele.name)}</p>
-                                            })
-                                        }
+                                    {
+                                        cartData.map((ele, i) => {
+                                            return <p
+                                                className=" mx-0.5 border border-black rounded capitalize px-1.5 hover:cursor-pointer"
+                                                key={uuid()}
+                                                onClick={() => { navigate("/billing"); dispatch(setItemsClicked(i)) }}
+                                            >{cartItemsNameFormate(ele.name)}</p>
+                                        })
+                                    }
 
-                                    </>
-
-                                    :
-
-                                    <>
-                                        <p className="mx-0.5 border border-black rounded capitalize px-1.5"><span className="text-xl font-medium font-serif">P</span>izza</p>
-                                        <p className="mx-0.5 border border-black rounded capitalize px-1.5"><span className="text-xl font-medium font-serif">P</span>aneer</p>
-                                        <p className="mx-0.5 border border-black rounded capitalize px-1.5"><span className="text-xl font-medium font-serif">R</span>oti</p>
-                                        {/* <p className=" capitalize px-1.5"><span className="text-xl font-medium font-serif">B</span>uttor</p> */}
-                                        {/* <p className=" capitalize px-1.5"><span className="text-xl font-medium font-serif">R</span>ice</p> */}
-                                        <p className=" mx-0.5 border border-black rounded capitalize px-1.5"><span className="text-xl font-medium font-serif">D</span>ummy</p>
-                                        <p className=" mx-0.5 border border-black rounded capitalize px-1.5"><span className="text-xl font-medium font-serif">C</span>art</p>
-                                    </>
-
+                                </>
                             }
 
                         </div>
@@ -601,7 +589,7 @@ const ProductDetail = () => {
                         {/* Send order with bill div */}
                         <div className="">
 
-                            <p className=" text-center font-bold">Send Order to Kitchen</p>
+                            <SendToKitchenBtnWilLogic />
 
                             <div className="flex justify-around md:justify-center">
 
@@ -849,6 +837,43 @@ function MenuWithLogic({ setShowSizingPart }: { setShowSizingPart: React.Dispatc
         </>
     )
 
+}
+
+
+
+function SendToKitchenBtnWilLogic() {
+
+    const { cartData } = cartState()
+
+    const dispatch = useDispatch<AppDispatch>()
+
+    function onClickHandlerSendKitchen() {
+        if (cartData.length <= 0) return alert("Cart items is empty.")
+
+
+        // // // Model actual UI ---->
+        let innerHTML = <div>
+            <CartData />
+            <ConfirmOrderWithTable />
+        </div>
+
+        dispatch(setOpenMoadl(true))
+        dispatch(setChildrenModal(innerHTML))
+
+    }
+
+
+
+
+    return (
+        <>
+
+            <button
+                className=" my-1 border border-black px-1 rounded text-center font-bold"
+                onClick={() => { onClickHandlerSendKitchen() }}
+            >Send Order to Kitchen</button>
+        </>
+    )
 }
 
 

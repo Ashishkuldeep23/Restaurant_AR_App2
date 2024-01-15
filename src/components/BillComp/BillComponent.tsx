@@ -127,7 +127,7 @@ export const BillComponent = () => {
 
 
 
-function CartData({ removeSingleItem = false }: { removeSingleItem?: boolean }) {
+export function CartData({ removeSingleItem = false }: { removeSingleItem?: boolean }) {
 
     const dispatch = useDispatch<AppDispatch>()
 
@@ -237,31 +237,38 @@ function CartData({ removeSingleItem = false }: { removeSingleItem?: boolean }) 
 
                 {/* Price ---> This will fixed only value get change */}
 
-                <div className=" xxs:w-72 my-2 mx-1  ">
-                    <p className=" underline font-semibold text-xl my-1">Bill Details</p>
+                {
+                    removeSingleItem
+                    &&
 
-                    <div className=" rounded py-1 px-0.5 bg-white ">
+                    <div className=" xxs:w-72 my-2 mx-1  ">
+                        <p className=" underline font-semibold text-xl my-1">Bill Details</p>
+
+                        <div className=" rounded py-1 px-0.5 bg-white ">
 
 
 
-                        <ul className=" h-36 flex flex-col">
-                            <li className=" flex justify-around font-semibold">
-                                <span className=" text-center w-32">Item Total</span>
-                                <span className=" font-serif">₹{totalPrice || 0}</span>
-                            </li>
-                            <li className=" flex justify-around font-semibold">
-                                <span className=" text-center w-32">GST <span className="text-xs">12%</span> </span>
-                                <span className=" font-serif">₹{gstPrice || 12}</span>
-                            </li>
-                            <li className=" mt-auto py-3 border-t-2 border-dashed flex justify-around font-semibold">
-                                <span className=" text-center w-32">To Pay</span>
-                                <span className=" font-serif">₹{(+gstPrice + totalPrice).toFixed(2)}</span>
-                            </li>
-                        </ul>
+                            <ul className=" h-36 flex flex-col">
+                                <li className=" flex justify-around font-semibold">
+                                    <span className=" text-center w-32">Item Total</span>
+                                    <span className=" font-serif">₹{totalPrice || 0}</span>
+                                </li>
+                                <li className=" flex justify-around font-semibold">
+                                    <span className=" text-center w-32">GST <span className="text-xs">12%</span> </span>
+                                    <span className=" font-serif">₹{gstPrice || 12}</span>
+                                </li>
+                                <li className=" mt-auto py-3 border-t-2 border-dashed flex justify-around font-semibold">
+                                    <span className=" text-center w-32">To Pay</span>
+                                    <span className=" font-serif">₹{(+gstPrice + totalPrice).toFixed(2)}</span>
+                                </li>
+                            </ul>
+
+                        </div>
 
                     </div>
 
-                </div>
+                }
+
 
             </div>
         </>
@@ -272,7 +279,7 @@ function CartData({ removeSingleItem = false }: { removeSingleItem?: boolean }) 
 
 
 
-function ConfirmOrderWithTable() {
+export function ConfirmOrderWithTable() {
 
     const totalAvilableTables = [1, 3, 4, 6, 7, 8, 10]
 
@@ -280,9 +287,9 @@ function ConfirmOrderWithTable() {
 
 
 
-    function confirmOrderBtn(){
+    function confirmOrderBtn() {
 
-        if(newTable === 0){
+        if (newTable === 0) {
             return alert("Plese select Table no.")
         }
 
@@ -296,7 +303,7 @@ function ConfirmOrderWithTable() {
     return (
         <>
 
-            <div className=' sm:px-14 flex justify-center items-center flex-wrap'>
+            <div className=' sm:px-12 flex justify-center items-center flex-wrap'>
 
 
                 <div className=' m-1'>
@@ -316,7 +323,7 @@ function ConfirmOrderWithTable() {
 
                             {
                                 totalAvilableTables.map((ele, i) => {
-                                    return <option key={i} value={ele}>{ele}</option>
+                                    return <option className=' bg-white' key={i} value={ele}>{ele}</option>
 
                                 })
                             }
@@ -334,7 +341,7 @@ function ConfirmOrderWithTable() {
 
                 <button
                     className=' border px-1 m-1 rounded bg-yellow-300 font-bold '
-                    onClick={()=>{confirmOrderBtn()}}
+                    onClick={() => { confirmOrderBtn() }}
                 >Confirm Order</button>
 
             </div>
