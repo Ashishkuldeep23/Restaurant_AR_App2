@@ -73,9 +73,8 @@ export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string
 
 
 
-    // const androidSrc = item.model.src
-
-    // const iosSrc = item.model.iosSrc ? item.model.iosSrc : "";
+    const androidSrc = item.model.src
+    const iosSrc = item.model.iosSrc ? item.model.iosSrc : "";
 
 
 
@@ -119,15 +118,11 @@ export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string
 
                 // src={`${item.model.src}`}
                 // ios-src={`${item.model.iosSrc}`}
-                src={`/models/cake.glb`}
+                // src={`/models/cake.glb`}
                 // ios-src={`models/french.usdz`}
 
-                // src={androidSrc}
-                // iosSrc={iosSrc}
-
-
-
-
+                src={androidSrc}
+                iosSrc={iosSrc}
 
                 ar-modes="webxr scene-viewer quick-look"
                 interaction-prompt-threshold="0"
