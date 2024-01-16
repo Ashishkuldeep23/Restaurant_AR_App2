@@ -73,7 +73,8 @@ export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string
 
 
 
-    const androidSrc = item.model.src
+    // const androidSrc = item.model.src
+    const androidSrc = "/models/onion.glb"
     // const iosSrc = item.model.iosSrc ? item.model.iosSrc : "";
 
 
@@ -118,6 +119,8 @@ export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string
 
                 // src={`${item.model.src}`}
                 // ios-src={`${item.model.iosSrc}`}
+
+
                 // src={`/models/cake.glb`}
                 // ios-src={`models/french.usdz`}
 
