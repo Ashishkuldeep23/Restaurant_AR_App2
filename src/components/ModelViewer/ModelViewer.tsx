@@ -76,6 +76,7 @@ export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string
     // const androidSrc = item.model.src
     const androidSrc = "/models/onion.glb"
     // const iosSrc = item.model.iosSrc ? item.model.iosSrc : "";
+    const iosSrc = "/models/onion.usdz";
 
 
 
@@ -125,25 +126,42 @@ export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string
                 // ios-src={`models/french.usdz`}
 
                 src={androidSrc}
-                iosSrc={androidSrc}
+                iosSrc={iosSrc}
 
-                ar-modes="webxr scene-viewer quick-look"
-                interaction-prompt-threshold="0"
-                alt="3Dmodel"
+                // ar-modes="webxr scene-viewer quick-look"
+                // interaction-prompt-threshold="0"
+                // alt="3Dmodel"
+                // environment-image="neutral"
+                // exposure="1.0"
+                // shadow-intensity="1.1"
+
+
+                // // // // Gihub code ---->
+                // ar-scale="fixed"
+                // camera-controls
+                // autoplay
+                // seamless-poster
+                // ar
+                // auto-rotate
+                // camera-orbit="0deg 65deg 0deg 1m"
+
+
+
+                seamless-poster
                 environment-image="neutral"
                 exposure="1.0"
-                // interaction-prompt-threshold="0"
-                shadow-intensity="1.1"
-
-
-                // // // Gihub code ---->
-                ar-scale="fixed"
-                camera-controls
-                autoplay
-                seamless-poster
+                interaction-prompt-threshold="0"
+                shadow-intensity="1"
                 ar
+                autoplay
+                ar-modes="webxr scene-viewer quick-look"
                 auto-rotate
-                camera-orbit="0deg 65deg 0deg 1m"
+                camera-controls
+                camera-orbit="0deg 90deg 0deg 8.37364m"
+                alt="3D model"
+
+
+                
             >
 
 
