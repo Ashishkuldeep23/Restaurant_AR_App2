@@ -74,7 +74,7 @@ export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string
 
 
     const androidSrc = item.model.src
-    const iosSrc = item.model.iosSrc ? item.model.iosSrc : "";
+    // const iosSrc = item.model.iosSrc ? item.model.iosSrc : "";
 
 
 
