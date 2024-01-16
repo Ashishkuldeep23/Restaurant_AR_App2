@@ -122,7 +122,7 @@ export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string
                 // ios-src={`models/french.usdz`}
 
                 src={androidSrc}
-                iosSrc={iosSrc}
+                iosSrc={androidSrc}
 
                 ar-modes="webxr scene-viewer quick-look"
                 interaction-prompt-threshold="0"
