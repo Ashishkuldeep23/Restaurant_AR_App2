@@ -4,6 +4,7 @@ import "@google/model-viewer/lib/model-viewer";
 // import { useEffect } from "react";
 import { TypeSingleProduct } from "../../Slices/productSlice"
 import "./style.css"
+import { useEffect, useState } from "react";
 // import { useEffect } from "react";
 
 
@@ -74,9 +75,25 @@ export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string
 
 
     // const androidSrc = item.model.src
-    const androidSrc = "/models/onion.glb"
+    // const androidSrc = "/models/onion.glb"
     // const iosSrc = item.model.iosSrc ? item.model.iosSrc : "";
-    const iosSrc = "/models/onion.usdz";
+    // const iosSrc = "/models/xyz.usdz";
+
+
+
+    const [androidSrc , setAndroidSrc] = useState("/models/onion.glb")
+    const [iosSrc , setIosSrc] = useState("/models/xyz.usdz")
+
+
+
+    useEffect(()=>{ 
+
+        // // // set model sorces both --->
+        setAndroidSrc("/models/onion.glb");
+        setIosSrc("/models/xyz.usdz");
+
+    } , [item])
+
 
 
 
@@ -154,6 +171,8 @@ export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string
                 shadow-intensity="1"
                 ar
                 autoplay
+                ar-scale="fixed"
+                xr-environment
                 ar-modes="webxr scene-viewer quick-look"
                 auto-rotate
                 camera-controls
