@@ -4,7 +4,7 @@ import "@google/model-viewer/lib/model-viewer";
 // import { useEffect } from "react";
 import { TypeSingleProduct } from "../../Slices/productSlice"
 import "./style.css"
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 // import { useEffect } from "react";
 
 
@@ -81,18 +81,18 @@ export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string
 
 
 
-    const [androidSrc , setAndroidSrc] = useState("/models/onion.glb")
-    const [iosSrc , setIosSrc] = useState("/models/a1.usdz")
+    // const [androidSrc , setAndroidSrc] = useState("/models/onion.glb")
+    // const [iosSrc , setIosSrc] = useState("/models/a1.usdz")
 
 
 
-    useEffect(()=>{ 
+    // useEffect(()=>{ 
 
-        // // // set model sorces both --->
-        setAndroidSrc("");
-        setIosSrc("/models/a2.usdz");
+    //     // // // set model sorces both --->
+    //     setAndroidSrc("");
+    //     setIosSrc("/models/a2.usdz");
 
-    } , [item])
+    // } , [item])
 
 
 
@@ -139,11 +139,11 @@ export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string
                 // ios-src={`${item.model.iosSrc}`}
 
 
-                // src={`/models/cake.glb`}
-                // ios-src={`models/french.usdz`}
+                src={`/models/a1.usdz`}
+                ios-src={`/models/a1.usdz`}
 
-                src={androidSrc}
-                iosSrc={iosSrc}
+                // src={androidSrc}
+                // iosSrc={iosSrc}
 
                 // ar-modes="webxr scene-viewer quick-look"
                 // interaction-prompt-threshold="0"
@@ -171,9 +171,10 @@ export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string
                 shadow-intensity="1"
                 ar
                 autoplay
-                ar-scale="fixed"
-                xr-environment
-                ar-modes="webxr scene-viewer quick-look"
+                // ar-scale="fixed"
+                // xr-environment
+                // ar-modes="scene-viewer webxr quick-look"
+                ar-modes="scene-viewer webxr"
                 auto-rotate
                 camera-controls
                 camera-orbit="0deg 90deg 0deg 8.37364m"
@@ -186,9 +187,9 @@ export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string
 
 
 
-                {/* <div className="poster" slot="poster">
+                <div className="poster" slot="poster">
                     <img className="pre-prompt" src="/glb/prompt.svg" />
-                </div> */}
+                </div>
 
 
                 <div className="progress-bar" slot="progress-bar">

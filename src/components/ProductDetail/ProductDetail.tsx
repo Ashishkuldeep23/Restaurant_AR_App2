@@ -546,7 +546,7 @@ const ProductDetail = () => {
                     <div className=" w-full md:w-2/4 relative">
 
                         {/* Gas logo ----> */}
-                        <div className="gas_box absolute right-2  scale-75 ">
+                        <div className="gas_box absolute right-2 -top-1.5  scale-75 ">
                             <div className="group">
                                 <div className="overlap-group">
                                     <div className="rectangle" />
