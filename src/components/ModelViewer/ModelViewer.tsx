@@ -82,15 +82,15 @@ export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string
 
 
     const [androidSrc , setAndroidSrc] = useState("/models/onion.glb")
-    const [iosSrc , setIosSrc] = useState("/models/xyz.usdz")
+    const [iosSrc , setIosSrc] = useState("/models/a1.usdz")
 
 
 
     useEffect(()=>{ 
 
         // // // set model sorces both --->
-        setAndroidSrc("/models/onion.glb");
-        setIosSrc("/models/xyz.usdz");
+        setAndroidSrc("");
+        setIosSrc("/models/a1.usdz");
 
     } , [item])
 
