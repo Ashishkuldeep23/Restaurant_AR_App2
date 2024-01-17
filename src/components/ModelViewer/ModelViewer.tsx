@@ -90,7 +90,7 @@ export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string
 
         // // // set model sorces both --->
         setAndroidSrc("");
-        setIosSrc("/models/a1.usdz");
+        setIosSrc("/models/a2.usdz");
 
     } , [item])
 
