@@ -164,11 +164,13 @@ export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string
 
 
 
+                // environment-image="neutral"
+                exposure="1.2"
+                // interaction-prompt-threshold="0"
+
+
                 seamless-poster
-                environment-image="neutral"
-                exposure="1.0"
-                interaction-prompt-threshold="0"
-                shadow-intensity="1"
+                shadow-intensity="1.1"
                 ar
                 autoplay
                 // ar-scale="fixed"

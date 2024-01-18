@@ -283,7 +283,7 @@ const ProductDetail = () => {
 
                 {/* md is breakpoint for leptop and mobile ----> */}
 
-                <div className=" mt-5 border rounded flex justify-between items-center flex-col md:flex-row w-full md:w-4/5">
+                <div className=" border rounded flex justify-between items-center flex-col md:flex-row w-full md:w-4/5">
 
                     <ModelViewer item={item} />
 

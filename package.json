@@ -10,7 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@google/model-viewer": "^1.11.1",
+    "@google/model-viewer": "^3.4.0",
     "@headlessui/react": "^1.7.17",
     "@reduxjs/toolkit": "^2.0.1",
     "focus-visible": "^5.2.0",
