@@ -120,7 +120,7 @@ export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string
 
 
                 src={`/models/onion.glb`}
-                // ios-src={`/models/a3.usdz`}
+                ios-src={`/models/a3.usdz`}
 
                 environment-image="neutral"
                 exposure="1.0"
@@ -130,9 +130,11 @@ export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string
                 ar
                 autoplay
 
-                
+
                 ar-scale="fixed"
                 xr-environment
+
+                
                 // ar-modes="scene-viewer webxr quick-look"
                 ar-modes="scene-viewer webxr quick-look"
                 auto-rotate
