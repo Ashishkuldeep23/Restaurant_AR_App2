@@ -11,6 +11,30 @@ import "./style.css"
 // import React from 'react'
 
 
+/**
+ * used arttibutes --->
+ *                 // src={androidSrc}
+                // iosSrc={iosSrc}
+                // ar-modes="webxr scene-viewer quick-look"
+                // interaction-prompt-threshold="0"
+                // alt="3Dmodel"
+                // environment-image="neutral"
+                // exposure="1.0"
+                // shadow-intensity="1.1"
+                // // // // Gihub code ---->
+                // ar-scale="fixed"
+                // camera-controls
+                // autoplay
+                // seamless-poster
+                // ar
+                // auto-rotate
+                // camera-orbit="0deg 65deg 0deg 1m"
+
+ */
+
+
+
+
 
 interface ModelViewerJSX {
     src: string;
@@ -47,30 +71,8 @@ declare global {
 
 
 export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string }) => {
-    // export const ModelViewer = () => {
 
 
-    // useEffect(() => {
-
-    //     // console.log("Log just to avoid err ->",item)
-
-    //     // Dynamically load the model-viewer script
-    //     const modelViewerScript = document.createElement('script');
-    //     modelViewerScript.type = 'module';
-    //     modelViewerScript.src = 'https://unpkg.com/@google/model-viewer/dist/model-viewer-legacy.js';
-    //     document.head.appendChild(modelViewerScript);
-
-    //     // // Dynamically load the focus-visible script
-    //     const focusVisibleScript = document.createElement('script');
-    //     focusVisibleScript.src = 'https://unpkg.com/focus-visible/dist/focus-visible.js';
-    //     document.head.appendChild(focusVisibleScript);
-
-    //     // Clean up the scripts when the component is unmounted
-    //     return () => {
-    //         document.head.removeChild(modelViewerScript);
-    //         document.head.removeChild(focusVisibleScript);
-    //     };
-    // }, []);
 
 
 
@@ -103,30 +105,8 @@ export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string
 
 
             <model-viewer
-                // Size of model is controlled by CSS. 
-                // id={`three_D_model`}
-                // // src={`./models/${item.name}.glb`}
-                // // // // item.model having URL of model ---->
-                // src={`${item.model}`}
-                // ios-src={`${item.model}`}
-                // ar
-                // autoplay
-                // ar-modes="scene-viewer webxr quick-look"
-                // auto-rotate
-                // camera-controls
-                // alt="3D model"
-
-                // seamless-poster
-                // environment-image="neutral"
-                // exposure="1.0"
-                // interaction-prompt-threshold="0"
-                // shadow-intensity="1"
-                // camera-orbit="0deg 90deg 0deg 8.37364m"
-
-
-
-                // // // src="./models/momo.glb" camera-controls ar-modes="scene-viewer webxr quick-look" ar autoplay 
-                // // // Above is used in model show website ---->
+               
+               
 
 
 
@@ -140,50 +120,26 @@ export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string
 
 
                 src={`/models/onion.glb`}
-                ios-src={`/models/a3.usdz`}
+                // ios-src={`/models/a3.usdz`}
 
-                // src={androidSrc}
-                // iosSrc={iosSrc}
-
-                // ar-modes="webxr scene-viewer quick-look"
-                // interaction-prompt-threshold="0"
-                // alt="3Dmodel"
-                // environment-image="neutral"
-                // exposure="1.0"
-                // shadow-intensity="1.1"
-
-
-                // // // // Gihub code ---->
-                // ar-scale="fixed"
-                // camera-controls
-                // autoplay
-                // seamless-poster
-                // ar
-                // auto-rotate
-                // camera-orbit="0deg 65deg 0deg 1m"
-
-
-
-                // environment-image="neutral"
-                exposure="1.2"
+                environment-image="neutral"
+                exposure="1.0"
                 interaction-prompt-threshold="0"
-
-
                 seamless-poster
-                shadow-intensity="1.1"
+                shadow-intensity="1.0"
                 ar
                 autoplay
-                // ar-scale="fixed"
-                // xr-environment
+
+                
+                ar-scale="fixed"
+                xr-environment
                 // ar-modes="scene-viewer webxr quick-look"
-                ar-modes="scene-viewer webxr"
+                ar-modes="scene-viewer webxr quick-look"
                 auto-rotate
                 camera-controls
                 camera-orbit="0deg 90deg 0deg 8.37364m"
                 alt="3D model"
 
-
-                
             >
 
 
