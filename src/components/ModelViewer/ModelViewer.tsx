@@ -139,8 +139,8 @@ export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string
                 // ios-src={`${item.model.iosSrc}`}
 
 
-                src={`/models/a1.usdz`}
-                ios-src={`/models/a1.usdz`}
+                src={`/models/a3.usdz`}
+                ios-src={`/models/a3.usdz`}
 
                 // src={androidSrc}
                 // iosSrc={iosSrc}
