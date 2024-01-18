@@ -166,7 +166,7 @@ export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string
 
                 // environment-image="neutral"
                 exposure="1.2"
-                // interaction-prompt-threshold="0"
+                interaction-prompt-threshold="0"
 
 
                 seamless-poster
