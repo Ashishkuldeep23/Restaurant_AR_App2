@@ -49,6 +49,7 @@ interface ModelViewerJSX {
     src: string;
     poster?: string;
     iosSrc?: string;
+    "ios-src"?:string;
     seamlessPoster?: boolean;
     autoplay?: boolean;
     environmentImage?: string;
@@ -128,8 +129,8 @@ export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string
                 src={`${item.model.src}`}
                 // ios-src={`${item.model.iosSrc}`}
 
+                ios-src={`/models/${item.name}.usdz`}
 
-                iosSrc={`${item.model.iosSrc}`}
 
 
                 // // // Loacl Models 
