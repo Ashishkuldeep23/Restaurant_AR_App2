@@ -126,7 +126,11 @@ export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string
 
                 // // // Models by URL
                 src={`${item.model.src}`}
-                ios-src={`${item.model.iosSrc}`}
+                // ios-src={`${item.model.iosSrc}`}
+
+
+                iosSrc={`${item.model.iosSrc}`}
+
 
                 // // // Loacl Models 
                 // src={`/models/onion.glb`}
