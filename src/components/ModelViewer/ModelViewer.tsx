@@ -128,20 +128,19 @@ export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string
                 // // // Models by URL
                 src={`${item.model.src}`}
                 // ios-src={`${item.model.iosSrc}`}
-
                 ios-src={`/models/${item.name}.usdz`}
 
-
+                
 
                 // // // Loacl Models 
                 // src={`/models/onion.glb`}
                 // ios-src={`/models/a3.usdz`}
 
+                poster="/images/s.png"
 
                 // environment-image="neutral"
-                // exposure="1.0"
-                // interaction-prompt-threshold="0"
-
+                exposure="1.0"
+                interaction-prompt-threshold="0"
 
 
                 seamless-poster
@@ -154,7 +153,7 @@ export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string
                 ar-modes="scene-viewer webxr quick-look"
                 auto-rotate
                 camera-controls
-                camera-orbit="0deg 55deg 0deg 1.37364m"
+                camera-orbit="60deg 55deg 0deg 1.37364m"
                 alt="3D model"
 
             >

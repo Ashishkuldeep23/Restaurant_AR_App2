@@ -86,12 +86,33 @@ model-viewer>#ar-prompt>img {
 
 
 @media only screen and (min-width: 600px) {
-
     #three_D_model_G {
         height: 65vh;
     }
 
     #three_D_model_R {
         height: 65vh;
+    }
+}
+
+
+@media (max-width: 300px) {
+    #three_D_model_G {
+        height: 40vh;
+    }
+
+    #three_D_model_R {
+        height: 40vh;
+    }
+}
+
+
+@media (max-width: 230px) {
+    #three_D_model_G {
+        height: 30vh;
+    }
+
+    #three_D_model_R {
+        height: 30vh;
     }
 }
