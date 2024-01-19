@@ -30,8 +30,17 @@ import "./style.css"
                 // auto-rotate
                 // camera-orbit="0deg 65deg 0deg 1m"
 
- */
+*/
 
+
+/**
+ * MODELS PROBLEMS WITH SOLUTION ----->
+ * 1) So problem was with IOS -> not using correct version of model viewer use latest version of model veiwer (provide @ latest during download ).
+ * 2) import model viewer from '@google/model-viewer/lib/model-viewer.
+ * 3) Don't use any useEffcet to attach CDN link insted of use package of model viewer.
+ * 4) For IOS you have to give usdz model file path in ios-src and give quick-look in ar-model atteribute.
+ * 5) Model should have good quality.
+*/
 
 
 
@@ -105,8 +114,8 @@ export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string
 
 
             <model-viewer
-               
-               
+
+
 
 
 
@@ -115,36 +124,35 @@ export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string
                 id={`${!item.isNonVeg ? "three_D_model_G" : "three_D_model_R"}`}
 
 
-                // src={`${item.model.src}`}
-                // ios-src={`${item.model.iosSrc}`}
+                // // // Models by URL
+                src={`${item.model.src}`}
+                ios-src={`${item.model.iosSrc}`}
+
+                // // // Loacl Models 
+                // src={`/models/onion.glb`}
+                // ios-src={`/models/a3.usdz`}
 
 
-                src={`/models/onion.glb`}
-                ios-src={`/models/a3.usdz`}
+                // environment-image="neutral"
+                // exposure="1.0"
+                // interaction-prompt-threshold="0"
 
-                environment-image="neutral"
-                exposure="1.0"
-                interaction-prompt-threshold="0"
+
+
                 seamless-poster
                 shadow-intensity="1.0"
                 ar
                 autoplay
-
-
                 ar-scale="fixed"
                 xr-environment
-
-                
                 // ar-modes="scene-viewer webxr quick-look"
                 ar-modes="scene-viewer webxr quick-look"
                 auto-rotate
                 camera-controls
-                camera-orbit="0deg 90deg 0deg 8.37364m"
+                camera-orbit="0deg 55deg 0deg 1.37364m"
                 alt="3D model"
 
             >
-
-
 
 
                 <div className="poster" slot="poster">
@@ -156,7 +164,7 @@ export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string
                     <div className="update-bar"></div>
                 </div>
                 <button slot="ar-button" id="ar-button">
-                    View <span className=" capitalize">{item.name}</span> in your space
+                    View <span className=" capitalize font-semibold">{item.name}</span> in your space
                 </button>
                 <div id="ar-prompt">
                     <img src="https://modelviewer.dev/shared-assets/icons/hand.png" />
