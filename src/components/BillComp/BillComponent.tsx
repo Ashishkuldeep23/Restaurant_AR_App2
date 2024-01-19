@@ -281,9 +281,9 @@ export function CartData({ removeSingleItem = false }: { removeSingleItem?: bool
 
 export function ConfirmOrderWithTable() {
 
-    const totalAvilableTables = [1, 3, 4, 6, 7, 8, 10]
+    const totalAvilableTables = [1, 3, 4, 6, 7, 8, 10]    // // // This is avilable tables in restaurent currently.
 
-    const [newTable, setNewTable] = useState(0)
+    const [newTable, setNewTable] = useState(6)     // // // Selected Seat from QR (If match with avilable seat then default works).
 
 
 
@@ -294,7 +294,6 @@ export function ConfirmOrderWithTable() {
         }
 
         alert(`Order successfull, by table no.${newTable}`)
-
     }
 
 
@@ -315,15 +314,21 @@ export function ConfirmOrderWithTable() {
                         <select
                             className=' border rounded border-yellow-300 font-semibold'
                             id="table_num"
-
                             onChange={(e) => { setNewTable(+e.target.value) }}
+                            // size={2}
+                            // defaultValue={newTable}
+                            value={newTable}
 
                         >
                             <option value={0} >0</option>
 
                             {
                                 totalAvilableTables.map((ele, i) => {
-                                    return <option className=' bg-white' key={i} value={ele}>{ele}</option>
+                                    return <option
+                                        className=' bg-white'
+                                        key={i}
+                                        value={ele}
+                                    >{ele}</option>
 
                                 })
                             }
@@ -332,10 +337,10 @@ export function ConfirmOrderWithTable() {
 
                     </div>
 
-                    <div>
+                    {/* <div>
                         <p>OR</p>
                         <p className=' border-b border-yellow-300 '>Table No. 7</p>
-                    </div>
+                    </div> */}
 
                 </div>
 
