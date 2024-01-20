@@ -10,7 +10,8 @@ import { getUserDataWithToken } from "./Slices/userSlice"
 import Modal from "./components/Modal/Modal"
 import { BillingPage } from "./Screens/BillingPage"
 import { cartState, loadCartData } from "./Slices/cartSlice"
-import { ChefPage } from "./Screens/ChefPage"
+// import { ChefPage } from "./Screens/ChefPage"
+import { UserPage } from "./Screens/UserPage"
 
 
 
@@ -53,8 +54,6 @@ export const gettingTokenInCookieAndLocalHost = () => {
 
   return token
 }
-
-
 
 
 
@@ -143,8 +142,8 @@ function App() {
 
 
         <Route
-          path="/chef"
-          element={<ChefPage />}
+          path="/profile"
+          element={<UserPage />}
         />
 
 

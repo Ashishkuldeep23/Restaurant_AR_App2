@@ -1,7 +1,7 @@
 import './style.css'
 import { Fragment, useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
-import {  useNavigate, useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { AppDispatch } from "../../store"
 import { TypeCustomizationsObj, TypeSingleProduct, fetchAllProduct, fetchOneProduct, productState } from "../../Slices/productSlice"
 import { removerUnderScore } from "../All_products/Single_product"
@@ -613,8 +613,7 @@ const ProductDetail = () => {
                                         loading="lazy"
                                         src="https://cdn.builder.io/api/v1/image/assets/TEMP/c93b38e740d6c1968ec9ece527f627f0b2678cb8256d0eefc4ac2e546dd9bd33?"
                                         className="aspect-square object-contain object-center w-full overflow-hidden max-w-[24px]"
-                                    />
-                                    VIEW BILL</button>
+                                    /> VIEW BILL</button>
 
 
                                 {/* here create a menu btn component with all logics ---> */}
@@ -850,10 +849,9 @@ function SendToKitchenBtnWilLogic() {
     function onClickHandlerSendKitchen() {
         if (cartData.length <= 0) return alert("Cart items is empty.")
 
-
         // // // Model actual UI ---->
         let innerHTML = <div>
-            <CartData />
+            <CartData removeSingleItem={true} showBilling={false} />
             <ConfirmOrderWithTable />
         </div>
 

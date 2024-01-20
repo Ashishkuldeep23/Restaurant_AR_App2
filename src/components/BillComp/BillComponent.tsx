@@ -103,7 +103,7 @@ export const BillComponent = () => {
                 <div className="border rounded p-1 bg-gray-100 " >
 
                     {/* Cart Details ----> */}
-                    <CartData removeSingleItem={true} />
+                    <CartData removeSingleItem={true} showBilling={true}/>
 
                     {/* Order btn ----> */}
                     <div className=" flex flex-col">
@@ -127,7 +127,7 @@ export const BillComponent = () => {
 
 
 
-export function CartData({ removeSingleItem = false }: { removeSingleItem?: boolean }) {
+export function CartData({ removeSingleItem = false , showBilling = false }: { removeSingleItem?: boolean , showBilling ?: boolean}) {
 
     const dispatch = useDispatch<AppDispatch>()
 
@@ -238,7 +238,7 @@ export function CartData({ removeSingleItem = false }: { removeSingleItem?: bool
                 {/* Price ---> This will fixed only value get change */}
 
                 {
-                    removeSingleItem
+                    showBilling
                     &&
 
                     <div className=" xxs:w-72 my-2 mx-1  ">

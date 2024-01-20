@@ -1,12 +1,13 @@
 
 // import React from 'react'
 
-import { Link } from "react-router-dom"
+import {Link  } from "react-router-dom"
 import { userState } from "../../Slices/userSlice"
 
 export const Navbar = () => {
 
     const userData = userState().userData
+   
 
     return (
         <>
@@ -26,8 +27,10 @@ export const Navbar = () => {
                 {/* User image div */}
                 <div className=" my-auto ml-auto mr-5 hover:scale-110 hover:cursor-pointer transition-all">
 
-                    <Link to='/login'>
+                    <Link to={userData.firstName ? "/profile" : "/login"}>
                         <img
+
+                            // onClick={()=>{userData.firstName ? "" : navigate("/login")}}
                             className=" h-12 rounded-full border"
                             src={userData.profilePic}
                             alt=""

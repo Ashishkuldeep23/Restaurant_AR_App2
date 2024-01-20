@@ -49,7 +49,7 @@ interface ModelViewerJSX {
     src: string;
     poster?: string;
     iosSrc?: string;
-    "ios-src"?:string;
+    "ios-src"?: string;
     seamlessPoster?: boolean;
     autoplay?: boolean;
     environmentImage?: string;
@@ -117,9 +117,6 @@ export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string
             <model-viewer
 
 
-
-
-
                 // src={`./models/${item.name}.glb`}
                 // // // item.model having URL of model ---->
                 id={`${!item.isNonVeg ? "three_D_model_G" : "three_D_model_R"}`}
@@ -129,8 +126,6 @@ export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string
                 src={`${item.model.src}`}
                 // ios-src={`${item.model.iosSrc}`}
                 ios-src={`/models/${item.name}.usdz`}
-
-                
 
                 // // // Loacl Models 
                 // src={`/models/onion.glb`}
@@ -147,7 +142,7 @@ export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string
                 shadow-intensity="1.0"
                 ar
                 autoplay
-                ar-scale="fixed"
+                ar-scale="auto"
                 xr-environment
                 // ar-modes="scene-viewer webxr quick-look"
                 ar-modes="scene-viewer webxr quick-look"
@@ -155,26 +150,23 @@ export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string
                 camera-controls
                 camera-orbit="60deg 55deg 0deg 1.37364m"
                 alt="3D model"
-
             >
-
-
-                <div className="poster" slot="poster">
-                    <img className="pre-prompt" src="/glb/prompt.svg" />
+                {/* Here we can set poster for the model ---> */}
+                <div className="poster h-full" slot="poster">
+                    <img id="poster_image" src="/images/s.png" />
                 </div>
-
 
                 <div className="progress-bar" slot="progress-bar">
-                    <div className="update-bar"></div>
+                    {/* <div className="update-bar"></div> */}
                 </div>
+
                 <button slot="ar-button" id="ar-button">
                     View <span className=" capitalize font-semibold">{item.name}</span> in your space
                 </button>
+
                 <div id="ar-prompt">
                     <img src="https://modelviewer.dev/shared-assets/icons/hand.png" />
                 </div>
-
-
 
             </model-viewer>
 

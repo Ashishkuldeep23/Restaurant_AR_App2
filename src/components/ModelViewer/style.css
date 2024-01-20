@@ -1,27 +1,3 @@
-
-
-#three_D_model_G {
-
-    height: 47vh;
-    border-radius: 5px;
-    width: 90%;
-    /* border: 1px solid red; */
-
-    filter: drop-shadow(1px 1px 100px #A1EEBD);
-}
-
-#three_D_model_R {
-
-    height: 47vh;
-    border-radius: 5px;
-    width: 90%;
-    /* border: 1px solid red; */
-
-    filter: drop-shadow(1px 1px 100px #febebe);
-}
-
-
-
 model-viewer {
     width: 100%;
     height: 400px;
@@ -49,6 +25,12 @@ model-viewer>#ar-prompt>img {
 
 
 /* View in your space code -----> */
+
+#poster_image{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
 
 #ar-button {
     background-image: url('https://cdn.khronos.org/assets/blog/live-gltf-asset-editing-in-your-browsereven-in-ar/ic_view_in_ar_new_googblue_48dp.png');
@@ -82,6 +64,32 @@ model-viewer>#ar-prompt>img {
 #ar-button:focus-visible {
     outline: 1px solid #4285f4;
 }
+
+
+
+
+/* Below id used in models --------> */
+
+#three_D_model_G {
+
+    height: 47vh;
+    border-radius: 5px;
+    width: 90%;
+    /* border: 1px solid red; */
+
+    filter: drop-shadow(1px 1px 100px #A1EEBD);
+}
+
+#three_D_model_R {
+
+    height: 47vh;
+    border-radius: 5px;
+    width: 90%;
+    /* border: 1px solid red; */
+
+    filter: drop-shadow(1px 1px 100px #febebe);
+}
+
 
 
 
