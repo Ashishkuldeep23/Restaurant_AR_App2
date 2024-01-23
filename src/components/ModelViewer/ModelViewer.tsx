@@ -131,7 +131,6 @@ export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string
                 // src={`/models/onion.glb`}
                 // ios-src={`/models/a3.usdz`}
 
-                poster="/images/s.png"
 
                 // environment-image="neutral"
                 exposure="1.0"

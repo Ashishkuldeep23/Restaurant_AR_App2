@@ -575,6 +575,7 @@ const ProductDetail = () => {
                                             return <p
                                                 className=" mx-0.5 border border-black rounded capitalize px-1.5 hover:cursor-pointer"
                                                 key={uuid()}
+                                                style={ { whiteSpace : "nowrap"}}
                                                 onClick={() => { navigate("/billing"); dispatch(setItemsClicked(i)) }}
                                             >{cartItemsNameFormate(ele.name)}</p>
                                         })

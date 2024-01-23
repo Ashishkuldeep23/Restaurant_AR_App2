@@ -95,9 +95,9 @@ export const BillComponent = () => {
     return (
         <>
 
-            <div className=" relative w-full h-fullAk flex flex-col justify-center items-center rounded px-1 sm:px-5 py-10 ">
+            <div className="relative w-full h-fullAk flex flex-col justify-center items-center rounded px-1 sm:px-5 py-10 ">
                 <Link to={'/'}>
-                    <button className=' border bg-yellow-200 rounded px-1 py-0.5 absolute right-2 top-2 font-bold'>Home</button>
+                    <button className=' z-10 border bg-yellow-200 rounded px-1 py-0.5 absolute right-2 top-2 font-bold'>Home</button>
                 </Link>
 
                 <div className="border rounded p-1 bg-gray-100 " >
@@ -162,7 +162,7 @@ export function CartData({ removeSingleItem = false , showBilling = false }: { r
 
                 {/* All cart itms with total price and total number (Loop run over all products)*/}
 
-                <div className=" xxs:w-72 my-2 mx-1  ">
+                <div className="max-h-96 overflow-y-scroll xxs:w-72 my-2 mx-1  ">
                     <p className=" underline font-semibold text-xl my-1">Cart Details</p>
 
                     <div className=" rounded pt-1 px-0.5 bg-white ">
