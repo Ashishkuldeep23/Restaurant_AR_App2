@@ -10,7 +10,7 @@ import QRCodeGenerator from "../QrGenerator/QrGenerator"
 import { setChildrenModal, setOpenMoadl } from "../../Slices/ModalSlice"
 import { CardDataInter, addItemInCart, cartState, setItemsClicked } from "../../Slices/cartSlice"
 import { v4 as uuid } from 'uuid';
-import { CartData, ConfirmOrderWithTable } from '../BillComp/BillComponent'
+import { CartData, ConfirmOrderWithTable, DummyCartUI } from '../BillComp/BillComponent'
 
 
 
@@ -126,6 +126,31 @@ const ProductDetail = () => {
 
         return <><span className=" text-xl font-medium font-serif">{name[0]}</span><span>{name.substring(1)}</span></>
 
+    }
+
+
+
+    // // // Below fn used to show modal with cart value and select table no. ------>
+    // // // Below fn used in two componentes thats why present in parent comp --->
+    function onClickHandlerSendKitchen() {
+
+        // // This var will hold innerHTMl structure --->
+        let innerHTML;
+
+        if (cartData.length <= 0) {
+            innerHTML = <DummyCartUI withModal={true} />
+        }
+
+        // // // Model actual UI ---->
+        else {
+            innerHTML = <div>
+                <CartData removeSingleItem={true} showBilling={false} />
+                <ConfirmOrderWithTable />
+            </div>
+        }
+
+        dispatch(setOpenMoadl(true))
+        dispatch(setChildrenModal(innerHTML))
     }
 
 
@@ -575,8 +600,8 @@ const ProductDetail = () => {
                                             return <p
                                                 className=" mx-0.5 border border-black rounded capitalize px-1.5 hover:cursor-pointer"
                                                 key={uuid()}
-                                                style={ { whiteSpace : "nowrap"}}
-                                                onClick={() => { navigate("/billing"); dispatch(setItemsClicked(i)) }}
+                                                style={{ whiteSpace: "nowrap" }}
+                                                onClick={() => { onClickHandlerSendKitchen(); dispatch(setItemsClicked(i)) }}
                                             >{cartItemsNameFormate(ele.name)}</p>
                                         })
                                     }
@@ -590,7 +615,7 @@ const ProductDetail = () => {
                         {/* Send order with bill div */}
                         <div className="">
 
-                            <SendToKitchenBtnWilLogic />
+                            <SendToKitchenBtnWilLogic onClickHandlerSendKitchen={onClickHandlerSendKitchen} />
 
                             <div className="flex justify-around md:justify-center">
 
@@ -841,27 +866,10 @@ function MenuWithLogic({ setShowSizingPart }: { setShowSizingPart: React.Dispatc
 
 
 
-function SendToKitchenBtnWilLogic() {
+function SendToKitchenBtnWilLogic({ onClickHandlerSendKitchen }: { onClickHandlerSendKitchen: Function }) {
 
-    const { cartData } = cartState()
 
     const dispatch = useDispatch<AppDispatch>()
-
-    function onClickHandlerSendKitchen() {
-        if (cartData.length <= 0) return alert("Cart items is empty.")
-
-        // // // Model actual UI ---->
-        let innerHTML = <div>
-            <CartData removeSingleItem={true} showBilling={false} />
-            <ConfirmOrderWithTable />
-        </div>
-
-        dispatch(setOpenMoadl(true))
-        dispatch(setChildrenModal(innerHTML))
-
-    }
-
-
 
 
     return (
@@ -869,7 +877,14 @@ function SendToKitchenBtnWilLogic() {
 
             <button
                 className=" my-1 border border-black px-1 rounded text-center font-bold"
-                onClick={() => { onClickHandlerSendKitchen() }}
+                onClick={() => {
+                    // // Show the modal 
+                    onClickHandlerSendKitchen();
+
+                    // // Set the click item to -1 (default)
+                    dispatch(setItemsClicked(-1));
+
+                }}
             >Send Order to Kitchen</button>
         </>
     )

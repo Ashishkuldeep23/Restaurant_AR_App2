@@ -1,7 +1,7 @@
 
 // import React from 'react'
 import { v4 as uuid } from 'uuid';
-import { useEffect, useState } from "react"
+import { useEffect,  useState } from "react"
 import { cartState, removeItemsInCart } from "../../Slices/cartSlice"
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../store';
@@ -11,14 +11,8 @@ import { setChildrenModal, setOpenMoadl } from '../../Slices/ModalSlice';
 
 export const BillComponent = () => {
 
-    const navigate = useNavigate()
-
     const dispatch = useDispatch<AppDispatch>()
     const { cartData } = cartState()
-
-
-
-
 
 
     // // This Fn is used to show confirm page ----->
@@ -44,50 +38,7 @@ export const BillComponent = () => {
     // if cart is 0 then show this -->
 
     if (cartData.length <= 0) {
-        return (
-            <>
-                <div className=' py-24 sm:py-36 w-full flex justify-center items-center '>
-                    <div >
-
-                        <div className='  flex flex-col items-center relative'>
-
-                            <img
-                                className=' rounded-full sm:w-1/2 '
-                                src="https://i.pinimg.com/originals/2e/ac/fa/2eacfa305d7715bdcd86bb4956209038.png"
-                                alt=""
-                            />
-
-                            <button
-                                className=' absolute top-5 right-10 sm:right-1/3 border-2 mx-2 p-0.5 rounded-full'
-                                onClick={() => { history.back() }}
-                            >🔙</button>
-                        </div>
-
-                        <div className=' w-full flex flex-col items-center relative -top-5 sm:-top-10'>
-
-                            {/* <p className=' font-semibold'>Your cart is <span className='text-orange-500'>Empty</span></p> */}
-                            <p> <span className=' font-semibold text-orange-500'>No data found</span> in your cart</p>
-
-                            <div>
-
-                                <button
-                                    onClick={() => { navigate("/") }}
-                                    className=' py-1 px-3 my-1 font-semibold rounded-full bg-orange-500 text-white'
-                                >Go to Home</button>
-
-
-                            </div>
-
-
-
-
-                        </div>
-
-                    </div>
-                </div>
-
-            </>
-        )
+        return <DummyCartUI withModal={false} />
     }
 
 
@@ -103,7 +54,7 @@ export const BillComponent = () => {
                 <div className="border rounded p-1 bg-gray-100 " >
 
                     {/* Cart Details ----> */}
-                    <CartData removeSingleItem={true} showBilling={true}/>
+                    <CartData removeSingleItem={true} showBilling={true} />
 
                     {/* Order btn ----> */}
                     <div className=" flex flex-col">
@@ -127,7 +78,59 @@ export const BillComponent = () => {
 
 
 
-export function CartData({ removeSingleItem = false , showBilling = false }: { removeSingleItem?: boolean , showBilling ?: boolean}) {
+export function DummyCartUI({ withModal = false }: { withModal?: boolean }) {
+
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+
+    return (
+        <div className=' py-24 sm:py-36 w-full flex justify-center items-center '>
+            <div >
+
+                <div className='  flex flex-col items-center relative'>
+
+                    <img
+                        className=' rounded-full sm:w-1/2 '
+                        src="https://i.pinimg.com/originals/2e/ac/fa/2eacfa305d7715bdcd86bb4956209038.png"
+                        alt=""
+                    />
+
+                    <button
+                        className=' absolute top-5 right-10 sm:right-1/3 border-2 mx-2 p-0.5 rounded-full'
+                        onClick={() => {
+                            !withModal ? history.back() : dispatch(setOpenMoadl(false))
+                        }}
+                    >🔙</button>
+                </div>
+
+                <div className=' w-full flex flex-col items-center relative -top-5 sm:-top-10'>
+
+                    {/* <p className=' font-semibold'>Your cart is <span className='text-orange-500'>Empty</span></p> */}
+                    <p> <span className=' font-semibold text-orange-500'>No data found</span> in your cart</p>
+
+                    <div>
+
+                        <button
+                            onClick={() => {
+                                !withModal ? navigate("/") : dispatch(setOpenMoadl(false))
+                            }}
+                            className=' py-1 px-3 my-1 font-semibold rounded-full bg-orange-500 text-white'
+                        >Go to Home</button>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    )
+}
+
+
+
+
+export function CartData({ removeSingleItem = false, showBilling = false }: { removeSingleItem?: boolean, showBilling?: boolean }) {
 
     const dispatch = useDispatch<AppDispatch>()
 
@@ -172,7 +175,10 @@ export function CartData({ removeSingleItem = false , showBilling = false }: { r
                                 cartData.length > 0
                                     ?
                                     cartData.map((ele, i) => {
-                                        return <li key={uuid()} className={`group flex  justify-around font-semibold border-b relative ${i === itemClicked && "border-red-300 border-2 rounded"} `}>
+                                        return <li
+                                            key={uuid()}
+                                            className={`group flex  justify-around font-semibold border-b relative ${i === itemClicked && "border-red-300 border-2 rounded"} `}
+                                        >
 
                                             {
                                                 removeSingleItem
@@ -290,7 +296,7 @@ export function ConfirmOrderWithTable() {
     function confirmOrderBtn() {
 
         if (newTable === 0) {
-            return alert("Plese select Table no.")
+            return alert("Plese select right Table No.")
         }
 
         alert(`Order successfull, by table no.${newTable}`)
@@ -320,7 +326,7 @@ export function ConfirmOrderWithTable() {
                             value={newTable}
 
                         >
-                            <option value={0} >0</option>
+                            <option value={0} disabled >Select</option>
 
                             {
                                 totalAvilableTables.map((ele, i) => {
