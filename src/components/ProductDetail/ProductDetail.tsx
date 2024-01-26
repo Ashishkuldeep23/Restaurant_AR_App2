@@ -16,7 +16,7 @@ import { CartData, ConfirmOrderWithTable, DummyCartUI } from '../BillComp/BillCo
 
 const ProductDetail = () => {
 
-    const navigate = useNavigate()
+    // const navigate = useNavigate()
 
     const item = productState().currenProduct
 
@@ -550,19 +550,6 @@ const ProductDetail = () => {
                 </div>
 
 
-
-                {/* Goto home BTn not Using now */}
-                {/* <Link to={"/"}>
-                    <button
-                        className="border rounded px-4 text-2xl font-bold bg-yellow-500 text-white my-5"
-                    >
-                        Goto Home 🏠
-                    </button>
-                </Link> */}
-
-
-
-
                 {/* Footer of page details */}
 
                 <div className=" w-full py-1.5 bg-slate-100 fixed bottom-0 flex justify-center">
@@ -613,13 +600,15 @@ const ProductDetail = () => {
 
 
                         {/* Send order with bill div */}
-                        <div className="">
+                        <div >
 
-                            <SendToKitchenBtnWilLogic onClickHandlerSendKitchen={onClickHandlerSendKitchen} />
+                            {/* <SendToKitchenBtnWilLogic onClickHandlerSendKitchen={onClickHandlerSendKitchen} /> */}
 
-                            <div className="flex justify-around md:justify-center">
+                            <div className="flex justify-around items-center flex-wrap md:justify-center">
 
+                                {/* Show below btn after successfull order ---> */}
 
+                                {/* 
 
                                 <button
                                     className="rounded bg-yellow-400 px-1 uppercase font-semibold text-md mx-1 relative flex"
@@ -639,8 +628,14 @@ const ProductDetail = () => {
                                         loading="lazy"
                                         src="https://cdn.builder.io/api/v1/image/assets/TEMP/c93b38e740d6c1968ec9ece527f627f0b2678cb8256d0eefc4ac2e546dd9bd33?"
                                         className="aspect-square object-contain object-center w-full overflow-hidden max-w-[24px]"
-                                    /> VIEW BILL</button>
+                                    />
 
+                                    <span>VIEW BILL</span>
+
+                                </button> */}
+
+
+                                <SendToKitchenBtnWilLogic onClickHandlerSendKitchen={onClickHandlerSendKitchen} />
 
                                 {/* here create a menu btn component with all logics ---> */}
                                 <MenuWithLogic setShowSizingPart={setShowSizingPart} />
@@ -663,8 +658,6 @@ const ProductDetail = () => {
 }
 
 export default ProductDetail
-
-
 
 
 
@@ -871,12 +864,15 @@ function SendToKitchenBtnWilLogic({ onClickHandlerSendKitchen }: { onClickHandle
 
     const dispatch = useDispatch<AppDispatch>()
 
+    const { cartData } = cartState()
+
 
     return (
         <>
 
+
             <button
-                className=" my-1 border border-black px-1 rounded text-center font-bold"
+                className=" my-1 border border-black px-1 rounded text-center font-bold relative"
                 onClick={() => {
                     // // Show the modal 
                     onClickHandlerSendKitchen();
@@ -885,7 +881,15 @@ function SendToKitchenBtnWilLogic({ onClickHandlerSendKitchen }: { onClickHandle
                     dispatch(setItemsClicked(-1));
 
                 }}
-            >Send Order to Kitchen</button>
+            >
+
+                {
+                    cartData.length > 0
+                    &&
+                    <span className=" bg-red-500 px-0.5 font-semibold text-white absolute rounded-full -top-2 -left-3">{cartData.length}</span>
+                }
+                <span className=' relative z-10'>Send Order to Kitchen</span>
+            </button>
         </>
     )
 }

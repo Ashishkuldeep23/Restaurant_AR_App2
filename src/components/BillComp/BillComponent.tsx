@@ -76,8 +76,6 @@ export const BillComponent = () => {
 }
 
 
-
-
 export function DummyCartUI({ withModal = false }: { withModal?: boolean }) {
 
     const navigate = useNavigate()
@@ -128,8 +126,6 @@ export function DummyCartUI({ withModal = false }: { withModal?: boolean }) {
 }
 
 
-
-
 export function CartData({ removeSingleItem = false, showBilling = false }: { removeSingleItem?: boolean, showBilling?: boolean }) {
 
     const dispatch = useDispatch<AppDispatch>()
@@ -154,7 +150,7 @@ export function CartData({ removeSingleItem = false, showBilling = false }: { re
         // }
 
 
-    }, [totalPrice])
+    }, [totalPrice , cartData])
 
 
     return (
@@ -280,9 +276,6 @@ export function CartData({ removeSingleItem = false, showBilling = false }: { re
         </>
     )
 }
-
-
-
 
 
 export function ConfirmOrderWithTable() {

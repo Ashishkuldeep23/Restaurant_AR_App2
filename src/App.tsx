@@ -12,6 +12,7 @@ import { BillingPage } from "./Screens/BillingPage"
 import { cartState, loadCartData } from "./Slices/cartSlice"
 // import { ChefPage } from "./Screens/ChefPage"
 import { UserPage } from "./Screens/UserPage"
+import { ChefPage } from "./Screens/ChefPage"
 
 
 
@@ -104,7 +105,6 @@ function App() {
 
     <>
 
-
       {/* Above from routes will avilable for all pages ---> */}
       < Modal />
 
@@ -146,6 +146,11 @@ function App() {
           element={<UserPage />}
         />
 
+        <Route
+          path="/chef-page"
+          element={<ChefPage />}
+        />
+
 
 
         {/* Not found Page ------> */}
@@ -167,7 +172,6 @@ function App() {
 
 
       </Routes>
-
 
     </>
 

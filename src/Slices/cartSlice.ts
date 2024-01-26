@@ -26,7 +26,7 @@ type InitailData = {
     cartData: CardDataInter[],
     whenCreated: string,
     totalPrice: number;
-    itemClicked : number;
+    itemClicked: number;
     // totalItems: number
 
 
@@ -43,7 +43,7 @@ const initialState: InitailData = {
     totalPrice: 0,
     // totalItems: 0,
     GST: 12,
-    itemClicked : -1
+    itemClicked: -1
 }
 
 
@@ -123,10 +123,11 @@ const cartSlice = createSlice({
 
 
 
-            // // And also update total price ---->
+           // // // Update clicked index ----->
+
+           state.itemClicked = -1
 
         },
-
 
         removeItemsInCart(state, action) {
 
@@ -166,20 +167,32 @@ const cartSlice = createSlice({
             state.cartData = findItemsInCart
             state.totalPrice = newTotalPrice
 
-
+            
+           // // // Update clicked index ----->
+           state.itemClicked = -1
 
         },
 
         // // // This fn will set which cart index clicek from footer --->
-        setItemsClicked(state , action){
+        setItemsClicked(state, action) {
             state.itemClicked = action.payload
         },
 
-        loadCartData(state , action){
+        loadCartData(state, action) {
             let cartData = action.payload as CardDataInter[]
             state.cartData = cartData
-        }
 
+            // console.log(action.payload)
+
+            let getTotalPrice = cartData.reduce((acc , cur) => acc + (cur.price * cur.quantity), 0)
+
+            // console.log(getTotalPrice)
+
+            // // // Set total price of item --->
+
+            state.totalPrice = getTotalPrice
+
+        }
 
     },
 
@@ -191,7 +204,7 @@ const cartSlice = createSlice({
 
 
 
-export const { addItemInCart, removeItemsInCart , setItemsClicked , loadCartData} = cartSlice.actions
+export const { addItemInCart, removeItemsInCart, setItemsClicked, loadCartData } = cartSlice.actions
 
 
 export const cartState = () => useSelector((state: RootState) => state.cartReducer)
