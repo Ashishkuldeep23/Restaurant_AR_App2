@@ -12,23 +12,16 @@ export const ChefComp = () => {
 
 
 
-  if (userData.role !== "chef") {
-
-    return <Navigate to={"/"}></Navigate>
-
-  }
-
+  if (userData.role !== "chef") return <Navigate to={"/"} />
 
   return (
     <>
 
       <div className=" w-full h-screen ">
 
-
         <AllCurrentOrder />
 
       </div>
-
 
     </>
   )

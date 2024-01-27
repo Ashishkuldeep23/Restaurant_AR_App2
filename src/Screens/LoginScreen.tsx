@@ -7,10 +7,7 @@ import Login from "../components/Login/Login"
 const LoginScreen = () => {
   return (
     <>
-
-        <Login />
-
-    
+      <Login />
     </>
 
   )
