@@ -16,7 +16,7 @@ const AllCurrentOrder = () => {
 
                     {
 
-                        [null, null, null].map((ele, i) => {
+                        [null, null, null, null, null].map((ele, i) => {
                             return <SingleOrderData data={ele} key={i} i={i} />
                         })
 
