@@ -55,9 +55,9 @@ export const Navbar = () => {
                 (userData.role === "chef" && location.pathname !== "/chef-page")
                 &&
 
-                <div className=" sticky top-0 left-1/2 z-50 flex  justify-center">
+                <div className=" sticky top-0 left-1/2 z-10 flex  justify-center">
                     <button
-                        className="  bg-sky-200/50 backdrop-blur-3xl capitalize font-bold  my-0.5  px-4 py-0.5 border  border-sky-400 text-sky-950 rounded-full "
+                        className=" bg-sky-200/50 backdrop-blur-3xl capitalize font-bold  my-0.5  px-4 py-0.5 border  border-sky-400 text-sky-950 rounded-full "
                         onClick={() => { navigate("/chef-page") }}
                     >Goto chef Page</button>
                 </div>

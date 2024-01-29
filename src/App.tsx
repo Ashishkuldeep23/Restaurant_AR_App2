@@ -15,6 +15,7 @@ import { UserPage } from "./Screens/UserPage"
 import { ChefPage } from "./Screens/ChefPage"
 
 
+// import io from 'socket.io-client';
 
 
 
@@ -56,6 +57,10 @@ export const gettingTokenInCookieAndLocalHost = () => {
   return token
 }
 
+
+// // // // Connection for socket io (providing extra info after comma to avoid CORS err)
+// // // This socket io i'll use to send and recive notification ---->
+// const socket = io(`${import.meta.env.VITE_BACKEND_URL}`, { transports: ['websocket'] }); // Replace with your server URL
 
 
 
@@ -100,10 +105,26 @@ function App() {
 
 
 
+  // // // Socket IO connection code ---->
+
+  // useEffect(() => {
+  //   socket.on('connect', () => {
+  //     console.log('Connected to server');
+  //   });
+
+  //   return () => {
+  //     socket.disconnect();
+  //   };
+  // }, []);
+
+
 
   return (
 
     <>
+
+      {/* Not working for now -----> */}
+      {/* <button className=" relative z-50 px-5 py-1 bg-red-500  rounded mx-5 my-1">Send Message</button> */}
 
       {/* Above from routes will avilable for all pages ---> */}
       < Modal />

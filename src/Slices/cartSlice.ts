@@ -123,9 +123,9 @@ const cartSlice = createSlice({
 
 
 
-           // // // Update clicked index ----->
+            // // // Update clicked index ----->
 
-           state.itemClicked = -1
+            state.itemClicked = -1
 
         },
 
@@ -167,9 +167,9 @@ const cartSlice = createSlice({
             state.cartData = findItemsInCart
             state.totalPrice = newTotalPrice
 
-            
-           // // // Update clicked index ----->
-           state.itemClicked = -1
+
+            // // // Update clicked index ----->
+            state.itemClicked = -1
 
         },
 
@@ -184,7 +184,7 @@ const cartSlice = createSlice({
 
             // console.log(action.payload)
 
-            let getTotalPrice = cartData.reduce((acc , cur) => acc + (cur.price * cur.quantity), 0)
+            let getTotalPrice = cartData.reduce((acc, cur) => acc + (cur.price * cur.quantity), 0)
 
             // console.log(getTotalPrice)
 
@@ -196,7 +196,13 @@ const cartSlice = createSlice({
 
     },
 
-    extraReducers: () => {
+    extraReducers: (builder) => {
+
+        builder
+            .addCase("order/createOrder/fulfilled", (state) => {
+                state.cartData = []
+            })
+
     }
 
 })

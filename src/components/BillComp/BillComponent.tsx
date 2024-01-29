@@ -1,12 +1,14 @@
 
 // import React from 'react'
 import { v4 as uuid } from 'uuid';
-import { useEffect,  useState } from "react"
+import { useEffect, useState } from "react"
 import { cartState, removeItemsInCart } from "../../Slices/cartSlice"
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../store';
 import { Link, useNavigate } from 'react-router-dom';
 import { setChildrenModal, setOpenMoadl } from '../../Slices/ModalSlice';
+import { createBody, createOrder } from '../../Slices/orderSlice';
+import { userState } from '../../Slices/userSlice';
 // import { Navigate } from "react-router-dom"
 
 export const BillComponent = () => {
@@ -150,7 +152,7 @@ export function CartData({ removeSingleItem = false, showBilling = false }: { re
         // }
 
 
-    }, [totalPrice , cartData])
+    }, [totalPrice, cartData])
 
 
     return (
@@ -284,6 +286,12 @@ export function ConfirmOrderWithTable() {
 
     const [newTable, setNewTable] = useState(6)     // // // Selected Seat from QR (If match with avilable seat then default works).
 
+    const dispatch = useDispatch<AppDispatch>()
+
+    const { cartData, totalPrice } = cartState()
+
+    const { userData } = userState()
+
 
 
     function confirmOrderBtn() {
@@ -292,7 +300,39 @@ export function ConfirmOrderWithTable() {
             return alert("Plese select right Table No.")
         }
 
-        alert(`Order successfull, by table no.${newTable}`)
+
+        if (cartData.length <= 0) {
+            return alert("Plese add item in your cart.")
+        }
+
+
+        // console.log(userData.firstName , userData.lastName , userData.role)
+
+        if (!userData.firstName || !userData.lastName || !userData.role) {
+            return alert("Plese login first.")
+        }
+        // alert(`Order successfull, by table no.${newTable}`)
+
+
+
+        let orderBody: createBody = {
+            cartData: cartData,
+            tableNumber: newTable,
+            totalPrice: totalPrice,
+            userId: userData.id,
+            status: "RECEIVED"
+        }
+
+        dispatch(createOrder(orderBody))
+
+
+
+
+        // // // Not so good way to close modal ---->
+        setTimeout(() => {
+            dispatch(setOpenMoadl(false))
+        }, 1000)
+
     }
 
 
