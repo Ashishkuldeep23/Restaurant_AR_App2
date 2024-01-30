@@ -36,6 +36,10 @@ export default {
       } ,
       height : {
         'fullAk' : '100vh'
+      },
+      
+      zIndex : {
+        "5" : "5"
       }
 
     },

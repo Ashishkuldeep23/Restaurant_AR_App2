@@ -9,6 +9,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { setChildrenModal, setOpenMoadl } from '../../Slices/ModalSlice';
 import { createBody, createOrder } from '../../Slices/orderSlice';
 import { userState } from '../../Slices/userSlice';
+import { socket } from '../../App';
 // import { Navigate } from "react-router-dom"
 
 export const BillComponent = () => {
@@ -324,6 +325,12 @@ export function ConfirmOrderWithTable() {
         }
 
         dispatch(createOrder(orderBody))
+
+
+
+
+        // // // By this way we can send data to the backend ---->
+        socket.emit('new-order', { ...orderBody });
 
 
 

@@ -6,16 +6,17 @@ import { useEffect } from "react"
 import { ProductDetailScreen } from "./Screens/ProductDetailScreen"
 import { useDispatch } from "react-redux"
 import { AppDispatch } from "./store"
-import { getUserDataWithToken } from "./Slices/userSlice"
+import { getUserDataWithToken, setNotification } from "./Slices/userSlice"
 import Modal from "./components/Modal/Modal"
 import { BillingPage } from "./Screens/BillingPage"
 import { cartState, loadCartData } from "./Slices/cartSlice"
 // import { ChefPage } from "./Screens/ChefPage"
 import { UserPage } from "./Screens/UserPage"
 import { ChefPage } from "./Screens/ChefPage"
+import { CurrentOrder } from "./Screens/CurrentOrder"
 
 
-// import io from 'socket.io-client';
+import io from 'socket.io-client';
 
 
 
@@ -60,7 +61,7 @@ export const gettingTokenInCookieAndLocalHost = () => {
 
 // // // // Connection for socket io (providing extra info after comma to avoid CORS err)
 // // // This socket io i'll use to send and recive notification ---->
-// const socket = io(`${import.meta.env.VITE_BACKEND_URL}`, { transports: ['websocket'] }); // Replace with your server URL
+export const socket = io(`${import.meta.env.VITE_BACKEND_URL}`, { transports: ['websocket'] }); // Replace with your server URL
 
 
 
@@ -107,15 +108,24 @@ function App() {
 
   // // // Socket IO connection code ---->
 
-  // useEffect(() => {
-  //   socket.on('connect', () => {
-  //     console.log('Connected to server');
-  //   });
+  useEffect(() => {
+    socket.on('connect', () => {
+      console.log('Connected to server. 😊');
+    });
 
-  //   return () => {
-  //     socket.disconnect();
-  //   };
-  // }, []);
+
+
+    socket.on("chef-order-recived", (res) => {
+      // console.log(res)
+      // console.log(res.message)
+      dispatch(setNotification(`${res.message}`))
+    })
+
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
 
 
 
@@ -170,6 +180,12 @@ function App() {
         <Route
           path="/chef-page"
           element={<ChefPage />}
+        />
+
+
+        <Route
+          path="/current-order"
+          element={<CurrentOrder />}
         />
 
 

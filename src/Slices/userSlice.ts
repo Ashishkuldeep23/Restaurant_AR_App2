@@ -2,6 +2,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
+import { OrderDataInterface } from "./orderSlice";
 // import { useSelector } from "react-redux";
 
 
@@ -52,6 +53,7 @@ export type TypeUserData = {
     email: string;
     id: string;
     address?: TypeUserAddress[];
+    orders ?: OrderDataInterface[] ,
 }
 
 
@@ -65,6 +67,7 @@ type TyepUserDataForSlice = {
     isForgotFullFilled: boolean;
     errMsg: string;
     userData: TypeUserData;
+    notification : string[]
 }
 
 
@@ -86,7 +89,9 @@ const initialState: TyepUserDataForSlice = {
         email: "",
         id: "",
         address: [],
-    }
+        orders : []
+    },
+    notification : []
 }
 
 
@@ -97,7 +102,16 @@ const userSlice = createSlice({
 
     name: "user",
     initialState,
-    reducers: {},
+    reducers: {
+
+        setNotification(state , action){
+
+           let actionData = action.payload as string
+
+           state.notification.unshift(actionData)
+        } ,
+
+    },
 
     extraReducers: (builder) => {
         builder
@@ -234,7 +248,7 @@ const userSlice = createSlice({
 
 
 
-export const { } = userSlice.actions
+export const { setNotification } = userSlice.actions
 
 export const userState = () => useSelector((state: RootState) => state.userRedcer)
 
