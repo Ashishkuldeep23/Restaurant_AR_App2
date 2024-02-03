@@ -10,14 +10,16 @@ import { CardDataInter } from "./cartSlice";
 // // // Above will use in action object , see the docs.
 
 
+export type OrderStatusOptions = "RECEIVED" | "PROCESSING" | "ON_TABLE" | "COMPLETED" | 'CANCELED'
+
 export type createBody = {
+    id : string ,
     tableNumber: number,
     totalPrice: number,
     cartData: CardDataInter[],
     userId: string,
-    status: "RECEIVED" | "PROCESSING" | "ON_TABLE" | "COMPLETED" | 'NOT_COMPLETED'
+    status: OrderStatusOptions
 }
-
 
 export const createOrder = createAsyncThunk("order/createOrder", async (body: createBody) => {
 
@@ -41,9 +43,6 @@ export const createOrder = createAsyncThunk("order/createOrder", async (body: cr
 })
 
 
-
-
-
 export interface OrderDataInterface {
     tableNumber: number,
     orderDate: string,
@@ -51,11 +50,9 @@ export interface OrderDataInterface {
     totalPrice: number,
     cartData: CardDataInter[],
     userId: string,
-    status: string,
+    status: OrderStatusOptions,
     id: string
 }
-
-
 
 
 interface orderInterface {

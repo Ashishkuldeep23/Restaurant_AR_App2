@@ -218,10 +218,7 @@ const productSlice = createSlice({
 
 
                 } else {
-
-
                     state.allProroductData = action.payload.data
-
                 }
 
 

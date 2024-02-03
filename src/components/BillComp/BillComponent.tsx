@@ -294,7 +294,6 @@ export function ConfirmOrderWithTable() {
     const { userData } = userState()
 
 
-
     function confirmOrderBtn() {
 
         if (newTable === 0) {
@@ -317,6 +316,7 @@ export function ConfirmOrderWithTable() {
 
 
         let orderBody: createBody = {
+            id : uuid(),
             cartData: cartData,
             tableNumber: newTable,
             totalPrice: totalPrice,
@@ -327,12 +327,8 @@ export function ConfirmOrderWithTable() {
         dispatch(createOrder(orderBody))
 
 
-
-
         // // // By this way we can send data to the backend ---->
         socket.emit('new-order', { ...orderBody });
-
-
 
 
         // // // Not so good way to close modal ---->

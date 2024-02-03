@@ -17,8 +17,6 @@ export function removerUnderScore(name: string) {
 
 
 
-
-
 export const Single_Product = ({ item }: { item: TypeSingleProduct }) => {
 
 

@@ -6,6 +6,7 @@ import productReducer from './Slices/productSlice'
 import modalReducer from './Slices/ModalSlice'
 import cartReducer from './Slices/cartSlice'
 import orderReducer from "./Slices/orderSlice"
+import chefReducer from "./Slices/chefSlice"
 
 
 export const store = configureStore({
@@ -15,7 +16,8 @@ export const store = configureStore({
         productReducer,
         modalReducer,
         cartReducer,
-        orderReducer
+        orderReducer,
+        chefReducer
     },
 
     // // // This will solve err in modal code (Sending JSX in action and use that jsx as value of state)

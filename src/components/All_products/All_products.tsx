@@ -6,7 +6,7 @@ import { Single_Product } from "./Single_product"
 import { fetchAllProduct, productState, setCurentProduct } from "../../Slices/productSlice"
 import { useDispatch } from "react-redux"
 import { AppDispatch } from "../../store"
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 
 
 
@@ -22,6 +22,8 @@ const All_products = () => {
     const allProductData = productState().allProroductData
 
     const dispatch = useDispatch<AppDispatch>()
+
+    const location = useLocation()
 
 
 
@@ -39,21 +41,33 @@ const All_products = () => {
 
 
     // // // set first product ----->
+    // console.log(location)
 
-    useEffect(()=>{
+    useEffect(() => {
 
-        if(allProductData.length > 0){
+
+        // // // Below code will always redirect in product showcase page, based on default product ---->
+        // // // But i don't want this (When user present on home page then only redirect into product show case page)
+
+        if (allProductData.length > 0) {
             setCurentProduct(allProductData[0])
 
             // // Now navigate to product show page 
             // // TODO : Change the logic after ---->
 
             // // BeDefaul sending on first page ---->
-            navgate(`/product/${allProductData[0].id}`)
+
+            // console.log(location)
+            console.log(location.pathname)
+
+            if (location.pathname === "/") {
+                // console.log("fuck............")
+                navgate(`/product/${allProductData[0].id}`)
+            }
 
         }
 
-    } , [allProductData])
+    }, [allProductData])
 
 
 

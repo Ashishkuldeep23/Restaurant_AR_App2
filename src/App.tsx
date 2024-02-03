@@ -6,7 +6,7 @@ import { useEffect } from "react"
 import { ProductDetailScreen } from "./Screens/ProductDetailScreen"
 import { useDispatch } from "react-redux"
 import { AppDispatch } from "./store"
-import { getUserDataWithToken, setNotification } from "./Slices/userSlice"
+import { NotificationSingle, getOrderUpdateAndShow, getUserDataWithToken, setNotification, setUnReadNotification } from "./Slices/userSlice"
 import Modal from "./components/Modal/Modal"
 import { BillingPage } from "./Screens/BillingPage"
 import { cartState, loadCartData } from "./Slices/cartSlice"
@@ -14,9 +14,9 @@ import { cartState, loadCartData } from "./Slices/cartSlice"
 import { UserPage } from "./Screens/UserPage"
 import { ChefPage } from "./Screens/ChefPage"
 import { CurrentOrder } from "./Screens/CurrentOrder"
-
-
+import { v4 as uuid } from "uuid"
 import io from 'socket.io-client';
+
 
 
 
@@ -65,6 +65,23 @@ export const socket = io(`${import.meta.env.VITE_BACKEND_URL}`, { transports: ['
 
 
 
+
+// // // Below fn() used to make notification format. 
+// // // Making new notification in formate ---->
+export function notificationFormateMaker(res: any) {
+  let newNotification: NotificationSingle = {
+    message: res.message || "Not Given",
+    id: res.id || uuid(),
+    notificationDate: res.notificationDate || Date.now(),
+    orderId: res.orderId || "",
+    isDeleted: res.isDeleted || false
+  }
+
+  return newNotification
+}
+
+
+
 function App() {
 
 
@@ -73,14 +90,12 @@ function App() {
   const { cartData } = cartState()
 
 
-
   useEffect(() => {
 
     // console.log("Call dispatch for home page ---->")
 
     // // // Calling user data if user login -->
     let checkToken = gettingTokenInCookieAndLocalHost()
-
     if (checkToken) {
       dispatch(getUserDataWithToken(checkToken))
     }
@@ -97,6 +112,7 @@ function App() {
 
 
   // // // setting Cart data into backend ----------------->
+  // // // If any change didect in cartData below code will add this into localHost ---->
   useEffect(() => {
     // if (cartData.length !== 0) {
     localStorage.setItem("AR_Cart", JSON.stringify(cartData))
@@ -106,26 +122,66 @@ function App() {
 
 
 
-  // // // Socket IO connection code ---->
 
+
+  function showNewNotificationByRes(res: any, length: 1) {
+
+    dispatch(setNotification(notificationFormateMaker(res)))
+    // // // Add unRead messages length ------->
+    dispatch(setUnReadNotification(length))
+  }
+
+
+
+  // // // Socket IO connection code ---->
+  // // // All Event listeners present here ------>
   useEffect(() => {
     socket.on('connect', () => {
       console.log('Connected to server. 😊');
     });
 
+    // // // User events ----->
+    socket.on("order-received-done", (res: any) => {
 
-
-    socket.on("chef-order-recived", (res) => {
       // console.log(res)
-      // console.log(res.message)
-      dispatch(setNotification(`${res.message}`))
+
+      // // now set notification should be an object --->
+
+      // let newNotification: NotificationSingle = {
+      //   message: res.message,
+      //   id: res.id,
+      //   notificationDate: res.notificationDate
+      // }
+
+      dispatch(setNotification(notificationFormateMaker(res)))
+      // // // Add unRead messages length ------->
+      dispatch(setUnReadNotification(1))
+
     })
+
+    socket.on("update-order-status-user", (res: any) => {
+      showNewNotificationByRes(res, 1)
+
+      console.log(res)
+
+      dispatch(getOrderUpdateAndShow(res.data))
+
+    })
+
+
+
+    // // // Chef Events ------>
+    socket.on("chef-order-recived", (res: any) => showNewNotificationByRes(res, 1))
+
+    socket.on("update-order-status-chef", (res: any) => showNewNotificationByRes(res, 1))
+
 
 
     return () => {
       socket.disconnect();
     };
   }, []);
+
 
 
 
@@ -189,7 +245,6 @@ function App() {
         />
 
 
-
         {/* Not found Page ------> */}
         <Route
           path="*"
@@ -200,7 +255,7 @@ function App() {
                 className=" flex flex-col justify-center items-center "
               >
                 <h1 className=" text-center text-3xl text-red-500">Page not Found, Go to Home please.</h1>
-                <Link to="/"><button className="border my-3 rounded text-white bg-green-500 px-2">GoTo Home 🏠</button></Link>
+                <Link to="/"><button className="border my-3 rounded text-white bg-green-500 px-2">Goto Home 🏠</button></Link>
               </div>
             </>
           }

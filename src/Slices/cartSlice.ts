@@ -212,7 +212,6 @@ const cartSlice = createSlice({
 
 export const { addItemInCart, removeItemsInCart, setItemsClicked, loadCartData } = cartSlice.actions
 
-
 export const cartState = () => useSelector((state: RootState) => state.cartReducer)
 
 export default cartSlice.reducer

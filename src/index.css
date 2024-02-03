@@ -15,14 +15,14 @@
 }
 
 
-* ::-webkit-scrollbar{
+* ::-webkit-scrollbar {
   width: 4px;
   height: 4px;
   /* background-color: red; */
   border-radius: 100px;
 }
 
-*::-webkit-scrollbar-thumb{
+*::-webkit-scrollbar-thumb {
   background-color: white;
   border: 1px solid cyan;
   border-radius: 100px;
@@ -31,12 +31,10 @@
 
 
 
-*::-webkit-scrollbar-thumb:hover{
+*::-webkit-scrollbar-thumb:hover {
   border: 1px solid blue;
   cursor: pointer;
 }
-
-
 
 
 html {
@@ -51,3 +49,8 @@ body {
 
 
 
+/* Below code will hide indicator btn of number input ---------> */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  display: none;
+}

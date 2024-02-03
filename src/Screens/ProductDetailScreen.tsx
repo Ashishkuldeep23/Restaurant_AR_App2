@@ -6,9 +6,8 @@ import ProductDetail from "../components/ProductDetail/ProductDetail"
 export const ProductDetailScreen = () => {
   return (
     <>
-
-        <Navbar />
-        <ProductDetail />
+      <Navbar />
+      <ProductDetail />
     </>
   )
 }

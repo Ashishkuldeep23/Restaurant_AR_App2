@@ -2,7 +2,16 @@
 // import React from 'react'
 
 import { Link, useLocation, useNavigate } from "react-router-dom"
-import { setNotification, userState } from "../../Slices/userSlice"
+import { NotificationSingle, clearUnReadNotification, setClickedNotification, userState } from "../../Slices/userSlice"
+import { Fragment, useEffect, useState } from 'react'
+import { Menu, Transition } from '@headlessui/react'
+import { useDispatch } from "react-redux"
+import { AppDispatch } from "../../store"
+// import { socket } from "../../App"
+// import { useDispatch } from "react-redux"
+
+
+
 
 export const Navbar = () => {
 
@@ -73,47 +82,33 @@ export const Navbar = () => {
 
 
 
-import { Fragment, useEffect } from 'react'
-import { Menu, Transition } from '@headlessui/react'
-import { socket } from "../../App"
-import { useDispatch } from "react-redux"
-
 function Notification() {
 
-    const { notification } = userState()
+    const { notification, unReadNotification } = userState()
 
-    const dispatch = useDispatch()
+    // const dispatch = useDispatch()
 
     // const [navigation, setNotification] = useState<string[]>([])
 
 
-    useEffect(() => {
-
-        // // // User events ----->
-
-        socket.on("order-received", (res) => {
-
-            // console.log(res)
-
-            dispatch(setNotification(`${res.message}`))
-
-        })
+    // useEffect(() => {
 
 
 
-        // socket.on("chef-order-recived", (res) => {
-        //     console.log(res)
-        //     console.log(res.message)
-        //     dispatch(setNotification(`${res.message}`))
-        // })
+
+    //     // socket.on("chef-order-recived", (res) => {
+    //     //     console.log(res)
+    //     //     console.log(res.message)
+    //     //     dispatch(setNotification(`${res.message}`))
+    //     // })
 
 
 
-        return () => {
-            socket.disconnect();
-        };
+    //     return () => {
+    //         socket.disconnect();
+    //     };
 
-    }, [])
+    // }, [])
 
 
 
@@ -122,7 +117,9 @@ function Notification() {
 
             <Menu as="div" className="relative ml-3 ">
                 <div>
-                    <Menu.Button className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                    <Menu.Button
+                        className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                    >
                         <span className="absolute -inset-1.5" />
                         <span className="sr-only">Open user menu</span>
                         <img
@@ -130,7 +127,20 @@ function Notification() {
                             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrbCy3v0RZ0RS8uhjD6elbAFBqQntE31uk2VoMYnPlmMkJLXQRI-gEdmsNZoZy23-NUW8&usqp=CAU"
                             alt=""
                         />
+
+                        {
+                            unReadNotification > 0
+                            &&
+
+                            <span
+                                className=" absolute -top-2 -left-2 font-bold inline-flex items-center rounded-full bg-gray-50 px-2 py-1 text-xs text-red-600 ring-1 ring-inset ring-gray-500/10 "
+                            >{unReadNotification}</span>
+
+                        }
+
+
                     </Menu.Button>
+
                 </div>
                 <Transition
                     as={Fragment}
@@ -142,7 +152,7 @@ function Notification() {
                     leaveTo="transform opacity-0 scale-95"
                 >
                     <Menu.Items
-                        className="absolute -right-12 z-20 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                        className="absolute -right-5 z-20 mt-2 w-48 origin-top-right rounded-md bg-white pt-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
                     >
 
                         <div className=" z-20 relative">
@@ -151,33 +161,24 @@ function Notification() {
                             <ul>
 
                                 {
-                                    notification.map((ele, i) => {
-                                        return (
-                                            <Fragment key={i}>
-                                                <Menu.Item>
-                                                    <li
+                                    notification.length > 0
+                                        ?
+                                        notification.map((ele, i) => {
+                                            return <SingleNotificatinUI ele={ele} key={ele.id} i={i} />
+                                        })
 
-                                                        className={'block px-4 py-2 text-sm text-gray-700 '}
-                                                    >
-                                                        {ele}
-                                                    </li>
 
-                                                </Menu.Item>
-                                            </Fragment>
-                                        )
-                                    })
+                                        :
+                                        <Menu.Item>
+                                            <li
+
+                                                className={'block px-4 py-2 text-sm text-gray-700 '}
+                                            >
+                                                No notification.
+                                            </li>
+
+                                        </Menu.Item>
                                 }
-
-
-                                <Menu.Item>
-                                    <li
-
-                                        className={'block px-4 py-2 text-sm text-gray-700 '}
-                                    >
-                                        New notification
-                                    </li>
-
-                                </Menu.Item>
 
                             </ul>
 
@@ -187,11 +188,93 @@ function Notification() {
 
                     </Menu.Items>
                 </Transition>
-            </Menu>
+            </Menu >
 
         </>
     )
 }
 
 
+const SingleNotificatinUI = ({ ele, i }: { ele: NotificationSingle, i: number }) => {
 
+    const { unReadNotification, userData } = userState()
+
+    // // // Creating indicator values for unRead Msgs ---->
+    const [unReadNums, setUnReadNums] = useState(0)
+
+    const navigate = useNavigate()
+
+    const dispatch = useDispatch<AppDispatch>()
+
+
+    function getNotiDate(str: string) {
+
+        let date = new Date(str)
+        // console.log(date)
+        return `${date.getHours()}:${date.getMinutes()} - ${date.toDateString()} `
+    }
+
+
+    function singleNoticlickHandler(e: React.MouseEvent<HTMLLIElement, MouseEvent>) {
+        e.preventDefault()
+        e.stopPropagation()
+
+        // // // TODO here if current order have (then send into /current-order or send into /profile page)
+        // // // For that we have to create a state in redux.(and used like that)
+
+        if (ele.orderId) {
+
+
+
+            // // // navigate user to profile ----------------->
+
+            if (userData.currentOrderArr && userData.currentOrderArr.length > 0) {
+
+                navigate("/current-order");
+            } else {
+                navigate("/profile");
+            }
+
+            dispatch(setClickedNotification(ele.orderId))
+        } else {
+            alert("Order id is not attached with this notification.")
+        }
+    }
+
+
+    useEffect(() => {
+
+
+        // // // Here setting all unRead values that we ge ---->
+        setUnReadNums(unReadNotification)
+
+        // console.log(unReadNotification)
+        // console.log(0)
+
+        // // // Here clearning all unread msg nums --->
+        dispatch(clearUnReadNotification())
+
+
+    }, [])
+
+    return (
+        <Menu.Item>
+            <li
+
+                className={'px-4 py-2 text-sm text-gray-700 relative flex flex-col border-b active:bg-red-100'}
+                onClick={(e) => singleNoticlickHandler(e)}
+            >
+                {ele.message}
+                <span className=" mx-auto text-xs">At: {getNotiDate(ele.notificationDate)}</span>
+
+                {
+                    i < unReadNums
+                    &&
+                    <span className=" text-red-500 absolute right-3 font-bold">৹</span>
+
+                }
+            </li>
+
+        </Menu.Item>
+    )
+}

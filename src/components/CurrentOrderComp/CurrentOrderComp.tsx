@@ -2,22 +2,26 @@
 
 // import React from 'react'
 
-import { useEffect, useState } from "react"
-import { OrderDataInterface } from "../../Slices/orderSlice"
-import { userState } from "../../Slices/userSlice"
-import { SingleOrder } from "../UserProfile/UserProfile"
+import { useEffect } from "react"
+import { setCurrentOrderArr, userState } from "../../Slices/userSlice"
+import { SingleOrder, logOutHadler } from "../UserProfile/UserProfile"
+import { useNavigate } from "react-router-dom"
+import { useDispatch } from "react-redux"
 
 
 const CurrentOrderComp = () => {
 
-    const [currentOrderArr, setCurrentOrderArr] = useState<OrderDataInterface[]>([])
+    const dispatch = useDispatch()
+
+    const navigate = useNavigate()
 
     const { userData } = userState()
 
+    const currentOrderArr = userData.currentOrderArr
+
     useEffect(() => {
 
-        if (userData.orders) {
-
+        if (userData.orders && userData.orders?.length > 0) {
 
             let currentOrders = userData.orders.filter((ele) => {
                 if (ele.status === "RECEIVED" || ele.status === "PROCESSING") {
@@ -27,9 +31,10 @@ const CurrentOrderComp = () => {
 
             // console.log(currentOrders)
 
-            setCurrentOrderArr(currentOrders)
+            // // // Here i'm current order arr ---->
+            dispatch(setCurrentOrderArr(currentOrders))
         }
-    }, [userData])
+    }, [userData.orders])
 
 
 
@@ -38,27 +43,44 @@ const CurrentOrderComp = () => {
     return (
         <>
             <div
-                className="w-full flex flex-col justify-center items-center bg-slate-800 min-h-screen"
+                className="w-full flex flex-col justify-center items-center bg-slate-800 text-white min-h-screen"
             >
 
                 <div
                     // className=" mt-1 w-full sm:w-4/6 min-h-80 bg-slate-900 text-white rounded border border-white flex flex-col items-center justify-center relative overflow-x-hidden overflow-y-auto  "
-                    className=" my-10"
+                    className="my-10"
 
                 >
 
-                    <h1 className=" text-center my-2 text-xl font-bold text-white underline">Your all orders</h1>
+                    <h1 className=" text-center my-2 text-xl font-bold text-white underline">Your all Current orders</h1>
 
 
-                    <div className=" text-white  flex flex-wrap items-center justify-center">
+                    <div
 
-                        {userData.orders?.map((ele) => {
+                        style={{ minHeight: "65vh" }}
+                        className="text-white  flex flex-wrap gap-5 items-center justify-center"
+                    >
+
+                        {userData.currentOrderArr?.map((ele) => {
                             return <SingleOrder key={ele.id} ele={ele} />
                         })}
 
                     </div>
 
 
+
+
+                    <div className=" mt-5 flex justify-center flex-col items-center">
+                        <p
+                            className=" border px-2 rounded text-lg font-bold hover:bg-green-500 "
+                            onClick={() => { navigate("/profile") }}
+                        >See all orders</p>
+
+                        <p
+                            className=" border px-2 ml-auto mt-5 mr-3 rounded text-sm font-bold bg-red-500 "
+                            onClick={() => { logOutHadler(); navigate("/"); }}
+                        >LogOut</p>
+                    </div>
                 </div>
 
             </div>

@@ -303,9 +303,7 @@ const ProductDetail = () => {
 
             <div className="flex flex-col justify-center items-center text-center rounded mx-1 my-5 pb-24">
 
-
                 {/* md is breakpoint for leptop and mobile ----> */}
-
                 <div className=" border rounded flex justify-between items-center flex-col md:flex-row w-full md:w-4/5">
 
                     <ModelViewer item={item} />
@@ -548,8 +546,8 @@ const ProductDetail = () => {
                 </div>
 
 
-                {/* Footer of page details */}
 
+                {/* Footer of page details */}
                 <div className=" w-full py-1.5 bg-slate-100 fixed bottom-0 flex justify-center">
 
 

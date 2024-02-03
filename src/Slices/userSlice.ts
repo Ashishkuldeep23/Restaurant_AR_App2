@@ -1,8 +1,9 @@
 
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import { OrderDataInterface } from "./orderSlice";
+import type { PayloadAction } from '@reduxjs/toolkit'
 // import { useSelector } from "react-redux";
 
 
@@ -29,11 +30,6 @@ export const getUserDataWithToken = createAsyncThunk("user/verifyToken", async (
 
 
 
-
-
-
-
-
 export type TypeUserAddress = {
     id: string;
     city: string,
@@ -53,7 +49,18 @@ export type TypeUserData = {
     email: string;
     id: string;
     address?: TypeUserAddress[];
-    orders ?: OrderDataInterface[] ,
+    orders?: OrderDataInterface[],
+    currentOrderArr?: OrderDataInterface[],
+}
+
+
+
+export type NotificationSingle = {
+    id: string,
+    message: string,
+    notificationDate: string,
+    isDeleted: boolean,
+    orderId: string
 }
 
 
@@ -67,7 +74,9 @@ type TyepUserDataForSlice = {
     isForgotFullFilled: boolean;
     errMsg: string;
     userData: TypeUserData;
-    notification : string[]
+    notification: NotificationSingle[];
+    unReadNotification: number;
+    clickedNotification: string;
 }
 
 
@@ -89,9 +98,14 @@ const initialState: TyepUserDataForSlice = {
         email: "",
         id: "",
         address: [],
-        orders : []
+        orders: [],
+        currentOrderArr: []
     },
-    notification : []
+
+    // // // Some notification states ----->
+    notification: [],
+    unReadNotification: 0,
+    clickedNotification: ""
 }
 
 
@@ -104,19 +118,55 @@ const userSlice = createSlice({
     initialState,
     reducers: {
 
-        setNotification(state , action){
+        setNotification(state, action: PayloadAction<NotificationSingle>) {
+            let actionData = action.payload as NotificationSingle
+            state.notification.unshift(actionData)
+        },
 
-           let actionData = action.payload as string
+        setUnReadNotification(state, action) {
+            state.unReadNotification += action.payload
+        },
+        clearUnReadNotification(state) {
+            state.unReadNotification = 0
+        },
 
-           state.notification.unshift(actionData)
-        } ,
+        setClickedNotification(state, action: PayloadAction<string>) {
+            state.clickedNotification = action.payload
+        },
+
+        setCurrentOrderArr(state, action: PayloadAction<OrderDataInterface[]>) {
+            // console.log(action.payload)
+            // console.log("called.....")
+            state.userData.currentOrderArr = action.payload
+        },
+
+        getOrderUpdateAndShow(state, action: PayloadAction<OrderDataInterface>) {
+            let newData: OrderDataInterface = action.payload
+
+            let cCartState = current(state)
+
+            if (cCartState.userData.orders) {
+                let findOrderIndex = cCartState.userData.orders.findIndex((ele) => ele.id === newData.id)
+
+                if (findOrderIndex !== -1) {
+                    state.userData.orders && state.userData.orders.splice(findOrderIndex, 1, newData)
+
+                    // if (newData.status === "RECEIVED" || newData.status === "PROCESSING") {
+                    // }
+                    // else if (newData.status === "ON_TABLE") {
+                    //     state.userData.orders && state.userData.orders.splice(findOrderIndex, 1)
+                    // }
+                }
+
+            }
+        },
 
     },
 
     extraReducers: (builder) => {
         builder
 
-            // // // fetchUser reducers with token ----->
+            // // // fetchUserData with token ----->
 
             .addCase(getUserDataWithToken.pending, (state) => {
                 state.isLoading = true
@@ -206,8 +256,8 @@ const userSlice = createSlice({
                         let exdays = 20
 
                         const d = new Date();
-                        d.setTime(d.getTime() + (exdays*24*60*60*60*1000));
-                        let expires = "expires="+ d.toUTCString();
+                        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 60 * 1000));
+                        let expires = "expires=" + d.toUTCString();
 
                         document.cookie = `token=${token};${expires}; path=/;`
 
@@ -216,6 +266,12 @@ const userSlice = createSlice({
 
 
                     state.userData = action.payload.data
+
+                    if (action.payload.data.notification && action.payload.data.notification.length > 0) {
+
+                        state.notification = action.payload.data.notification
+
+                    }
 
 
                     // // // set data in localStorage ------>
@@ -242,13 +298,48 @@ const userSlice = createSlice({
 
             })
 
+
+
+            // // // Some extra reducers of other slices ---->
+            .addCase("order/createOrder/fulfilled", (state, action: PayloadAction<any, never>) => {
+
+                state.userData.orders?.unshift(action.payload.data)
+
+            })
+
+
+            // // // Update data if change ---------->
+            .addCase("chef/updateOrder/fulfilled", (state, action: PayloadAction<any, never>) => {
+                if (action.payload.data) {
+
+                    let newData: OrderDataInterface = action.payload.data
+                    let cCartState = current(state)
+                    if (cCartState.userData.orders) {
+                        let findOrderIndex = cCartState.userData.orders.findIndex((ele) => ele.id === newData.id)
+
+                        if (findOrderIndex !== -1) {
+                            if (newData.status === "RECEIVED" || newData.status === "PROCESSING") {
+                                state.userData.orders && state.userData.orders.splice(findOrderIndex, 1, newData)
+                            }
+                            else if (newData.status === "ON_TABLE") {
+                                state.userData.orders && state.userData.orders.splice(findOrderIndex, 1)
+                            }
+                        }
+
+                    }
+
+
+                }
+            })
+
+
     }
 
 })
 
 
 
-export const { setNotification } = userSlice.actions
+export const { setNotification, setUnReadNotification, clearUnReadNotification, setClickedNotification, setCurrentOrderArr , getOrderUpdateAndShow} = userSlice.actions
 
 export const userState = () => useSelector((state: RootState) => state.userRedcer)
 
