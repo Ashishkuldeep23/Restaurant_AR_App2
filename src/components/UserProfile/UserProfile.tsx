@@ -328,8 +328,7 @@ function UpdateUiForChef({ ele }: { ele: OrderDataInterface }) {
 
 
                 // // // Now sending notification ------>
-                socket.emit("update-order-status", { ...ele })
-
+                socket.emit("update-order-status", { ...ele, status: updateOrder.status })
 
 
             }
