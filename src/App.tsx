@@ -61,7 +61,18 @@ export const gettingTokenInCookieAndLocalHost = () => {
 
 // // // // Connection for socket io (providing extra info after comma to avoid CORS err)
 // // // This socket io i'll use to send and recive notification ---->
-export const socket = io(`${import.meta.env.VITE_BACKEND_URL}`, { transports: ['websocket'] }); // Replace with your server URL
+export const socket = io(`${import.meta.env.VITE_BACKEND_URL}`, {
+  transports: ['websocket'],
+  withCredentials: true,
+  reconnectionDelayMax: 10000,
+  auth: {
+    token: `${gettingTokenInCookieAndLocalHost()}`
+  },
+  query: {
+    "Ashish": "Kuldeep"
+  }
+
+}); // Replace with your server URL
 
 
 
