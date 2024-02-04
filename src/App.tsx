@@ -6,7 +6,7 @@ import { useEffect, useState } from "react"
 import { ProductDetailScreen } from "./Screens/ProductDetailScreen"
 import { useDispatch } from "react-redux"
 import { AppDispatch } from "./store"
-import { NotificationSingle, getOrderUpdateAndShow, getUserDataWithToken, setNotification, setUnReadNotification, userState } from "./Slices/userSlice"
+import { NotificationSingle, getOrderUpdateAndShow, getUserDataWithToken, setNotification,  userState } from "./Slices/userSlice"
 import Modal from "./components/Modal/Modal"
 import { BillingPage } from "./Screens/BillingPage"
 import { cartState, loadCartData } from "./Slices/cartSlice"
@@ -22,6 +22,8 @@ import io from 'socket.io-client';
 
 
 import sound from "./sound/noti2.mp3";
+import { addNewOrderByNoti } from "./Slices/chefSlice"
+import { AnyEvent } from "@google/model-viewer/lib/utilities"
 
 
 // // fn write to check only based on this ---> calling fetch user ---> in LocalHost also -->
@@ -115,15 +117,12 @@ function App() {
     audio.play().catch(error => console.error('Error playing the sound file:', error));
   }
 
-  function showNewNotificationByRes(res: any, length: 1) {
+  function showNewNotificationByRes(res: AnyEvent) {
+
+    // // // Add unRead messages length ------->
+    // dispatch(setUnReadNotification(length))
 
     dispatch(setNotification(notificationFormateMaker(res)))
-    // // // Add unRead messages length ------->
-    dispatch(setUnReadNotification(length))
-
-    // // // Now here call fn to play sound --->
-    // setPlayNotiSound(true)
-
   }
 
   // // // This useEffect is used to play the notification sound by state variable.
@@ -192,25 +191,36 @@ function App() {
 
       dispatch(setNotification(notificationFormateMaker(res)))
       // // // Add unRead messages length ------->
-      dispatch(setUnReadNotification(1))
+      // dispatch(setUnReadNotification(1))
 
     })
 
     socket.on("update-order-status-user", (res: any) => {
-      showNewNotificationByRes(res, 1)
 
       // console.log(res)
 
       dispatch(getOrderUpdateAndShow(res.data))
 
+      showNewNotificationByRes(res)
     })
 
 
 
     // // // Chef Events ------>
-    socket.on("chef-order-recived", (res: any) => showNewNotificationByRes(res, 1))
+    socket.on("chef-order-recived", (res: any) => {
 
-    socket.on("update-order-status-chef", (res: any) => showNewNotificationByRes(res, 1))
+
+      // console.log(res)
+      // console.log(res.data)
+
+      // // // Call fn() to add data in chef 
+      dispatch(addNewOrderByNoti(res.data))
+
+      showNewNotificationByRes(res)
+
+    })
+
+    socket.on("update-order-status-chef", (res: any) => showNewNotificationByRes(res))
 
 
 
@@ -226,7 +236,7 @@ function App() {
 
     <div
       // // // Below onHover and state var both only user to prevent err to play notificaton ---->
-       onMouseOver={() => setPlayNotiSound(true)}
+      onMouseOver={() => setPlayNotiSound(true)}
     >
 
 

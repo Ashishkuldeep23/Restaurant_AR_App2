@@ -3,19 +3,22 @@
 // import React from 'react'
 
 import { useEffect } from "react"
-import { setCurrentOrderArr, userState } from "../../Slices/userSlice"
+import { getUserDataWithToken, setCurrentOrderArr, userState } from "../../Slices/userSlice"
 import { SingleOrder, logOutHadler } from "../UserProfile/UserProfile"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useDispatch } from "react-redux"
+import { gettingTokenInCookieAndLocalHost } from "../../App"
+import { AppDispatch } from "../../store"
+import { LoaderCircle } from "../LoaderCircle/LoaderCircle"
 
 
 const CurrentOrderComp = () => {
 
-    const dispatch = useDispatch()
+    const dispatch = useDispatch<AppDispatch>()
 
     const navigate = useNavigate()
 
-    const { userData } = userState()
+    const { userData, isLoading } = userState()
 
     const currentOrderArr = userData.currentOrderArr
 
@@ -38,13 +41,40 @@ const CurrentOrderComp = () => {
 
 
 
-    if (currentOrderArr && currentOrderArr.length <= 0) return <h1> Not Previous order found. || 404</h1>
+    if (currentOrderArr && currentOrderArr.length <= 0) {
+        return (
+            <>
+
+                <div
+                    className="w-full flex flex-col items-center pt-40 bg-slate-800 text-white min-h-screen"
+                >
+                    <h1> Not Previous order found. || 404</h1>
+                    <Link to={"/profile"}>
+
+                        <button className=" mt-5  border rounded px-3 ">Goto Profile</button>
+
+                    </Link>
+
+                </div>
+
+            </>
+        )
+    }
+
 
     return (
         <>
+
             <div
-                className="w-full flex flex-col justify-center items-center bg-slate-800 text-white min-h-screen"
+                className="w-full flex flex-col justify-center items-center bg-slate-800 text-white min-h-screen relative"
             >
+
+                <LoaderCircle isLoading={isLoading} />
+
+                <button
+                    className=" font-semibold text-sm px-3 rounded border absolute right-2 top-2"
+                    onClick={() => { dispatch(getUserDataWithToken(gettingTokenInCookieAndLocalHost())) }}
+                >↻Refresh</button>
 
                 <div
                     // className=" mt-1 w-full sm:w-4/6 min-h-80 bg-slate-900 text-white rounded border border-white flex flex-col items-center justify-center relative overflow-x-hidden overflow-y-auto  "

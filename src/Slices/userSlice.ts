@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import { OrderDataInterface } from "./orderSlice";
 import type { PayloadAction } from '@reduxjs/toolkit'
+import { gettingTokenInCookieAndLocalHost } from "../App";
 // import { useSelector } from "react-redux";
 
 
@@ -22,6 +23,24 @@ export const getUserDataWithToken = createAsyncThunk("user/verifyToken", async (
     }
 
     const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/userDataByToken`, option)
+    let data = await response.json();
+    return data
+})
+
+
+
+export const updateManyNotiToSeen = createAsyncThunk("user/updateNoti", async () => {
+
+    let option: RequestInit = {
+        method: "PUT",
+        credentials: 'include',
+        headers: {
+            "token": `${gettingTokenInCookieAndLocalHost()}`
+        }
+
+    }
+
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/updateManyNotiToSeen`, option)
     let data = await response.json();
     return data
 })
@@ -120,10 +139,7 @@ const userSlice = createSlice({
         setNotification(state, action: PayloadAction<NotificationSingle>) {
             let actionData = action.payload as NotificationSingle
             state.notification.unshift(actionData)
-        },
-
-        setUnReadNotification(state, action) {
-            state.unReadNotification += action.payload
+            state.unReadNotification++
         },
 
         clearUnReadNotification(state) {
@@ -134,23 +150,27 @@ const userSlice = createSlice({
             state.clickedNotification = action.payload
         },
 
+        // // // This is used in set current order arr --->
         setCurrentOrderArr(state, action: PayloadAction<OrderDataInterface[]>) {
             // console.log(action.payload)
             // console.log("called.....")
             state.userData.currentOrderArr = action.payload
         },
 
+        // // // Below is used in send notification ---> 
         getOrderUpdateAndShow(state, action: PayloadAction<OrderDataInterface>) {
             let newData: OrderDataInterface = action.payload
 
             let cCartState = current(state)
 
+            // console.log(action.payload)
+
             // / // Update order arr with updated order data --->
             if (cCartState.userData.orders) {
                 let findOrderIndex = cCartState.userData.orders.findIndex((ele) => ele.id === newData.id)
 
-                if (findOrderIndex !== -1) {
-                    state.userData.orders && state.userData.orders.splice(findOrderIndex, 1, newData)
+                if (findOrderIndex !== -1 && state.userData.orders) {
+                    state.userData.orders.splice(findOrderIndex, 1, newData)
                 }
             }
 
@@ -159,8 +179,8 @@ const userSlice = createSlice({
 
                 let findCurentOrderIndex = cCartState.userData.currentOrderArr.findIndex((ele) => ele.id === newData.id)
 
-                if (findCurentOrderIndex !== -1) {
-                    state.userData.currentOrderArr && state.userData.currentOrderArr.splice(findCurentOrderIndex, 1, newData)
+                if (findCurentOrderIndex !== -1 && state.userData.currentOrderArr) {
+                    state.userData.currentOrderArr.splice(findCurentOrderIndex, 1, newData)
                 }
             }
 
@@ -278,7 +298,14 @@ const userSlice = createSlice({
                         // // // update notification arr ------->
                         state.notification = userData.notification
 
+
+                        let unReadNotficationsAre = userData.notification.filter((ele: NotificationSingle) => ele.isSeen === false)
+
                         // // // TODO -----> check any new notification ?? if yes then show (And then update to null)-->
+
+                        // console.log(unReadNotficationsAre)
+
+                        state.unReadNotification = unReadNotficationsAre.length
 
                     }
 
@@ -297,6 +324,87 @@ const userSlice = createSlice({
             })
 
             .addCase(getUserDataWithToken.rejected, (state, action) => {
+
+                state.errMsg = action.error.message || 'Error occured'
+                state.isLoading = false
+                state.isError = true
+
+
+                alert(`${action.error.message} || Error occured.`)
+
+            })
+
+
+
+            .addCase(updateManyNotiToSeen.pending, (state) => {
+                state.isLoading = true
+                state.isFullFilled = false
+            })
+
+            .addCase(updateManyNotiToSeen.fulfilled, (state, action) => {
+
+                // console.log(action.payload)
+
+                if (action.payload.status === false) {
+
+                    state.errMsg = action.payload.message
+
+                    state.isError = true
+
+                    // toast.error(`${action.payload.message} | 400`, {
+                    //     position: "top-right",
+                    //     autoClose: 2000,
+                    //     hideProgressBar: false,
+                    //     closeOnClick: true,
+                    //     pauseOnHover: false,
+                    //     draggable: true,
+                    //     progress: undefined,
+                    //     theme: "dark",
+                    // })
+
+
+                    alert(`${action.payload.message} | 400`)
+
+
+
+
+
+                } else {
+
+                    // toast.success(`${action.payload.message}`, {
+                    //     position: "top-right",
+                    //     autoClose: 2000,
+                    //     hideProgressBar: false,
+                    //     closeOnClick: true,
+                    //     pauseOnHover: false,
+                    //     draggable: true,
+                    //     progress: undefined,
+                    //     theme: "dark",
+                    // })
+
+
+                    // // // Set is logIn True ------->
+
+                    state.isLogIn = true
+                    state.isFullFilled = true
+
+
+
+                    // console.log(action.payload)
+
+                    state.unReadNotification = 0
+
+
+                }
+
+
+                // console.log(action.payload.message)
+
+                state.isLoading = false
+
+            })
+
+            .addCase(updateManyNotiToSeen.rejected, (state, action) => {
 
                 state.errMsg = action.error.message || 'Error occured'
                 state.isLoading = false
@@ -348,7 +456,7 @@ const userSlice = createSlice({
 
 
 
-export const { setNotification, setUnReadNotification, clearUnReadNotification, setClickedNotification, setCurrentOrderArr, getOrderUpdateAndShow } = userSlice.actions
+export const { setNotification, clearUnReadNotification, setClickedNotification, setCurrentOrderArr, getOrderUpdateAndShow } = userSlice.actions
 
 export const userState = () => useSelector((state: RootState) => state.userRedcer)
 

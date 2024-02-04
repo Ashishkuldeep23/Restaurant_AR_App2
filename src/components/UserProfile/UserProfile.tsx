@@ -1,7 +1,7 @@
 
 // import React from 'react'
 
-import { Navigate, useNavigate } from "react-router-dom"
+import { Link, Navigate, useNavigate } from "react-router-dom"
 import { userState } from "../../Slices/userSlice"
 import { OrderDataInterface, OrderStatusOptions } from "../../Slices/orderSlice"
 import { useEffect, useState } from "react"
@@ -32,7 +32,6 @@ const UserProfile = () => {
 
     // console.log(userData)
 
-
     // // /// "If user is not login"
     if (!userData.firstName && !userData.lastName) {
         return <Navigate to={'/'}></Navigate>
@@ -41,7 +40,7 @@ const UserProfile = () => {
 
     return (
         <>
-            <div className="w-full flex flex-col justify-center items-center bg-slate-800">
+            <div className="w-full flex flex-col justify-center items-center bg-slate-800 min-h-screen">
                 <div className=" w-full sm:w-4/6 h-4/6 bg-slate-900 text-white rounded border border-white flex flex-col items-center justify-center relative overflow-x-hidden overflow-y-auto ">
 
                     <img
@@ -92,7 +91,6 @@ export default UserProfile
 
 
 
-
 const OldOrderDataUI = () => {
 
     const { userData } = userState()
@@ -113,7 +111,7 @@ const OldOrderDataUI = () => {
 
 
                 <div
-                    className=" text-white flex flex-wrap items-center justify-center"
+                    className=" text-white flex flex-wrap items-center justify-center gap-7 sm:px-36"
                 >
 
                     {userData.orders?.map((ele) => {
@@ -129,7 +127,6 @@ const OldOrderDataUI = () => {
         </>
     )
 }
-
 
 
 export const SingleOrder = ({ ele, shouldNavigate = false }: { ele: OrderDataInterface, shouldNavigate?: boolean }) => {
@@ -159,11 +156,13 @@ export const SingleOrder = ({ ele, shouldNavigate = false }: { ele: OrderDataInt
 
 
     return (
-        <div className={` ${userData.role === "chef" && "border"} flex flex-col rounded shadow-xl shadow-gray-600 hover:scale-110 sm:hover:-translate-y-5 transition-all`}>
+        <div className={` ${userData.role === "chef" && "border"} bg-slate-800 flex flex-col rounded shadow-xl shadow-gray-600 hover:scale-110 sm:hover:-translate-y-5 transition-all`}>
             <div
                 key={ele.id}
                 className={` flex flex-col flex-wrap border rounded m-1 px-1 py-4 xxs:w-72
-                    ${ele.status !== "PROCESSING" ? "bg-emerald-700" : "bg-orange-700"}  
+                    ${ele.status === "PROCESSING" ? "bg-orange-700" : ele.status === "ON_TABLE" ? ' bg-sky-700' : 'bg-emerald-700'}  
+
+
                     ${ele.id === clickedNotification && "ring-4 ring-red-500"}
                 `}
             >
@@ -204,7 +203,7 @@ export const SingleOrder = ({ ele, shouldNavigate = false }: { ele: OrderDataInt
                                     </div>
                                     <div className=" flex justify-between">
 
-                                        <p>{e.isNonVeg ? "Veg" : "Non-Veg"} | </p>
+                                        <p>{!e.isNonVeg ? "Veg" : "Non-Veg"} | </p>
                                         <p>{e.quantity} X ₹{e.price}</p>
                                         <p>₹{e.quantity * e.price}</p>
                                     </div>
@@ -266,6 +265,20 @@ export const SingleOrder = ({ ele, shouldNavigate = false }: { ele: OrderDataInt
                 <UpdateUiForChef ele={ele} />
             }
 
+            {
+                ele.status === "ON_TABLE"
+                &&
+                <>
+                    <div className=" m-3 mt-0 border-t p-1 flex flex-col items-center">
+                        <Link to={"/"}>
+                            <button 
+                            className=" px-3 rounded bg-green-500 border font-bold"
+                            onClick={()=>{alert("Now we can show the billing page to user and also we can update status of order(status : order done).")}}
+                            >Order Done ✅</button>
+                        </Link>
+                    </div>
+                </>
+            }
 
 
         </div>
@@ -298,6 +311,9 @@ function UpdateUiForChef({ ele }: { ele: OrderDataInterface }) {
 
         e.stopPropagation()
 
+
+
+
         if (updateOrder.status === "RECEIVED" && updateOrder.time === 20 && showOption === true) {
             // setShowOption(!showOption)
             return alert("Update something please.")
@@ -319,11 +335,24 @@ function UpdateUiForChef({ ele }: { ele: OrderDataInterface }) {
                 // console.log(time)
                 // // // Now call the backend
 
+
+                // console.log({ ...ele, status: updateOrder.status , time })
+                // return
+
                 if (updateOrder.status === 'PROCESSING') {
                     dispatch(updateOrderStatusChef({ whatUpdate: "chefStatus", orderId: ele.id, time: time, status: updateOrder.status }))
+
+
+                    // // // Now sending notification (sending prepration time with status proccessing) ------>
+                    socket.emit("update-order-status", { ...ele, status: updateOrder.status, preparationTime: time })
+
                 }
                 else if (updateOrder.status === "ON_TABLE") {
                     dispatch(updateOrderStatusChef({ whatUpdate: "chefStatus", orderId: ele.id, status: updateOrder.status }))
+
+
+                    // // // Now sending notification ------>
+                    socket.emit("update-order-status", { ...ele, status: updateOrder.status })
                 }
 
 

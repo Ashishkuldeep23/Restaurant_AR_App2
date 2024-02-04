@@ -2,8 +2,8 @@
 // import React from 'react'
 
 import { Link, useLocation, useNavigate } from "react-router-dom"
-import { NotificationSingle, clearUnReadNotification, setClickedNotification, userState } from "../../Slices/userSlice"
-import { Fragment, useEffect, useState } from 'react'
+import { NotificationSingle,  setClickedNotification, updateManyNotiToSeen, userState } from "../../Slices/userSlice"
+import { Fragment, useEffect } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import { useDispatch } from "react-redux"
 import { AppDispatch } from "../../store"
@@ -195,12 +195,12 @@ function Notification() {
 }
 
 
-const SingleNotificatinUI = ({ ele, i }: { ele: NotificationSingle, i: number }) => {
+const SingleNotificatinUI = ({ ele }: { ele: NotificationSingle, i?: number }) => {
 
-    const { unReadNotification, userData } = userState()
+    const { userData } = userState()
 
     // // // Creating indicator values for unRead Msgs ---->
-    const [unReadNums, setUnReadNums] = useState(0)
+    // const [unReadNums, setUnReadNums] = useState(0)
 
     const navigate = useNavigate()
 
@@ -249,29 +249,30 @@ const SingleNotificatinUI = ({ ele, i }: { ele: NotificationSingle, i: number })
 
 
         // // // Here setting all unRead values that we ge ---->
-        setUnReadNums(unReadNotification)
+        // setUnReadNums(unReadNotification)
 
         // console.log(unReadNotification)
         // console.log(0)
 
-        // // // Here clearning all unread msg nums --->
-        dispatch(clearUnReadNotification())
+        // // // Here clearning all unread msg nums  --->
+        dispatch(updateManyNotiToSeen())
 
 
     }, [])
+
 
     return (
         <Menu.Item>
             <li
 
-                className={'px-4 py-2 text-sm text-gray-700 relative flex flex-col border-b active:bg-red-100'}
+                className={`px-4 py-2 text-sm text-gray-700 relative flex flex-col border-b active:bg-red-100 ${!ele.isSeen && 'bg-emerald-100'}`}
                 onClick={(e) => singleNoticlickHandler(e)}
             >
                 {ele.message}
                 <span className=" mx-auto text-xs">At: {getNotiDate(ele.notificationDate)}</span>
 
                 {
-                    i < unReadNums
+                    !ele.isSeen
                     &&
                     <span className=" text-red-500 absolute right-3 font-bold">৹</span>
 

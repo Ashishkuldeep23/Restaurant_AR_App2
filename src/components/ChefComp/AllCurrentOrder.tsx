@@ -4,12 +4,13 @@ import { useDispatch } from "react-redux"
 import { AppDispatch } from "../../store"
 import { chefSliceData, getAllCurrentOrderData } from "../../Slices/chefSlice"
 import { SingleOrder } from "../UserProfile/UserProfile"
+import { LoaderCircle } from "../LoaderCircle/LoaderCircle"
 
 const AllCurrentOrder = () => {
 
     const dispatch = useDispatch<AppDispatch>()
 
-    const { chefOrderData } = chefSliceData()
+    const { chefOrderData, isLoading } = chefSliceData()
 
 
     useEffect(() => {
@@ -20,10 +21,28 @@ const AllCurrentOrder = () => {
     return (
         <>
 
-            <div className=" bg-slate-950 text-white flex flex-col items-center bg-sky-200/70 min-h-screen ">
+            <div
+                className=" relative bg-slate-950 text-white flex flex-col items-center  bg-sky-200/70 min-h-screen bg-contain bg-[url('https://img.freepik.com/premium-photo/empty-wood-table-top-with-chef-cooking-restaurant-kitchen-blurred-defocused-background_688350-3953.jpg')]  sm:pt-28 "
+            >
+
+                <button
+                    className=" font-semibold text-sm px-3 rounded border absolute right-2 top-2 bg-black"
+                    onClick={() => { dispatch(getAllCurrentOrderData()) }}
+                >↻Refresh</button>
 
 
-                <h1 className=" my-5 text-3xl">All currect order below</h1>
+                <LoaderCircle isLoading={isLoading} />
+
+                <h1 className=" mt-5 text-4xl bg-slate-950 rounded px-3">Your kitchen</h1>
+                <h1 className="mb-5 text-3xl bg-slate-950 rounded px-3">All currect order below</h1>
+
+                {
+                    (chefOrderData.length === 0)
+                    &&
+                    <h1 className=" my-5 text-xl bg-slate-950 rounded px-3 ">No current order found.(wait for order by Customer)</h1>
+                }
+
+
 
                 <div className="flex flex-wrap justify-center items-start gap-7">
 

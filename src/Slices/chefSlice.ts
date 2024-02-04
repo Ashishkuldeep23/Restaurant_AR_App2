@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import { OrderDataInterface, OrderStatusOptions } from "./orderSlice";
 import { gettingTokenInCookieAndLocalHost } from "../App";
-
+import type { PayloadAction } from '@reduxjs/toolkit'
 
 // import type { PayloadAction } from "@reduxjs/toolkit"
 // // // Above will use in action object , see the docs.
@@ -76,7 +76,9 @@ const chefSlice = createSlice({
     initialState,
     reducers: {
 
-
+        addNewOrderByNoti(state, action: PayloadAction<OrderDataInterface>) {
+            state.chefOrderData.unshift(action.payload)
+        }
 
     },
 
@@ -246,7 +248,7 @@ const chefSlice = createSlice({
 
 
 
-export const { } = chefSlice.actions
+export const { addNewOrderByNoti } = chefSlice.actions
 
 export const chefSliceData = () => useSelector((state: RootState) => state.chefReducer)
 
