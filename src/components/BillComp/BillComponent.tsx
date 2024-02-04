@@ -316,7 +316,7 @@ export function ConfirmOrderWithTable() {
 
 
         let orderBody: createBody = {
-            id : uuid(),
+            id: uuid(),
             cartData: cartData,
             tableNumber: newTable,
             totalPrice: totalPrice,
@@ -339,6 +339,54 @@ export function ConfirmOrderWithTable() {
     }
 
 
+
+    function selectOnchangeHandler(e: React.ChangeEvent<HTMLSelectElement>) {
+
+        // // // Updating table no. --->
+        setNewTable(+e.target.value)
+
+
+
+        // // // Now setting cooki efor table no. ------->
+        let hours = 1
+        const d = new Date();
+        d.setTime(d.getTime() + (hours * 60 * 60 * 1000));    // // // set new date after 1 h ---->
+        let expires = "expires=" + d.toUTCString();
+
+        let cname = 'tableNO'
+        let cvalue = `${e.target.value}`
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+
+        // console.log("Done -----> check now")
+    }
+
+
+
+
+
+    useEffect(() => {
+
+        // // // Updating table no. if got in cookie (limit is 1h)
+
+        let allCookies = document.cookie.split(";")
+
+        for (let cookie of allCookies) {
+
+            if (cookie.includes("tableNO")) {
+
+                let tableNoArr = cookie.split("=")
+
+                let actualTableNo = tableNoArr[1]
+
+                setNewTable(+actualTableNo)
+
+            }
+
+        }
+
+    }, [])
+
+
     // console.log(newTable)
 
     return (
@@ -356,7 +404,7 @@ export function ConfirmOrderWithTable() {
                         <select
                             className=' border rounded border-yellow-300 font-semibold'
                             id="table_num"
-                            onChange={(e) => { setNewTable(+e.target.value) }}
+                            onChange={(e) => { selectOnchangeHandler(e); }}
                             // size={2}
                             // defaultValue={newTable}
                             value={newTable}

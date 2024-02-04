@@ -28,8 +28,6 @@ export const getUserDataWithToken = createAsyncThunk("user/verifyToken", async (
 
 
 
-
-
 export type TypeUserAddress = {
     id: string;
     city: string,
@@ -60,7 +58,8 @@ export type NotificationSingle = {
     message: string,
     notificationDate: string,
     isDeleted: boolean,
-    orderId: string
+    orderId: string,
+    isSeen: boolean
 }
 
 
@@ -126,6 +125,7 @@ const userSlice = createSlice({
         setUnReadNotification(state, action) {
             state.unReadNotification += action.payload
         },
+
         clearUnReadNotification(state) {
             state.unReadNotification = 0
         },
@@ -145,20 +145,25 @@ const userSlice = createSlice({
 
             let cCartState = current(state)
 
+            // / // Update order arr with updated order data --->
             if (cCartState.userData.orders) {
                 let findOrderIndex = cCartState.userData.orders.findIndex((ele) => ele.id === newData.id)
 
                 if (findOrderIndex !== -1) {
                     state.userData.orders && state.userData.orders.splice(findOrderIndex, 1, newData)
-
-                    // if (newData.status === "RECEIVED" || newData.status === "PROCESSING") {
-                    // }
-                    // else if (newData.status === "ON_TABLE") {
-                    //     state.userData.orders && state.userData.orders.splice(findOrderIndex, 1)
-                    // }
                 }
-
             }
+
+            // // // Now check in currrent order arr and upadate into also ----->
+            if (cCartState.userData.currentOrderArr) {
+
+                let findCurentOrderIndex = cCartState.userData.currentOrderArr.findIndex((ele) => ele.id === newData.id)
+
+                if (findCurentOrderIndex !== -1) {
+                    state.userData.currentOrderArr && state.userData.currentOrderArr.splice(findCurentOrderIndex, 1, newData)
+                }
+            }
+
         },
 
     },
@@ -264,12 +269,16 @@ const userSlice = createSlice({
                     }
 
 
+                    let userData = action.payload.data
 
-                    state.userData = action.payload.data
+                    state.userData = userData
 
-                    if (action.payload.data.notification && action.payload.data.notification.length > 0) {
+                    if (userData.notification && userData.notification.length > 0) {
+                        // console.log(userData.notification[0].id)
+                        // // // update notification arr ------->
+                        state.notification = userData.notification
 
-                        state.notification = action.payload.data.notification
+                        // // // TODO -----> check any new notification ?? if yes then show (And then update to null)-->
 
                     }
 
@@ -339,7 +348,7 @@ const userSlice = createSlice({
 
 
 
-export const { setNotification, setUnReadNotification, clearUnReadNotification, setClickedNotification, setCurrentOrderArr , getOrderUpdateAndShow} = userSlice.actions
+export const { setNotification, setUnReadNotification, clearUnReadNotification, setClickedNotification, setCurrentOrderArr, getOrderUpdateAndShow } = userSlice.actions
 
 export const userState = () => useSelector((state: RootState) => state.userRedcer)
 

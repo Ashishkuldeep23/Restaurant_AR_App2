@@ -2,11 +2,11 @@ import { HomePage } from "./Screens/HomePage"
 import { Routes, Route, Link } from "react-router-dom"
 import LoginScreen from "./Screens/LoginScreen"
 import GoogleSuccessPage from "./components/Login/GoogleSuccessPage"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { ProductDetailScreen } from "./Screens/ProductDetailScreen"
 import { useDispatch } from "react-redux"
 import { AppDispatch } from "./store"
-import { NotificationSingle, getOrderUpdateAndShow, getUserDataWithToken, setNotification, setUnReadNotification } from "./Slices/userSlice"
+import { NotificationSingle, getOrderUpdateAndShow, getUserDataWithToken, setNotification, setUnReadNotification, userState } from "./Slices/userSlice"
 import Modal from "./components/Modal/Modal"
 import { BillingPage } from "./Screens/BillingPage"
 import { cartState, loadCartData } from "./Slices/cartSlice"
@@ -18,6 +18,10 @@ import { v4 as uuid } from "uuid"
 import io from 'socket.io-client';
 
 
+// import useSound from 'use-sound';
+
+
+import sound from "./sound/noti2.mp3";
 
 
 // // fn write to check only based on this ---> calling fetch user ---> in LocalHost also -->
@@ -61,6 +65,7 @@ export const gettingTokenInCookieAndLocalHost = () => {
 
 // // // // Connection for socket io (providing extra info after comma to avoid CORS err)
 // // // This socket io i'll use to send and recive notification ---->
+// // // We can send data during connection (see the code)
 export const socket = io(`${import.meta.env.VITE_BACKEND_URL}`, {
   transports: ['websocket'],
   withCredentials: true,
@@ -85,7 +90,8 @@ export function notificationFormateMaker(res: any) {
     id: res.id || uuid(),
     notificationDate: res.notificationDate || Date.now(),
     orderId: res.orderId || "",
-    isDeleted: res.isDeleted || false
+    isDeleted: res.isDeleted || false,
+    isSeen: res.isSeen || false,
   }
 
   return newNotification
@@ -95,12 +101,44 @@ export function notificationFormateMaker(res: any) {
 
 function App() {
 
-
   const dispatch = useDispatch<AppDispatch>()
 
   const { cartData } = cartState()
 
+  const { notification } = userState()
 
+  const [playNotiSound, setPlayNotiSound] = useState(false)
+
+
+  function play() {
+    let audio = new Audio(sound)
+    audio.play().catch(error => console.error('Error playing the sound file:', error));
+  }
+
+  function showNewNotificationByRes(res: any, length: 1) {
+
+    dispatch(setNotification(notificationFormateMaker(res)))
+    // // // Add unRead messages length ------->
+    dispatch(setUnReadNotification(length))
+
+    // // // Now here call fn to play sound --->
+    // setPlayNotiSound(true)
+
+  }
+
+  // // // This useEffect is used to play the notification sound by state variable.
+  useEffect(() => {
+    if (notification.length > 0 && playNotiSound) {
+      play()
+      // setTimeout(() => {
+      //   setPlayNotiSound(false)
+      // }, 100)
+
+    }
+  }, [notification])
+
+
+  // // // Below useEffect used in getting user data and seting cart data 
   useEffect(() => {
 
     // console.log("Call dispatch for home page ---->")
@@ -132,18 +170,6 @@ function App() {
   }, [cartData])
 
 
-
-
-
-  function showNewNotificationByRes(res: any, length: 1) {
-
-    dispatch(setNotification(notificationFormateMaker(res)))
-    // // // Add unRead messages length ------->
-    dispatch(setUnReadNotification(length))
-  }
-
-
-
   // // // Socket IO connection code ---->
   // // // All Event listeners present here ------>
   useEffect(() => {
@@ -173,7 +199,7 @@ function App() {
     socket.on("update-order-status-user", (res: any) => {
       showNewNotificationByRes(res, 1)
 
-      console.log(res)
+      // console.log(res)
 
       dispatch(getOrderUpdateAndShow(res.data))
 
@@ -198,7 +224,11 @@ function App() {
 
   return (
 
-    <>
+    <div
+      // // // Below onHover and state var both only user to prevent err to play notificaton ---->
+       onMouseOver={() => setPlayNotiSound(true)}
+    >
+
 
       {/* Not working for now -----> */}
       {/* <button className=" relative z-50 px-5 py-1 bg-red-500  rounded mx-5 my-1">Send Message</button> */}
@@ -276,7 +306,7 @@ function App() {
 
       </Routes>
 
-    </>
+    </div>
 
   )
 }

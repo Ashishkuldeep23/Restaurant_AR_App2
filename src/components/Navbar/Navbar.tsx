@@ -222,9 +222,12 @@ const SingleNotificatinUI = ({ ele, i }: { ele: NotificationSingle, i: number })
         // // // TODO here if current order have (then send into /current-order or send into /profile page)
         // // // For that we have to create a state in redux.(and used like that)
 
-        if (ele.orderId) {
 
 
+        if (userData.role === "chef") {
+            navigate("/chef-page")
+        }
+        else if (ele.orderId) {
 
             // // // navigate user to profile ----------------->
 
