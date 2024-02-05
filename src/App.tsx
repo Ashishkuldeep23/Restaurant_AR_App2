@@ -24,7 +24,7 @@ import io from 'socket.io-client';
 import sound from "./sound/noti2.mp3";
 import { addNewOrderByNoti } from "./Slices/chefSlice"
 import { AnyEvent } from "@google/model-viewer/lib/utilities"
-import { Toaster } from "react-hot-toast"
+import toast, { Toaster } from "react-hot-toast"
 
 
 // // fn write to check only based on this ---> calling fetch user ---> in LocalHost also -->
@@ -118,13 +118,28 @@ function App() {
     audio.play().catch(error => console.error('Error playing the sound file:', error));
   }
 
-  function showNewNotificationByRes(res: AnyEvent) {
+  function showNewNotificationByRes(res: any) {
 
     // // // Add unRead messages length ------->
     // dispatch(setUnReadNotification(length))
 
     dispatch(setNotification(notificationFormateMaker(res)))
+
+
+    // // // Show alert for new notification
+    toast(`${res.message || "Message Not Given"}`,
+      {
+        icon: '🔔',
+        style: {
+          borderRadius: '10px',
+          background: '#333',
+          color: '#fff',
+        },
+      }
+    );
+
   }
+
 
   // // // This useEffect is used to play the notification sound by state variable.
   useEffect(() => {
