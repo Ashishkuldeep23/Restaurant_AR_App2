@@ -152,7 +152,7 @@ export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string
             >
                 {/* Here we can set poster for the model ---> */}
                 <div className="poster h-full" slot="poster">
-                    <img id="poster_image" src="/images/s.png" />
+                    <img id="poster_image" src="/images/food.png" />
                 </div>
 
                 <div className="progress-bar" slot="progress-bar">

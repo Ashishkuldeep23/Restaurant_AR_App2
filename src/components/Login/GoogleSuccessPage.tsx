@@ -12,6 +12,7 @@ import { AppDispatch } from "../../store"
 import { useNavigate, useParams } from "react-router-dom"
 import { useEffect } from "react"
 import { getUserDataWithToken, userState } from "../../Slices/userSlice"
+import toast from "react-hot-toast"
 // import { getUserDataWithToken, userState } from "../../Slices/UserSlice"
 // import { fetchAllCategoryAndHighlight, fetchAllProducts } from "../../Slices/AllProductSlice"
 
@@ -42,7 +43,7 @@ const GoogleSuccessPage = () => {
             dispatch(getUserDataWithToken(token))
         }
 
-        // alert("call dispatch here now")
+        // toast.error("call dispatch here now")
 
     }, [])
 
@@ -56,7 +57,7 @@ const GoogleSuccessPage = () => {
             // dispatch(fetchAllCategoryAndHighlight())
             // dispatch(fetchAllProducts({ brand: "", category: '', price: "-1", limit: `${limitValue}` }))
 
-            // alert(12)
+            // toast.error(12)
 
         }
 
@@ -99,7 +100,7 @@ const GoogleSuccessPage = () => {
 
                         <button
                             className="border px-2 rounded my-1.5 hover:-translate-y-1 transition-all"
-                            onClick={() => { userData.email ? navigate("/") : alert("Wait for data load.") }}
+                            onClick={() => { userData.email ? navigate("/") : toast.error("Wait for data load.") }}
                         >Home🏠</button>
 
                     </div>

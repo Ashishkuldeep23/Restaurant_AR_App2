@@ -10,6 +10,7 @@ import { setChildrenModal, setOpenMoadl } from '../../Slices/ModalSlice';
 import { createBody, createOrder } from '../../Slices/orderSlice';
 import { userState } from '../../Slices/userSlice';
 import { socket } from '../../App';
+import toast from 'react-hot-toast';
 // import { Navigate } from "react-router-dom"
 
 export const BillComponent = () => {
@@ -297,21 +298,21 @@ export function ConfirmOrderWithTable() {
     function confirmOrderBtn() {
 
         if (newTable === 0) {
-            return alert("Plese select right Table No.")
+            return toast.error("Plese select right Table No.")
         }
 
 
         if (cartData.length <= 0) {
-            return alert("Plese add item in your cart.")
+            return toast.error("Plese add item in your cart.")
         }
 
 
         // console.log(userData.firstName , userData.lastName , userData.role)
 
         if (!userData.firstName || !userData.lastName || !userData.role) {
-            return alert("Plese login first.")
+            return toast.error("Plese login first.")
         }
-        // alert(`Order successfull, by table no.${newTable}`)
+        // toast.error(`Order successfull, by table no.${newTable}`)
 
 
 

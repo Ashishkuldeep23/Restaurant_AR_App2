@@ -2,6 +2,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
+import toast from "react-hot-toast";
 // import { gettingTokenInCookieAndLocalHost } from "../App";
 
 
@@ -211,7 +212,7 @@ const productSlice = createSlice({
                     // })
 
 
-                    alert(`${action.payload.message} | 400`)
+                    toast.error(`${action.payload.message} | 400`)
 
 
 
@@ -235,7 +236,7 @@ const productSlice = createSlice({
                 state.isError = true
 
 
-                alert(`${action.error.message} || Error occured.`)
+                toast.error(`${action.error.message} || Error occured.`)
 
             })
 
@@ -268,7 +269,7 @@ const productSlice = createSlice({
                     // })
 
 
-                    alert(`${action.payload.message} | 400`)
+                    toast.error(`${action.payload.message} | 400`)
 
 
 
@@ -296,7 +297,7 @@ const productSlice = createSlice({
                 state.isError = true
 
 
-                alert(`${action.error.message} || Error occured.`)
+                toast.error(`${action.error.message} || Error occured.`)
 
             })
 

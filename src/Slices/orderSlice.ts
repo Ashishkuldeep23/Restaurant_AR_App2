@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import { gettingTokenInCookieAndLocalHost } from "../App";
 import { CardDataInter } from "./cartSlice";
+import toast from "react-hot-toast";
 
 
 // import type { PayloadAction } from "@reduxjs/toolkit"
@@ -110,7 +111,7 @@ const orderSlice = createSlice({
                     // })
 
 
-                    alert(`${action.payload.message} | 400`)
+                    toast.error(`${action.payload.message} | 400`)
 
 
                 } else {
@@ -120,7 +121,7 @@ const orderSlice = createSlice({
                     // state.currenProduct = action.payload.data
 
 
-                    alert(`${action.payload.message}`)
+                    toast.success(`${action.payload.message}`)
 
                     // // // Remove cart data
                     localStorage.removeItem("AR_Cart")
@@ -152,7 +153,7 @@ const orderSlice = createSlice({
                 state.isError = true
 
 
-                alert(`${action.error.message} || Error occured.`)
+                toast.error(`${action.error.message} || Error occured.`)
 
             })
     }

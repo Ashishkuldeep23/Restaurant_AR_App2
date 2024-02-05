@@ -72,7 +72,7 @@ model-viewer>#ar-prompt>img {
 
 #three_D_model_G {
 
-    height: 47vh;
+    height: 45vh;
     border-radius: 5px;
     width: 90%;
     /* border: 1px solid red; */
@@ -82,7 +82,7 @@ model-viewer>#ar-prompt>img {
 
 #three_D_model_R {
 
-    height: 47vh;
+    height: 45vh;
     border-radius: 5px;
     width: 90%;
     /* border: 1px solid red; */

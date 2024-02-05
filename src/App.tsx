@@ -6,7 +6,7 @@ import { useEffect, useState } from "react"
 import { ProductDetailScreen } from "./Screens/ProductDetailScreen"
 import { useDispatch } from "react-redux"
 import { AppDispatch } from "./store"
-import { NotificationSingle, getOrderUpdateAndShow, getUserDataWithToken, setNotification,  userState } from "./Slices/userSlice"
+import { NotificationSingle, getOrderUpdateAndShow, getUserDataWithToken, setNotification, userState } from "./Slices/userSlice"
 import Modal from "./components/Modal/Modal"
 import { BillingPage } from "./Screens/BillingPage"
 import { cartState, loadCartData } from "./Slices/cartSlice"
@@ -24,6 +24,7 @@ import io from 'socket.io-client';
 import sound from "./sound/noti2.mp3";
 import { addNewOrderByNoti } from "./Slices/chefSlice"
 import { AnyEvent } from "@google/model-viewer/lib/utilities"
+import { Toaster } from "react-hot-toast"
 
 
 // // fn write to check only based on this ---> calling fetch user ---> in LocalHost also -->
@@ -239,6 +240,12 @@ function App() {
       onMouseOver={() => setPlayNotiSound(true)}
     >
 
+
+      {/* Component to show notification ---> */}
+      <Toaster
+        position="top-right"
+        reverseOrder={false}
+      />
 
       {/* Not working for now -----> */}
       {/* <button className=" relative z-50 px-5 py-1 bg-red-500  rounded mx-5 my-1">Send Message</button> */}

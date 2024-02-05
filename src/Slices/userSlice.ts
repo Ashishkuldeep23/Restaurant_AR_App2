@@ -5,6 +5,7 @@ import { RootState } from "../store";
 import { OrderDataInterface } from "./orderSlice";
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { gettingTokenInCookieAndLocalHost } from "../App";
+import toast from "react-hot-toast";
 // import { useSelector } from "react-redux";
 
 
@@ -220,7 +221,7 @@ const userSlice = createSlice({
                     // })
 
 
-                    alert(`${action.payload.message} | 400`)
+                    toast.error(`${action.payload.message} | 400`)
 
 
 
@@ -330,7 +331,7 @@ const userSlice = createSlice({
                 state.isError = true
 
 
-                alert(`${action.error.message} || Error occured.`)
+                toast.error(`${action.error.message} || Error occured.`)
 
             })
 
@@ -363,7 +364,7 @@ const userSlice = createSlice({
                     // })
 
 
-                    alert(`${action.payload.message} | 400`)
+                    toast.error(`${action.payload.message} | 400`)
 
 
 
@@ -411,7 +412,7 @@ const userSlice = createSlice({
                 state.isError = true
 
 
-                alert(`${action.error.message} || Error occured.`)
+                toast.error(`${action.error.message} || Error occured.`)
 
             })
 

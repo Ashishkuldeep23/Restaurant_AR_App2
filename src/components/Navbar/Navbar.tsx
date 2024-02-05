@@ -2,11 +2,12 @@
 // import React from 'react'
 
 import { Link, useLocation, useNavigate } from "react-router-dom"
-import { NotificationSingle,  setClickedNotification, updateManyNotiToSeen, userState } from "../../Slices/userSlice"
+import { NotificationSingle, clearUnReadNotification, setClickedNotification, updateManyNotiToSeen, userState } from "../../Slices/userSlice"
 import { Fragment, useEffect } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import { useDispatch } from "react-redux"
 import { AppDispatch } from "../../store"
+import toast from "react-hot-toast"
 // import { socket } from "../../App"
 // import { useDispatch } from "react-redux"
 
@@ -197,7 +198,7 @@ function Notification() {
 
 const SingleNotificatinUI = ({ ele }: { ele: NotificationSingle, i?: number }) => {
 
-    const { userData } = userState()
+    const { userData , unReadNotification } = userState()
 
     // // // Creating indicator values for unRead Msgs ---->
     // const [unReadNums, setUnReadNums] = useState(0)
@@ -240,7 +241,7 @@ const SingleNotificatinUI = ({ ele }: { ele: NotificationSingle, i?: number }) =
 
             dispatch(setClickedNotification(ele.orderId))
         } else {
-            alert("Order id is not attached with this notification.")
+            toast.error("Order id is not attached with this notification.")
         }
     }
 
@@ -250,12 +251,15 @@ const SingleNotificatinUI = ({ ele }: { ele: NotificationSingle, i?: number }) =
 
         // // // Here setting all unRead values that we ge ---->
         // setUnReadNums(unReadNotification)
-
         // console.log(unReadNotification)
         // console.log(0)
 
-        // // // Here clearning all unread msg nums  --->
-        dispatch(updateManyNotiToSeen())
+        if (unReadNotification > 0) {
+
+            // // // Here clearning all unread msg nums  --->
+            dispatch(updateManyNotiToSeen())
+            dispatch(clearUnReadNotification())
+        }
 
 
     }, [])

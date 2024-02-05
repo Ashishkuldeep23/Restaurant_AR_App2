@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux"
 import { AppDispatch } from "../../store"
 import { updateOrderStatusChef } from "../../Slices/chefSlice"
 import { socket } from "../../App"
+import toast from "react-hot-toast"
 
 
 
@@ -273,7 +274,7 @@ export const SingleOrder = ({ ele, shouldNavigate = false }: { ele: OrderDataInt
                         <Link to={"/"}>
                             <button 
                             className=" px-3 rounded bg-green-500 border font-bold"
-                            onClick={()=>{alert("Now we can show the billing page to user and also we can update status of order(status : order done).")}}
+                            onClick={()=>{toast.error("Now we can show the billing page to user and also we can update status of order(status : order done).")}}
                             >Order Done ✅</button>
                         </Link>
                     </div>
@@ -316,10 +317,10 @@ function UpdateUiForChef({ ele }: { ele: OrderDataInterface }) {
 
         if (updateOrder.status === "RECEIVED" && updateOrder.time === 20 && showOption === true) {
             // setShowOption(!showOption)
-            return alert("Update something please.")
+            return toast.error("Update something please.")
         } else {
             if (showOption === true) {
-                alert(`Updating data ( status : ${updateOrder.status} and time : ${updateOrder.time} ) successfully.`)
+                toast.success(`Updating data ( status : ${updateOrder.status} and time : ${updateOrder.time} ) successfully.`)
 
 
                 let date = new Date(Date.now())

@@ -12,6 +12,7 @@ import { CardDataInter, addItemInCart, cartState, setItemsClicked } from "../../
 import { v4 as uuid } from 'uuid';
 import { CartData, ConfirmOrderWithTable, DummyCartUI } from '../BillComp/BillComponent'
 import { LoaderCircle } from '../LoaderCircle/LoaderCircle'
+import toast from 'react-hot-toast'
 
 
 
@@ -87,7 +88,7 @@ const ProductDetail = () => {
 
         if (choossenCustomizations.sizes.length === 0 && choossenCustomizations.crusts.length === 0) {
 
-            return alert("Choose something first ---->")
+            return toast.error("Choose something first ---->")
         }
 
 
@@ -158,7 +159,7 @@ const ProductDetail = () => {
     useEffect(() => {
 
         if (choossenCustomizations.sizes.length !== 0 || choossenCustomizations.crusts.length !== 0) {
-            // alert()
+            // toast.error()
 
             // if(choossenCustomizations.sizes.length > 0){
 
@@ -266,7 +267,7 @@ const ProductDetail = () => {
                 dispatch(fetchAllProduct())
 
             } else {
-                alert("ID not getting from url bar.")
+                toast.error("ID not getting from url bar.")
             }
 
 
@@ -602,7 +603,7 @@ const ProductDetail = () => {
                                 <button
                                     className="rounded bg-yellow-400 px-1 uppercase font-semibold text-md mx-1 relative flex"
                                     onClick={() => {
-                                        // (cartData.length > 0) ? navigate("/billing") : alert("Add item for billing.");
+                                        // (cartData.length > 0) ? navigate("/billing") : 
                                         navigate("/billing");
                                         dispatch(setItemsClicked(-1));
                                     }}
@@ -763,7 +764,7 @@ function MenuWithLogic({ setShowSizingPart }: { setShowSizingPart: React.Dispatc
         function categoryClickHandler(category: string) {
 
             // console.log(category)
-            // alert()
+     
 
 
             for (let key in groupByData) {

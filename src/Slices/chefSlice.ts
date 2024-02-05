@@ -5,6 +5,7 @@ import { RootState } from "../store";
 import { OrderDataInterface, OrderStatusOptions } from "./orderSlice";
 import { gettingTokenInCookieAndLocalHost } from "../App";
 import type { PayloadAction } from '@reduxjs/toolkit'
+import toast from "react-hot-toast";
 
 // import type { PayloadAction } from "@reduxjs/toolkit"
 // // // Above will use in action object , see the docs.
@@ -113,7 +114,7 @@ const chefSlice = createSlice({
                     // })
 
 
-                    alert(`${action.payload.message} | 400`)
+                    toast.error(`${action.payload.message} | 400`)
 
 
                 } else {
@@ -146,7 +147,7 @@ const chefSlice = createSlice({
                 state.isError = true
 
 
-                alert(`${action.error.message} || Error occured.`)
+                toast.error(`${action.error.message} || Error occured.`)
 
             })
 
@@ -179,7 +180,7 @@ const chefSlice = createSlice({
                     // })
 
 
-                    alert(`${action.payload.message} | 400`)
+                    toast.error(`${action.payload.message} | 400`)
 
 
                 } else {
@@ -234,7 +235,7 @@ const chefSlice = createSlice({
                 state.isError = true
 
 
-                alert(`${action.error.message} || Error occured.`)
+                toast.error(`${action.error.message} || Error occured.`)
 
             })
 
