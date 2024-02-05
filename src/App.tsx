@@ -23,7 +23,7 @@ import io from 'socket.io-client';
 
 import sound from "./sound/noti2.mp3";
 import { addNewOrderByNoti } from "./Slices/chefSlice"
-import { AnyEvent } from "@google/model-viewer/lib/utilities"
+// import { AnyEvent } from "@google/model-viewer/lib/utilities"
 import toast, { Toaster } from "react-hot-toast"
 
 
