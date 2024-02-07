@@ -15,7 +15,7 @@ export type CardDataInter = {
         sizes: { name: string, additionalPrice: number }[],
         crusts: { name: string, additionalPrice: number }[]
     },
-    isNonVeg?: boolean
+    isNonVeg?: boolean,
 }
 
 

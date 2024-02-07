@@ -130,7 +130,7 @@ const OldOrderDataUI = () => {
 }
 
 
-export const SingleOrder = ({ ele, shouldNavigate = false }: { ele: OrderDataInterface, shouldNavigate?: boolean }) => {
+export const SingleOrder = ({ ele, shouldNavigate = false, forChef = false }: { ele: OrderDataInterface, shouldNavigate?: boolean, forChef?: boolean }) => {
 
 
     const navigate = useNavigate()
@@ -143,6 +143,8 @@ export const SingleOrder = ({ ele, shouldNavigate = false }: { ele: OrderDataInt
 
 
     useEffect(() => {
+
+        console.log(ele)
 
 
         if ((ele.status === "RECEIVED" || ele.status === "PROCESSING") && shouldNavigate) {
@@ -202,33 +204,63 @@ export const SingleOrder = ({ ele, shouldNavigate = false }: { ele: OrderDataInt
                                         <p className=" capitalize">{e.name}</p>
                                         <p className=" capitalize">{e.category}</p>
                                     </div>
-                                    <div className=" flex justify-between">
 
-                                        <p>{!e.isNonVeg ? "Veg" : "Non-Veg"} | </p>
-                                        <p>{e.quantity} X ₹{e.price}</p>
-                                        <p>₹{e.quantity * e.price}</p>
-                                    </div>
+                                    <div className=" flex justify-center">
 
-                                    <div className=" flex justify-between">
-                                        <p className=" capitalize">{e.customizations.sizes[0].name || ""}</p>
-                                        <p className=" capitalize">At - ₹{e.customizations.sizes[0].additionalPrice}</p>
+                                        <p className=" text-center text-red-200 underline font-semibold">{!e.isNonVeg ? "Veg" : "Non-Veg"} </p>
+
+                                        {/* <p>{e.quantity} X ₹{e.price}</p>
+                                        <p>₹{e.quantity * e.price}</p> */}
 
                                     </div>
+
+                                    <div className=" flex flex-wrap justify-between px-2">
+                                        <p className=" capitalize">⁕{e.customizations.sizes[0].name || ""}</p>
+                                        {/* <p className=" capitalize">At - ₹{e.customizations.sizes[0].additionalPrice}</p> */}
+
+                                        {
+                                            e.customizations.crusts[0]
+                                            &&
+                                            <p className=" capitalize">⁕⁕{e.customizations.crusts[0].name || ""}</p>
+                                        }
+
+                                    </div>
+
+                                    {/* <p>{e.quantity} X ₹{e.price}</p>
+                                    <p>₹{e.quantity * e.price}</p> */}
+
+                                    {/* <p className=" capitalize">At - ₹{e.customizations.sizes[0].additionalPrice}</p>
+                                    <p className=" capitalize">At - ₹{e.customizations?.crusts[0]?.additionalPrice}</p> */}
+
+
+
+                                    {/* Price div ---> */}
 
 
                                     {
-                                        e.customizations.crusts[0]
+
+                                        !forChef
                                         &&
-
-                                        <div className=" flex justify-between">
-                                            <p className=" capitalize">{e.customizations.crusts[0].name || ""}</p>
-                                            <p className=" capitalize">At - ₹{e.customizations.crusts[0].additionalPrice}</p>
-
+                                        <div className=" px-2 text-center">
+                                            <p>
+                                                ₹<span>{e.price - ((e.customizations.sizes[0].additionalPrice || 0) + (e.customizations.crusts[0].additionalPrice || 0))}</span>
+                                                + ₹<span>{e.customizations.sizes[0].additionalPrice}</span>
+                                                + <span>{e.customizations?.crusts[0]?.additionalPrice && `₹${e.customizations?.crusts[0]?.additionalPrice}`}</span>
+                                                = ₹<span>{e.price}</span>
+                                            </p>
                                         </div>
                                     }
 
 
-
+                                    {/* 
+                                    {
+                                        e.customizations.crusts[0]
+                                        &&
+                                        <div className=" flex justify-between">
+                                            <p className=" capitalize">{e.customizations.crusts[0].name || ""}</p>
+                                        </div>
+                                    }
+                                    */}
 
 
                                 </div>
@@ -241,7 +273,12 @@ export const SingleOrder = ({ ele, shouldNavigate = false }: { ele: OrderDataInt
                 <div className=" border-t flex  justify-between items-center px-1">
 
                     <p className=" text-center border-2 border-y-0 border-green-400 px-4 rounded my-1 font-bold">Status : {ele.status}</p>
-                    <p className=" border-2 border-y-0 border-blue-400 px-2 sm:px-4 rounded">At :₹{ele.totalPrice}</p>
+
+                    {
+                        !forChef
+                        &&
+                        <p className=" border-2 border-y-0 border-blue-400 px-2 sm:px-4 rounded">At :₹{ele.totalPrice}</p>
+                    }
 
                 </div>
 
@@ -272,9 +309,9 @@ export const SingleOrder = ({ ele, shouldNavigate = false }: { ele: OrderDataInt
                 <>
                     <div className=" m-3 mt-0 border-t p-1 flex flex-col items-center">
                         <Link to={"/"}>
-                            <button 
-                            className=" px-3 rounded bg-green-500 border font-bold"
-                            onClick={()=>{toast.error("Now we can show the billing page to user and also we can update status of order(status : order done).")}}
+                            <button
+                                className=" px-3 rounded bg-green-500 border font-bold"
+                                onClick={() => { toast.error("Now we can show the billing page to user and also we can update status of order(status : order done).") }}
                             >Order Done ✅</button>
                         </Link>
                     </div>
@@ -302,7 +339,8 @@ function UpdateUiForChef({ ele }: { ele: OrderDataInterface }) {
     const [updateOrder, setUpdateOrder] = useState<UpdateOrder>({ id: "", status: "RECEIVED", time: 20 })
 
     // // Toggle tio show upadate ui --->
-    const [showOption, setShowOption] = useState(false)
+    // // Now options to edit order will always visiable (Updated) ---->
+    const [showOption, setShowOption] = useState(true)
 
 
     const [optionArr, setOptionArr] = useState<OrderStatusOptions[]>([])
@@ -365,7 +403,7 @@ function UpdateUiForChef({ ele }: { ele: OrderDataInterface }) {
         }
 
         // // Do toggle thing last after all cases ---->
-        setShowOption(!showOption)
+        setShowOption(showOption)
 
     }
 
@@ -382,8 +420,9 @@ function UpdateUiForChef({ ele }: { ele: OrderDataInterface }) {
             setOptionArr(["RECEIVED", "PROCESSING", "CANCELED"])
         }
 
+        // // // Added completed option for select.
         if (ele.status === "PROCESSING") {
-            setOptionArr(["PROCESSING", 'ON_TABLE', "CANCELED"])
+            setOptionArr(["PROCESSING", 'ON_TABLE', "COMPLETED", "CANCELED"])
         }
 
 
@@ -403,10 +442,10 @@ function UpdateUiForChef({ ele }: { ele: OrderDataInterface }) {
                     &&
                     <div className=" w-full relative ">
 
-                        <span
+                        {/* <span
                             className=" absolute top-0 right-0 border-2 border-red-400 text-red-400 rounded px-2 font-semibold "
                             onClick={() => { setShowOption(false) }}
-                        >X</span>
+                        >X</span> */}
 
                         <div className=" flex justify-center">
 
@@ -423,7 +462,11 @@ function UpdateUiForChef({ ele }: { ele: OrderDataInterface }) {
                                             key={i}
                                             // disabled={ e===updateOrder.status ? true : false}
                                             value={options}
-                                            className={` ${options === 'CANCELED' && 'text-red-600 underline'}`}
+                                            className={` 
+                                            ${options === 'CANCELED'
+                                                    ? 'text-red-600 font-semibold'
+                                                    : options === "COMPLETED" && 'text-green-600 font-semibold'
+                                                }`}
                                         >{options}</option>
                                     })
                                 }
@@ -474,8 +517,6 @@ function UpdateUiForChef({ ele }: { ele: OrderDataInterface }) {
                             </>
 
                         }
-
-
 
                     </div>
 

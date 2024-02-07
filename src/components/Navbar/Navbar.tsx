@@ -25,6 +25,23 @@ export const Navbar = () => {
     // console.log(location);
 
 
+
+
+
+    useEffect(() => {
+
+        if (userData.role === "chef") {
+
+            // console.log(location.pathname)
+            // console.log(`${location.pathname}` === '/')
+
+            navigate("/chef-page")
+        }
+
+    }, [userData])
+
+
+
     return (
         <>
 
@@ -198,7 +215,7 @@ function Notification() {
 
 const SingleNotificatinUI = ({ ele }: { ele: NotificationSingle, i?: number }) => {
 
-    const { userData , unReadNotification } = userState()
+    const { userData, unReadNotification } = userState()
 
     // // // Creating indicator values for unRead Msgs ---->
     // const [unReadNums, setUnReadNums] = useState(0)

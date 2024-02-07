@@ -51,9 +51,9 @@ const AllCurrentOrder = () => {
 
                         (chefOrderData.length > 0)
 
-                            ? chefOrderData.map((order) => <SingleOrder key={order.id} ele={order} />)
+                            ? chefOrderData.map((order) => <SingleOrder key={order.id} ele={order} forChef={true} />)
 
-                            : [null].map((ele, i) => <SingleOrderData data={ele} i={i} key={i} />)
+                            : [null].map((ele, i) => <SingleDummyOrder data={ele} i={i} key={i} />)
                     }
 
                 </div>
@@ -72,7 +72,23 @@ export default AllCurrentOrder
 
 
 
-function SingleOrderData({ data, i }: { data: null, i: number }) {
+
+
+
+
+// function SingleCurrentOrderForChef(){
+
+// }
+
+
+
+
+
+
+
+
+
+function SingleDummyOrder({ data, i }: { data: null, i: number }) {
     return (
         <div
 
