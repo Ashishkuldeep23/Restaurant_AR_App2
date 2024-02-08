@@ -56,23 +56,40 @@ export const Navbar = () => {
                 </div>
 
 
-                {/* User image div */}
-                <div className=" flex justify-between items-center gap-2 sm:gap-5 my-auto ml-auto mr-5 hover:scale-110 hover:cursor-pointer transition-all">
 
-                    <Notification />
+                <div className="flex justify-between items-center gap-2 sm:gap-5 my-auto ml-auto mr-5">
+
+                    {/* Ball icon, user notification div here ---> */}
+                    <div className="  hover:scale-125  hover:cursor-pointer transition-all">
+
+                        <Notification />
+                    </div>
+
+                    {/* User image div */}
+                    <div className="  hover:scale-125 hover:cursor-pointer transition-all">
 
 
-                    <Link to={userData.firstName ? "/profile" : "/login"}>
-                        <img
 
-                            // onClick={()=>{userData.firstName ? "" : navigate("/login")}}
-                            className=" h-12 rounded-full border"
-                            src={userData.profilePic}
-                            alt=""
+                        <Link to={userData.firstName ? "/profile" : "/login"}>
+                            <img
 
-                        />
-                    </Link>
+                                onError={(event) => {
+                                    event.currentTarget.src = "https://res.cloudinary.com/dlvq8n2ca/image/upload/v1700368567/ej31ylpxtamndu3trqtk.png"
+                                    event.currentTarget.onerror = null;
+                                }}
+
+                                // onClick={()=>{userData.firstName ? "" : navigate("/login")}}
+                                className=" h-12 rounded-full border"
+                                src={userData.profilePic}
+                                alt=""
+
+                            />
+                        </Link>
+                    </div>
+
+
                 </div>
+
 
             </div>
 

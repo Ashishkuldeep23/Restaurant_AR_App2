@@ -141,10 +141,9 @@ export const SingleOrder = ({ ele, shouldNavigate = false, forChef = false }: { 
         return new Date(str)
     }
 
-
     useEffect(() => {
 
-        console.log(ele)
+        // console.log(ele)
 
 
         if ((ele.status === "RECEIVED" || ele.status === "PROCESSING") && shouldNavigate) {
@@ -156,7 +155,6 @@ export const SingleOrder = ({ ele, shouldNavigate = false, forChef = false }: { 
         }
 
     }, [ele])
-
 
     return (
         <div className={` ${userData.role === "chef" && "border"} bg-slate-800 flex flex-col rounded shadow-xl shadow-gray-600 hover:scale-110 sm:hover:-translate-y-5 transition-all`}>
@@ -207,7 +205,11 @@ export const SingleOrder = ({ ele, shouldNavigate = false, forChef = false }: { 
 
                                     <div className=" flex justify-center">
 
-                                        <p className=" text-center text-red-200 underline font-semibold">{!e.isNonVeg ? "Veg" : "Non-Veg"} </p>
+                                        <p
+                                            className={`text-center border-b font-bold
+                                                ${!e.isNonVeg ? "text-red-200 border-b-red-200" : "text-red-600 border-b-red-600"}
+                                            `}
+                                        >{!e.isNonVeg ? "Veg" : "Non-Veg"} </p>
 
                                         {/* <p>{e.quantity} X ₹{e.price}</p>
                                         <p>₹{e.quantity * e.price}</p> */}

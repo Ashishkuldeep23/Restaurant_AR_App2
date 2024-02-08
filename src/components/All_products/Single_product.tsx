@@ -23,7 +23,7 @@ export const Single_Product = ({ item }: { item: TypeSingleProduct }) => {
     return (
         <>
 
-            <div className="border bg-white  border-white rounded mx-1 my-16 sm:w-96 w-72">
+            <div className=" flex flex-col items-center overflow-hidden border bg-white  border-white rounded mx-1 my-16 sm:w-96 w-72">
 
 
                 {/* <model-viewer

@@ -98,8 +98,6 @@ const CurrentOrderComp = () => {
                     </div>
 
 
-
-
                     <div className=" mt-5 flex justify-center flex-col items-center">
                         <p
                             className=" border px-2 rounded text-lg font-bold hover:bg-green-500 "

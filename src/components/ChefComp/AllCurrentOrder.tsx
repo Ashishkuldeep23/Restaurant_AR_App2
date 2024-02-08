@@ -3,10 +3,13 @@ import { useEffect } from "react"
 import { useDispatch } from "react-redux"
 import { AppDispatch } from "../../store"
 import { chefSliceData, getAllCurrentOrderData } from "../../Slices/chefSlice"
-import { SingleOrder } from "../UserProfile/UserProfile"
+import { SingleOrder, logOutHadler } from "../UserProfile/UserProfile"
 import { LoaderCircle } from "../LoaderCircle/LoaderCircle"
+import { useNavigate } from "react-router-dom"
 
 const AllCurrentOrder = () => {
+
+    const navigate = useNavigate()
 
     const dispatch = useDispatch<AppDispatch>()
 
@@ -22,7 +25,7 @@ const AllCurrentOrder = () => {
         <>
 
             <div
-                className=" relative bg-slate-950 text-white flex flex-col items-center  bg-sky-200/70 min-h-screen bg-contain bg-[url('https://img.freepik.com/premium-photo/empty-wood-table-top-with-chef-cooking-restaurant-kitchen-blurred-defocused-background_688350-3953.jpg')]  sm:pt-28 "
+                className="relative bg-slate-950 text-white flex flex-col items-center  bg-sky-200/70 min-h-screen bg-contain bg-[url('https://img.freepik.com/premium-photo/empty-wood-table-top-with-chef-cooking-restaurant-kitchen-blurred-defocused-background_688350-3953.jpg')] pb-16 sm:pt-28 "
             >
 
                 <button
@@ -33,8 +36,8 @@ const AllCurrentOrder = () => {
 
                 <LoaderCircle isLoading={isLoading} />
 
-                <h1 className=" mt-5 text-4xl bg-slate-950 rounded px-3">Your kitchen</h1>
-                <h1 className="mb-5 text-3xl bg-slate-950 rounded px-3">All currect order below</h1>
+                <h1 className=" mt-5 text-4xl bg-slate-950 rounded px-3 text-center">Your kitchen</h1>
+                <h1 className="mb-5 text-3xl bg-slate-950 rounded px-3 text-center">All currect order below</h1>
 
                 {
                     (chefOrderData.length === 0)
@@ -57,6 +60,15 @@ const AllCurrentOrder = () => {
                     }
 
                 </div>
+
+
+                {/* <div className=" mt-5 flex justify-center flex-col items-center"> */}
+                    <p
+                        className=" border px-2 ml-auto mt-5 mr-3 rounded text-sm font-bold bg-red-500 absolute right-2 bottom-2 "
+                        onClick={() => { logOutHadler(); navigate("/"); }}
+                    >LogOut</p>
+                {/* </div> */}
+
 
             </div>
 

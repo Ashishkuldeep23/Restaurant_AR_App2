@@ -8,8 +8,7 @@ import { useDispatch } from "react-redux"
 import { AppDispatch } from "../../store"
 import { useLocation, useNavigate } from "react-router-dom"
 import { LoaderCircle } from "../LoaderCircle/LoaderCircle"
-
-
+import { v4 as uuid } from 'uuid'
 
 
 
@@ -75,11 +74,7 @@ const All_products = () => {
     return (
         <>
 
-
-
-
             <LoaderCircle isLoading={isLoading} />
-
 
             <div
                 // style={{ minHeight: "100vh", width: "100vw" }}
@@ -103,14 +98,27 @@ const All_products = () => {
                                 )
                             })
 
-                            : <p>No Product found</p>
+                            :
+                            <div className=" flex flex-wrap justify-evenly">
+                                {
+                                    [null, null, null, null, null, null].map(() => {
+                                        return (
+                                            <div
+                                                key={uuid()}
+                                                className=" relative flex flex-col justify-center items-center h-96 border bg-white  border-white rounded mx-1 my-16 sm:w-96 w-72"
+                                            >
+                                                <p className=" text-5xl font-bold relative z-20">Getting product data.</p>
+                                                <LoaderCircle isLoading={isLoading} />
+                                            </div>
+                                        )
+                                    })
+                                }
+                            </div>
                     }
                 </div>
 
 
             </div>
-
-
 
         </>
     )
