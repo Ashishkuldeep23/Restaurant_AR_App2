@@ -14,7 +14,7 @@ import toast from "react-hot-toast";
 export type OrderStatusOptions = "RECEIVED" | "PROCESSING" | "ON_TABLE" | "COMPLETED" | 'CANCELED'
 
 export type createBody = {
-    id : string ,
+    id: string,
     tableNumber: number,
     totalPrice: number,
     cartData: CardDataInter[],
@@ -53,6 +53,7 @@ export interface OrderDataInterface {
     userId: string,
     status: OrderStatusOptions,
     id: string
+    currentOrder?: boolean
 }
 
 

@@ -74,7 +74,7 @@ const All_products = () => {
     return (
         <>
 
-            <LoaderCircle isLoading={isLoading} />
+            <LoaderCircle isLoading={isLoading} isFixied={true} />
 
             <div
                 // style={{ minHeight: "100vh", width: "100vw" }}

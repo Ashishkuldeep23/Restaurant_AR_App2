@@ -6,13 +6,15 @@ import { AppDispatch } from "../../store"
 import { TypeCustomizationsObj, TypeSingleProduct, fetchAllProduct, fetchOneProduct, productState } from "../../Slices/productSlice"
 import { removerUnderScore } from "../All_products/Single_product"
 import { ModelViewer } from "../ModelViewer/ModelViewer"
-import QRCodeGenerator from "../QrGenerator/QrGenerator"
+// import QRCodeGenerator from "../QrGenerator/QrGenerator"      // // Not using this component for now.
+
 import { setChildrenModal, setOpenMoadl } from "../../Slices/ModalSlice"
 import { CardDataInter, addItemInCart, cartState, setItemsClicked } from "../../Slices/cartSlice"
 import { v4 as uuid } from 'uuid';
 import { CartData, ConfirmOrderWithTable, DummyCartUI } from '../BillComp/BillComponent'
 import { LoaderCircle } from '../LoaderCircle/LoaderCircle'
 import toast from 'react-hot-toast'
+import { userState } from '../../Slices/userSlice'
 
 
 
@@ -25,6 +27,8 @@ const ProductDetail = () => {
     const isLoading = productState().isLoading
 
     const { cartData } = cartState()
+
+    const { userData } = userState()
 
     const params = useParams()
 
@@ -300,14 +304,52 @@ const ProductDetail = () => {
                     <div className=" w-full md:w-1/4 flex items-center justify-center flex-col-reverse md:flex-col">
 
 
-                        {/* Generate qr --> */}
-                        <div className="my-4 py-4 border-t md:border-b md:border-t-0 ">
+                        {/* Generate qr --> Not using now, */}
+                        {/* <div className="my-4 py-4 border-t md:border-b md:border-t-0 ">
 
                             <p className=" mb-1.5">Scan QR👇</p>
 
                             <QRCodeGenerator />
 
+                        </div> */}
+
+
+                        {/* Curent order info ----> */}
+                        <div className="my-4 py-4 border-t md:border-b md:border-t-0 ">
+
+
+                            {
+                                userData.singleCurrentOrder
+                                &&
+                                <div className=' w-full bg-slate-200 py-2 rounded'>
+                                    <p>{userData.singleCurrentOrder.status}</p>
+
+                                    {/* Data.now isLessThen  display below */}
+                                    <p>{userData.singleCurrentOrder.preparationTime}</p>
+                                    <>
+                                        {
+                                            userData.singleCurrentOrder.cartData.map((ele , i) => {
+                                                return <div
+                                                    key={ele.id}
+                                                    className=' capitalize border-b border-slate-100 flex justify-between flex-wrap px-2 gap-2'
+                                                >
+                                                    {/* <p>{JSON.stringify(ele)}</p> */}
+                                                    <p>{i+1}.</p>
+                                                    <p>{ele.name}</p>
+                                                    <p>{ele.category}</p>
+                                                    <p>{ele.customizations?.sizes[0]?.name || ''}</p>
+                                                    <p>{ele.customizations?.crusts[0]?.name || ""}</p>
+                                                </div>
+                                            })
+                                        }
+                                    </>
+
+                                </div>
+
+                            }
+
                         </div>
+
 
                         {/* Main UI with details --> */}
                         <div className="w-full md:h-60  md:overflow-y-scroll">
@@ -526,8 +568,6 @@ const ProductDetail = () => {
                                     </div>
                             }
                         </div>
-
-
 
                     </div>
 
@@ -764,7 +804,7 @@ function MenuWithLogic({ setShowSizingPart }: { setShowSizingPart: React.Dispatc
         function categoryClickHandler(category: string) {
 
             // console.log(category)
-     
+
 
 
             for (let key in groupByData) {

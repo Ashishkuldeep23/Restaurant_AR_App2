@@ -245,7 +245,7 @@ export const SingleOrder = ({ ele, shouldNavigate = false, forChef = false }: { 
                                         &&
                                         <div className=" px-2 text-center">
                                             <p>
-                                                ₹<span>{e.price - ((e.customizations.sizes[0].additionalPrice || 0) + (e.customizations.crusts[0].additionalPrice || 0))}</span>
+                                                ₹<span>{e.price - ((e.customizations.sizes[0]?.additionalPrice || 0) + (e.customizations.crusts[0]?.additionalPrice || 0))}</span>
                                                 + ₹<span>{e.customizations.sizes[0].additionalPrice}</span>
                                                 + <span>{e.customizations?.crusts[0]?.additionalPrice && `₹${e.customizations?.crusts[0]?.additionalPrice}`}</span>
                                                 = ₹<span>{e.price}</span>

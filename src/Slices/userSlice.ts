@@ -69,6 +69,7 @@ export type TypeUserData = {
     address?: TypeUserAddress[];
     orders?: OrderDataInterface[],
     currentOrderArr?: OrderDataInterface[],
+    singleCurrentOrder?: OrderDataInterface
 }
 
 
@@ -118,7 +119,7 @@ const initialState: TyepUserDataForSlice = {
         id: "",
         address: [],
         orders: [],
-        currentOrderArr: []
+        currentOrderArr: [],
     },
 
     // // // Some notification states ----->
@@ -292,7 +293,12 @@ const userSlice = createSlice({
 
                     let userData = action.payload.data
 
+                    // console.log(userData)
+
                     state.userData = userData
+
+
+                    // // // settin notifications now --->
 
                     if (userData.notification && userData.notification.length > 0) {
                         // console.log(userData.notification[0].id)
@@ -309,6 +315,27 @@ const userSlice = createSlice({
                         state.unReadNotification = unReadNotficationsAre.length
 
                     }
+
+
+                    // // // getting current order and setting --->
+
+                    if (userData.orders && userData.orders.length > 0) {
+
+                        let findCurrentSingleOrder = userData.orders.filter((ele: OrderDataInterface) => ele.currentOrder === true)
+
+                        // console.log(findCurrentSingleOrder);
+
+
+                        if(findCurrentSingleOrder.length > 0){
+                            state.userData.singleCurrentOrder = findCurrentSingleOrder[0]
+                        }
+
+                        
+
+
+                    }
+
+
 
 
                     // // // set data in localStorage ------>
