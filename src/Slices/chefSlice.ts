@@ -60,6 +60,7 @@ interface ChefIntiData {
     isFullFilled: boolean,
     errMsg: string,
     chefOrderData: OrderDataInterface[]
+    // filteredOrderData: OrderDataInterface[]
 }
 
 
@@ -68,7 +69,8 @@ const initialState: ChefIntiData = {
     isError: false,
     isFullFilled: false,
     errMsg: "",
-    chefOrderData: []
+    chefOrderData: [],
+    // filteredOrderData: []
 }
 
 
@@ -127,7 +129,9 @@ const chefSlice = createSlice({
                     // alert(`${action.payload.message}`)
 
                     if (action.payload.data) {
-                        state.chefOrderData = action.payload.data
+
+                        let allCurrentOrders = action.payload.data as OrderDataInterface[]
+                        state.chefOrderData = allCurrentOrders
                     }
 
 
@@ -236,7 +240,6 @@ const chefSlice = createSlice({
 
 
                 toast.error(`${action.error.message} || Error occured.`)
-
             })
 
 

@@ -3,10 +3,12 @@ import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 import { AppDispatch } from "../../store"
 import { chefSliceData, getAllCurrentOrderData } from "../../Slices/chefSlice"
-import { UpdateUiForChef, logOutHadler, makeDateByDbStr } from "../UserProfile/UserProfile"
+import { logOutHadler } from "../UserProfile/UserProfile"
 import { LoaderCircle } from "../LoaderCircle/LoaderCircle"
 import { useNavigate } from "react-router-dom"
 // import toast from "react-hot-toast"
+// import { OrderDataInterface } from "../../Slices/orderSlice"
+import { SingleCurrentOrderForChef, SingleDummyOrder } from "./SingleCurrentOrderChef"
 import { OrderDataInterface } from "../../Slices/orderSlice"
 
 const AllCurrentOrder = () => {
@@ -16,6 +18,57 @@ const AllCurrentOrder = () => {
     const dispatch = useDispatch<AppDispatch>()
 
     const { chefOrderData, isLoading } = chefSliceData()
+
+    const [allCurentOrder, setAllCurentOrder] = useState<OrderDataInterface[]>([])
+
+    type filetrBTNValues = 1 | 2 | 3
+    const [filterBTN, setFilterBTN] = useState<filetrBTNValues>()
+
+
+
+
+    function filterAllOrdersAndSet(key: number): OrderDataInterface[] {
+
+        window.scroll(0 , 0)
+
+        if(key === filterBTN) return []
+
+        let filetrNum = 1
+
+        if (key === 1 || key === 2 || key === 3) {
+            filetrNum = key
+            setFilterBTN(key)
+        }
+
+
+        let filterData = chefOrderData.filter((ele) => {
+            if (filetrNum === 1 && (ele.status === "RECEIVED" || ele.status === "PROCESSING")) {
+                return ele
+            }
+            if (filetrNum === 2 && (ele.status === "ON_TABLE")) {
+                return ele
+            }
+            if (filetrNum === 3 && (ele.status === "COMPLETED" || ele.status === "CANCELED")) {
+                return ele
+            }
+        })
+
+        setAllCurentOrder(filterData)
+        return []
+    }
+
+
+
+
+
+    useEffect(() => {
+
+        filterAllOrdersAndSet(1)
+        setFilterBTN(1)
+
+    }, [chefOrderData])
+
+
 
 
     useEffect(() => {
@@ -54,15 +107,34 @@ const AllCurrentOrder = () => {
                     {
 
 
-                        (chefOrderData.length > 0)
+                        (allCurentOrder.length > 0)
 
-                            ? chefOrderData.map((order) => <SingleCurrentOrderForChef key={order.id} ele={order} />)
+                            ? allCurentOrder.map((order) => <SingleCurrentOrderForChef key={order.id} ele={order} />)
 
                             : [null].map((ele, i) => <SingleDummyOrder data={ele} i={i} key={i} />)
                     }
 
                 </div>
 
+
+
+                {/* Filter BTN ------> */}
+                <div className=" flex justify-between flex-wrap px-5 my-5 gap-3 w-full text-black ">
+
+                    {
+                        ["Current Orders", 'On Table Orders', 'Completed Orders'].map((ele, i) => {
+                            return (
+                                <button
+                                    key={i}
+                                    className={`  px-3 rounded font-bold w-20 ${(i + 1) === filterBTN ? "bg-green-700 text-white" : "bg-slate-200"} `}
+                                    onClick={() => filterAllOrdersAndSet(i + 1)}
+                                >{ele}</button>
+                            )
+                        })
+                    }
+
+
+                </div>
 
 
                 {/* <div className=" mt-5 flex justify-center flex-col items-center"> */}
@@ -75,230 +147,9 @@ const AllCurrentOrder = () => {
 
             </div>
 
-
         </>
     )
 }
 
 export default AllCurrentOrder
-
-
-
-
-export function SingleCurrentOrderForChef({ ele }: { ele: OrderDataInterface }) {
-
-
-    // const { chefOrderData } = chefSliceData()
-
-    const [timeRemaining, setTimeRemaining] = useState<number>(15)
-
-
-    function calculateRemainingTime(time: string) {
-        // console.log(time)
-
-        let dateAtPepare = new Date(time)
-
-        let dateNow = new Date()
-
-        var differenceValue = (dateAtPepare.getTime() - dateNow.getTime()) / 1000;
-        differenceValue /= 60;
-        let timeGotInMints = Math.round(differenceValue)
-
-        console.log(timeGotInMints)
-
-        setTimeRemaining(timeGotInMints)
-
-        // console.log(dateAtPepare)
-    }
-
-
-    useEffect(() => {
-
-
-        // console.log(ele.preparationTime)
-
-        if (ele.orderDate !== ele.preparationTime) {
-
-            calculateRemainingTime(ele.preparationTime)
-
-
-            if (timeRemaining > 0) {
-
-                setInterval(() => {
-
-                    calculateRemainingTime(ele.preparationTime)
-                }, 60000)
-            }
-
-        }
-
-    }, [])
-
-
-
-    return (
-        <>
-
-            <div className={` bg-slate-800 flex flex-col rounded shadow-xl shadow-gray-600 hover:scale-110 sm:hover:-translate-y-5 transition-all`}>
-                <div
-                    key={ele.id}
-                    className={` flex flex-col flex-wrap border rounded m-1 px-1 py-4 xxs:w-72 text-black
-                        ${ele?.status === "PROCESSING" ? "bg-orange-300" : ele?.status === "ON_TABLE" ? ' bg-sky-500' : ele?.status === 'CANCELED' ? "bg-red-500" : "bg-green-500"}  
-                        `}
-                >
-                    <div className=" flex justify-between items-start">
-                        <p className=" font-bold px-1 sm:px-3 rounded">Table:{ele.tableNumber}</p>
-
-                        <div className=" border-b flex  items-end ">
-                            <span>Received At :</span>
-                            <p >{makeDateByDbStr(ele.orderDate).toLocaleTimeString()}  </p>
-                            {/* <p >{makeDateByDbStr(ele.orderDate).toLocaleDateString()}</p> */}
-                        </div>
-
-
-                    </div>
-
-                    <div>
-
-                        {
-                            ele.orderDate !== ele.preparationTime
-                            &&
-
-                            <div>
-                                {
-                                    timeRemaining > 0
-                                        ? <p className=" text-end capitalize font-bold">Time Remaining: {timeRemaining} mins</p>
-
-                                        : <p className=" text-center text-sm">The time left has reached <span className=" font-bold">0.</span> Please change the status accordingly.</p>
-                                }
-                            </div>
-
-                        }
-
-                    </div>
-
-                    {/* <p>{makeDateAndTime(ele.orderDate)}</p> */}
-                    {/* <p>{makeDateAndTime(ele.preparationTime)}</p> */}
-                    {/* <p>{JSON.stringify(ele.cartData)}</p> */}
-
-
-
-                    <div className=" flex flex-col items-center  justify-center border-t mt-2">
-                        <p className=" border-b text-center text-sm text-slate-200 font-semibold">Cart Data</p>
-                        {
-                            (ele.cartData.length > 0)
-
-                            &&
-                            <div className="bg-slate-200 rounded ">{
-
-                                ele.cartData.map((e, i) => {
-                                    return (
-                                        <div
-                                            key={i}
-                                            className=" border-b-slate-600 border my-1 px-0.5 relative w-full overflow-hidden "
-                                        >
-
-                                            <div className=" flex justify-between flex-wrap gap-2 capitalize">
-                                                <p>{e.name}</p>
-                                                <p>
-                                                    <span>{e.customizations.sizes[0].name || ""}</span>
-                                                    {
-                                                        e.customizations.crusts[0]
-                                                        &&
-                                                        <span >{e.customizations.crusts[0].name || ""}</span>
-                                                    }
-
-                                                </p>
-                                                <p>{e.quantity}</p>
-                                            </div>
-
-
-
-
-
-                                        </div>
-                                    )
-                                })
-
-                            }</div>
-
-                        }
-                    </div>
-
-                    {
-                        ele.orderDate !== ele.preparationTime
-                        &&
-                        <p className=" text-center">Prepared At : {makeDateByDbStr(ele.preparationTime).toLocaleTimeString()}</p>
-                    }
-
-
-                    <div className=" border-t flex  gap-3 items-center px-1">
-
-                        <p className={` text-center px-2 rounded my-1 font-bold text-white
-                                 ${ele?.status === "PROCESSING" ? "bg-orange-800" : ele?.status === "ON_TABLE" ? ' bg-sky-800' : 'bg-green-800'}
-                                `}
-
-                        >{ele.status}</p>
-
-                        {/* {
-                            // !forChef
-                            // &&
-                            <p className=" border-2 border-y-0 border-blue-400 px-2 sm:px-4 rounded">At :₹{ele.totalPrice}</p>
-                        } */}
-
-                    </div>
-
-
-                    <div>
-                        { 
-                            <UpdateUiForChef ele={ele} isBgBlack={true} />
-                        }
-                    </div>
-
-                    {/* <p className=" ">{makeDateAndTime(ele.orderDate)}</p> */}
-                    {/* Below update component should only show to chefs ---> */}
-
-                </div>
-
-            </div>
-        </>
-    )
-
-}
-
-
-
-function SingleDummyOrder({ data, i }: { data: null, i: number }) {
-    return (
-        <div
-
-            onClick={() => { console.log(data) }}
-
-            className={`shadow-2xl mx-1 w-full sm:w-2/5 ${i % 2 === 0 ? "bg-orange-400" : " bg-emerald-400"} p-1.5 rounded-md`}
-        >
-
-            <h1>Not Found DATA | 404</h1>
-
-            <div className=" flex r gap-4 justify-between flex-wrap">
-                <p className=" font-bold">Table No: 9</p>
-                <p>Received at: 8 PM</p>
-                <p>Time Remaining: 15m</p>
-            </div>
-
-            <div className=" bg-slate-800 my-3 px-1">
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Delectus sed fuga fugiat voluptatibus enim asperiores odio et eaque natus, error voluptatem nulla ullam ducimus culpa? In ut pariatur cupiditate hic.
-            </div>
-
-            <div className=" flex flex-wrap px-6">
-
-                <button className={`mr-10 shadow-lg  ${i % 2 === 0 ? "bg-red-600" : " bg-green-700"} text-white px-4 `}>Processing</button>
-
-                <p>Custom Instruction</p>
-
-            </div>
-
-        </div>
-    )
-}
-
 
