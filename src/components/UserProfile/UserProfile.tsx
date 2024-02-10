@@ -130,6 +130,12 @@ const OldOrderDataUI = () => {
 }
 
 
+
+export function makeDateByDbStr(str: string): Date {
+    return new Date(str)
+}
+
+
 export const SingleOrder = ({ ele, shouldNavigate = false, forChef = false }: { ele: OrderDataInterface, shouldNavigate?: boolean, forChef?: boolean }) => {
 
 
@@ -137,9 +143,6 @@ export const SingleOrder = ({ ele, shouldNavigate = false, forChef = false }: { 
 
     const { clickedNotification, userData } = userState()
 
-    function makeDateByDbStr(str: string): Date {
-        return new Date(str)
-    }
 
     useEffect(() => {
 
@@ -191,7 +194,7 @@ export const SingleOrder = ({ ele, shouldNavigate = false, forChef = false }: { 
                         ele.cartData.map((e, i) => {
                             return (
                                 <div
-                                    key={e.id}
+                                    key={i}
                                     className=" bg-slate-800 border my-1 px-0.5 rounded relative w-full overflow-hidden xxs:w-4/5"
                                 >
 
@@ -327,7 +330,7 @@ export const SingleOrder = ({ ele, shouldNavigate = false, forChef = false }: { 
 
 
 // // // Below comp only visiable for chef --------->
-function UpdateUiForChef({ ele }: { ele: OrderDataInterface }) {
+export function UpdateUiForChef({ ele, isBgBlack = false }: { ele: OrderDataInterface, isBgBlack?: boolean }) {
 
 
     type UpdateOrder = {
@@ -388,7 +391,7 @@ function UpdateUiForChef({ ele }: { ele: OrderDataInterface }) {
                     socket.emit("update-order-status", { ...ele, status: updateOrder.status, preparationTime: time })
 
                 }
-                else if (updateOrder.status === "ON_TABLE") {
+                else if (updateOrder.status === "ON_TABLE" || updateOrder.status === 'COMPLETED' || updateOrder.status === "CANCELED") {
                     dispatch(updateOrderStatusChef({ whatUpdate: "chefStatus", orderId: ele.id, status: updateOrder.status }))
 
 
@@ -454,7 +457,7 @@ function UpdateUiForChef({ ele }: { ele: OrderDataInterface }) {
                             <label htmlFor="status">Status : </label>
 
                             <select
-                                className=" bg-black border rounded my-0.5" id="status"
+                                className={`${!isBgBlack ? "bg-black" : "bg-slate-200"}  border rounded my-0.5" id="status `}
                                 value={updateOrder.status}
                                 onChange={(e) => { setUpdateOrder({ ...updateOrder, status: e.target.value as OrderStatusOptions }) }}
                             >
@@ -494,7 +497,7 @@ function UpdateUiForChef({ ele }: { ele: OrderDataInterface }) {
 
                                         <input
                                             id="time"
-                                            className=" bg-black border rounded mx-0.5 px-1"
+                                            className={`${!isBgBlack ? "bg-black" : "bg-slate-200"} border rounded mx-0.5 px-1 `}
                                             style={{ width: "30px" }}
                                             type="number"
                                             value={updateOrder.time}
@@ -526,9 +529,10 @@ function UpdateUiForChef({ ele }: { ele: OrderDataInterface }) {
 
                 {/* <div> */}
                 <button
-                    className={` px-3 rounded text-sm font-bold capitalize ${showOption ? "bg-green-400" : "border border-green-400 text-green-400"} `}
+
+                    className={` m-1 text-white px-3 rounded text-sm font-bold capitalize ${showOption ? "bg-red-500" : "border border-red-500 text-red-500"} `}
                     onClick={(e) => { clickHandler(e) }}
-                >{showOption ? "Actual" : "Ready For"} Update</button>
+                >Update</button>
                 {/* </div> */}
 
             </div>

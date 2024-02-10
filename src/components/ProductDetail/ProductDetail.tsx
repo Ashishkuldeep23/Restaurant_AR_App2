@@ -15,6 +15,7 @@ import { CartData, ConfirmOrderWithTable, DummyCartUI } from '../BillComp/BillCo
 import { LoaderCircle } from '../LoaderCircle/LoaderCircle'
 import toast from 'react-hot-toast'
 import { userState } from '../../Slices/userSlice'
+import { makeDateByDbStr } from '../UserProfile/UserProfile'
 
 
 
@@ -294,6 +295,8 @@ const ProductDetail = () => {
             {/** Loading component ---->  */}
             <LoaderCircle isLoading={isLoading} />
 
+            {/* <p className=' text-4xl'>{item.timeRequired && item.timeRequired}</p> */}
+
             <div className="flex flex-col justify-center items-center text-center rounded mx-1 my-5 pb-24">
 
                 {/* md is breakpoint for leptop and mobile ----> */}
@@ -325,18 +328,19 @@ const ProductDetail = () => {
                                     <p>{userData.singleCurrentOrder.status}</p>
 
                                     {/* Data.now isLessThen  display below */}
-                                    <p>{userData.singleCurrentOrder.preparationTime}</p>
+                                    {/* <p>{userData.singleCurrentOrder.preparationTime}</p> */}
+                                    <p>
+                                        <span>{makeDateByDbStr(userData.singleCurrentOrder.preparationTime).toLocaleDateString()}</span> |
+                                        <span>{makeDateByDbStr(userData.singleCurrentOrder.preparationTime).toLocaleTimeString()}</span>
+                                    </p>
                                     <>
                                         {
-                                            userData.singleCurrentOrder.cartData.map((ele , i) => {
-                                                return <div
-                                                    key={ele.id}
-                                                    className=' capitalize border-b border-slate-100 flex justify-between flex-wrap px-2 gap-2'
+                                            userData.singleCurrentOrder.cartData.map((ele, i) => {
+                                                return <div key={i}
+                                                    className=' capitalize border-b border-slate-100 flex justify-center items-center flex-wrap px-2 gap-2 leading-5'
                                                 >
                                                     {/* <p>{JSON.stringify(ele)}</p> */}
-                                                    <p>{i+1}.</p>
-                                                    <p>{ele.name}</p>
-                                                    <p>{ele.category}</p>
+                                                    <p><span>{i + 1}.</span> <span>{ele.name}</span> <span>({ele.category})</span></p>
                                                     <p>{ele.customizations?.sizes[0]?.name || ''}</p>
                                                     <p>{ele.customizations?.crusts[0]?.name || ""}</p>
                                                 </div>
@@ -575,7 +579,6 @@ const ProductDetail = () => {
                 </div>
 
 
-
                 {/* Footer of page details */}
                 <div className=" w-full py-1.5 bg-slate-100 fixed bottom-0 flex justify-center">
 
@@ -736,8 +739,6 @@ function NameWithLeftRight() {
                 {
 
                     sameCatProducts.map((ele) => {
-
-
                         return (
                             <Fragment key={ele.id}>{
 

@@ -92,7 +92,7 @@ export type TypeSingleProduct = {
 
     customizations?: TypeCustomizationsObj,
     isNonVeg?: boolean
-
+    timeRequired ?: string
 
 }
 
@@ -112,13 +112,9 @@ type TypeProductInitial = {
 
 const initialOneProducData: TypeSingleProduct = {
     id: '',
-
     name: '',
-
     category: '',
-
     price: 0,
-
     discountPercentage: 0,
 
     // model: 'https://res.cloudinary.com/dlvq8n2ca/image/upload/v1704005444/hnvnf1bfodpwdinkuccq.glb',
@@ -139,11 +135,8 @@ const initialOneProducData: TypeSingleProduct = {
 
 
     likes: 0,
-
     dislikes: 0,
-
     likedUserIds: [],
-
     dislikedUserIds: [],
 
     customizations: {
@@ -151,7 +144,8 @@ const initialOneProducData: TypeSingleProduct = {
         crusts: []
     },
 
-    isNonVeg: false
+    isNonVeg: false ,
+    timeRequired : '10 min'
 }
 
 
