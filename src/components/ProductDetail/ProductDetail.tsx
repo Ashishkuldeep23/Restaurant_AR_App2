@@ -14,7 +14,7 @@ import { v4 as uuid } from 'uuid';
 import { CartData, ConfirmOrderWithTable, DummyCartUI } from '../BillComp/BillComponent'
 import { LoaderCircle } from '../LoaderCircle/LoaderCircle'
 import toast from 'react-hot-toast'
-import { userState } from '../../Slices/userSlice'
+import { setClickedNotification, userState } from '../../Slices/userSlice'
 import { makeDateByDbStr } from '../UserProfile/UserProfile'
 
 
@@ -34,6 +34,8 @@ const ProductDetail = () => {
     const params = useParams()
 
     const dispatch = useDispatch<AppDispatch>()
+
+    const navigate = useNavigate()
 
 
     // // // This var is only used to show when used click to add into cart -->
@@ -156,6 +158,26 @@ const ProductDetail = () => {
 
         dispatch(setOpenMoadl(true))
         dispatch(setChildrenModal(innerHTML))
+    }
+
+
+
+
+    function currentSingleOrderClick(e: React.MouseEvent<HTMLDivElement, MouseEvent>, orderId?: string) {
+
+        e.stopPropagation()
+
+        if (orderId) {
+            if (userData.currentOrderArr && userData.currentOrderArr.length > 0) {
+
+                navigate("/current-order");
+            } else {
+                navigate("/profile");
+            }
+
+            dispatch(setClickedNotification(orderId))
+        }
+
     }
 
 
@@ -324,8 +346,11 @@ const ProductDetail = () => {
                             {
                                 userData.singleCurrentOrder
                                 &&
-                                <div className=' w-full bg-slate-200 py-2 rounded'>
-                                    <p>{userData.singleCurrentOrder.status}</p>
+                                <div
+                                    className=' w-full bg-slate-200 py-2 rounded'
+                                    onClick={(e) => { currentSingleOrderClick(e, userData.singleCurrentOrder?.id) }}
+                                >
+                                    <p className={`border rounded  border-red-500 inline px-2 ${userData.singleCurrentOrder?.status === "PROCESSING" ? "border-orange-300" : userData.singleCurrentOrder?.status === "ON_TABLE" ? ' border-sky-500' : userData.singleCurrentOrder?.status === 'CANCELED' ? "border-red-500" : "border-green-500"}  `}>{userData.singleCurrentOrder.status}</p>
 
                                     {/* Data.now isLessThen  display below */}
                                     {/* <p>{userData.singleCurrentOrder.preparationTime}</p> */}

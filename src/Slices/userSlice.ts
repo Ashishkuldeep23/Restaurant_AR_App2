@@ -294,12 +294,10 @@ const userSlice = createSlice({
                     let userData = action.payload.data
 
                     // console.log(userData)
-
                     state.userData = userData
 
 
                     // // // settin notifications now --->
-
                     if (userData.notification && userData.notification.length > 0) {
                         // console.log(userData.notification[0].id)
                         // // // update notification arr ------->
@@ -318,19 +316,22 @@ const userSlice = createSlice({
 
 
                     // // // getting current order and setting --->
-
                     if (userData.orders && userData.orders.length > 0) {
 
-                        let findCurrentSingleOrder = userData.orders.filter((ele: OrderDataInterface) => ele.currentOrder === true)
+                        let arrOfOrderstatus = ["RECEIVED", "PROCESSING", "ON_TABLE"]
+
+                        let findCurrentSingleOrder = userData.orders.filter((ele: OrderDataInterface) => {
+                            if (ele.currentOrder === true && arrOfOrderstatus.includes(ele.status)) return ele
+                        })
 
                         // console.log(findCurrentSingleOrder);
 
 
-                        if(findCurrentSingleOrder.length > 0){
+                        if (findCurrentSingleOrder.length > 0) {
                             state.userData.singleCurrentOrder = findCurrentSingleOrder[0]
                         }
 
-                        
+
 
 
                     }
@@ -448,7 +449,40 @@ const userSlice = createSlice({
             // // // Some extra reducers of other slices ---->
             .addCase("order/createOrder/fulfilled", (state, action: PayloadAction<any, never>) => {
 
-                state.userData.orders?.unshift(action.payload.data)
+                // console.log(action.payload)
+
+                if (action.payload.created) {
+
+                    state.userData.orders?.unshift(action.payload.data)
+
+                    state.userData.singleCurrentOrder = action.payload.data
+                }
+
+                if (action.payload.updated) {
+
+                    state.userData.singleCurrentOrder = action.payload.data
+
+                    let cUserState = current(state)
+
+
+                    let allOrderData = cUserState.userData.orders
+
+                    if (allOrderData?.length && allOrderData?.length > 0) {
+
+                        let findIndex = allOrderData.findIndex((ele) => ele.id === action.payload.data.id)
+
+                        if (findIndex !== -1) {
+
+                            state.userData.orders?.splice(findIndex, 1, action.payload.data)
+
+                        }
+
+
+                    }
+
+                    // console.log(action.payload.data)
+                }
+
 
             })
 

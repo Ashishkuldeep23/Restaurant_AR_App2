@@ -190,7 +190,6 @@ export function SingleCurrentOrderForChef({ ele }: { ele: OrderDataInterface }) 
 
 
 
-
 // // // Below comp only visiable for chef --------->
 export function UpdateUiForChef({ ele, isBgBlack = false }: { ele: OrderDataInterface, isBgBlack?: boolean }) {
 
@@ -411,7 +410,6 @@ export function UpdateUiForChef({ ele, isBgBlack = false }: { ele: OrderDataInte
     )
 
 }
-
 
 
 
