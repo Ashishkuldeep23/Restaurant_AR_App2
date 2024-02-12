@@ -4,7 +4,7 @@ import { OrderDataInterface, OrderStatusOptions } from "../../Slices/orderSlice"
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../store";
 import toast from "react-hot-toast";
-import { updateOrderStatusChef } from "../../Slices/chefSlice";
+import { UpdateOrderChefBody, updateOrderStatusChef } from "../../Slices/chefSlice";
 import { socket } from "../../App";
 
 export function SingleCurrentOrderForChef({ ele }: { ele: OrderDataInterface }) {
@@ -241,11 +241,22 @@ export function UpdateUiForChef({ ele, isBgBlack = false }: { ele: OrderDataInte
                 // // // Now call the backend
 
 
-                // console.log({ ...ele, status: updateOrder.status , time })
+                // console.log({ ...ele, status: updateOrder.status , time }) 
                 // return
 
+                // // // endPreparation startPreparation
+
                 if (updateOrder.status === 'PROCESSING') {
-                    dispatch(updateOrderStatusChef({ whatUpdate: "chefStatus", orderId: ele.id, time: time, status: updateOrder.status }))
+
+                    let bodyData: UpdateOrderChefBody = {
+                        whatUpdate: "chefStatus",
+                        orderId: ele.id,
+                        time: time,
+                        status: updateOrder.status,
+                        startPreparation: Date.now(),
+                        // endPreparation: Date.now()
+                    }
+                    dispatch(updateOrderStatusChef(bodyData))
 
 
                     // // // Now sending notification (sending prepration time with status proccessing) ------>
@@ -253,7 +264,7 @@ export function UpdateUiForChef({ ele, isBgBlack = false }: { ele: OrderDataInte
 
                 }
                 else if (updateOrder.status === "ON_TABLE" || updateOrder.status === 'COMPLETED' || updateOrder.status === "CANCELED") {
-                    dispatch(updateOrderStatusChef({ whatUpdate: "chefStatus", orderId: ele.id, status: updateOrder.status }))
+                    dispatch(updateOrderStatusChef({ whatUpdate: "chefStatus", orderId: ele.id, status: updateOrder.status, endPreparation: Date.now() }))
 
 
                     // // // Now sending notification ------>
@@ -290,14 +301,14 @@ export function UpdateUiForChef({ ele, isBgBlack = false }: { ele: OrderDataInte
         if (ele.status === "PROCESSING") {
             setOptionArr(["PROCESSING", 'ON_TABLE', "COMPLETED", "CANCELED"])
         }
-        
+
         // // // Added completed option for select.
         if (ele.status === "ON_TABLE") {
             setOptionArr(['ON_TABLE', "COMPLETED", "CANCELED"])
         }
 
-        if(ele.status === "COMPLETED" || ele.status === "CANCELED"){
-            setOptionArr(["COMPLETED" , "CANCELED"])
+        if (ele.status === "COMPLETED" || ele.status === "CANCELED") {
+            setOptionArr(["COMPLETED", "CANCELED"])
         }
 
 

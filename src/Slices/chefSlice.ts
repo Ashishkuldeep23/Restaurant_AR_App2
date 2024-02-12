@@ -28,15 +28,17 @@ export const getAllCurrentOrderData = createAsyncThunk("chef/getAllCurrentData",
 
 
 
-type UpdateOrderBody = {
+export type UpdateOrderChefBody = {
     whatUpdate: 'chefStatus',
     orderId: string,
+    status: OrderStatusOptions,
     time?: string,
-    status: OrderStatusOptions
+    startPreparation?: number,
+    endPreparation?: number,
 }
 
 
-export const updateOrderStatusChef = createAsyncThunk("chef/updateOrder", async (body: UpdateOrderBody) => {
+export const updateOrderStatusChef = createAsyncThunk("chef/updateOrder", async (body: UpdateOrderChefBody) => {
     let option: RequestInit = {
         method: "POST",
         credentials: 'include',
@@ -217,6 +219,9 @@ const chefSlice = createSlice({
                             }
                             else if (newData.status === "ON_TABLE") {
                                 state.chefOrderData.splice(findOrderIndex, 1)
+                            }
+                            else if (newData.status === "COMPLETED" || newData.status === "CANCELED") {
+                                state.chefOrderData.splice(findOrderIndex, 1, newData)
                             }
                         }
 

@@ -22,16 +22,16 @@ const AllCurrentOrder = () => {
     const [allCurentOrder, setAllCurentOrder] = useState<OrderDataInterface[]>([])
 
     type filetrBTNValues = 1 | 2 | 3
-    const [filterBTN, setFilterBTN] = useState<filetrBTNValues>()
+    const [filterBTN, setFilterBTN] = useState<filetrBTNValues>(3)
 
 
 
 
     function filterAllOrdersAndSet(key: number): OrderDataInterface[] {
 
-        window.scroll(0 , 0)
+        window.scroll(0, 0)
 
-        if(key === filterBTN) return []
+        // if (key === filterBTN) return []
 
         let filetrNum = 1
 
@@ -64,7 +64,7 @@ const AllCurrentOrder = () => {
     useEffect(() => {
 
         filterAllOrdersAndSet(1)
-        setFilterBTN(1)
+        // setFilterBTN(1)
 
     }, [chefOrderData])
 
@@ -111,7 +111,14 @@ const AllCurrentOrder = () => {
 
                             ? allCurentOrder.map((order) => <SingleCurrentOrderForChef key={order.id} ele={order} />)
 
-                            : [null].map((ele, i) => <SingleDummyOrder data={ele} i={i} key={i} />)
+                            : [null].map((ele, i) => {
+                                return (
+                                    <div className=" flex flex-col items-center">
+                                        <p className=" text-2xl underline text-black my-1">Not Order Found (in {filterBTN === 1 ? "Current Orders" : filterBTN === 2 ? "On Table Orders" : filterBTN === 3 ? "Completed Orders" : "404"})</p>
+                                        <SingleDummyOrder data={ele} i={i} key={i} />
+                                    </div>
+                                )
+                            })
                     }
 
                 </div>
