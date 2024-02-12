@@ -126,7 +126,7 @@ const AllCurrentOrder = () => {
 
 
                 {/* Filter BTN ------> */}
-                <div className="w-full sm:w-2/5 flex justify-between flex-wrap px-5 my-5 gap-3 text-black ">
+                <div className="w-full sm:w-2/5 flex justify-between flex-wrap px-5 my-5 gap-3 text-black border border-black py-1 rounded ">
 
                     {
                         ["Current Orders", 'On Table Orders', 'Completed Orders'].map((ele, i) => {
