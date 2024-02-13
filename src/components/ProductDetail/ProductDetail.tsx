@@ -16,6 +16,7 @@ import { LoaderCircle } from '../LoaderCircle/LoaderCircle'
 import toast from 'react-hot-toast'
 import { setClickedNotification, userState } from '../../Slices/userSlice'
 import { makeDateByDbStr } from '../UserProfile/UserProfile'
+import { OrderStatusOptions } from '../../Slices/orderSlice'
 
 
 
@@ -339,8 +340,8 @@ const ProductDetail = () => {
                         </div> */}
 
 
-                        {/* Curent order info ----> */}
-                        <div className="my-4 py-4 border-t md:border-b md:border-t-0 ">
+                        {/* Curent order info div ----> */}
+                        <div className="my-4 py-4 border-t md:border-b md:border-t-0 hover:cursor-pointer mx-1">
 
 
                             {
@@ -350,7 +351,10 @@ const ProductDetail = () => {
                                     className=' w-full bg-slate-200 py-2 rounded'
                                     onClick={(e) => { currentSingleOrderClick(e, userData.singleCurrentOrder?.id) }}
                                 >
-                                    <p className={`border rounded  border-red-500 inline px-2 ${userData.singleCurrentOrder?.status === "PROCESSING" ? "border-orange-300" : userData.singleCurrentOrder?.status === "ON_TABLE" ? ' border-sky-500' : userData.singleCurrentOrder?.status === 'CANCELED' ? "border-red-500" : "border-green-500"}  `}>{userData.singleCurrentOrder.status}</p>
+
+                                    <StatusProgressShowToUser status={userData.singleCurrentOrder?.status} />
+
+                                    <p className={`border rounded font-semibold border-red-500 inline px-2 ${userData.singleCurrentOrder?.status === "PROCESSING" ? "border-orange-300" : userData.singleCurrentOrder?.status === "ON_TABLE" ? ' border-sky-500' : userData.singleCurrentOrder?.status === 'CANCELED' ? "border-red-500" : "border-green-500"}  `}>{userData.singleCurrentOrder.status}</p>
 
                                     {/* Data.now isLessThen  display below */}
                                     {/* <p>{userData.singleCurrentOrder.preparationTime}</p> */}
@@ -950,4 +954,84 @@ function SendToKitchenBtnWilLogic({ onClickHandlerSendKitchen }: { onClickHandle
     )
 }
 
+
+
+
+function StatusProgressShowToUser({ status = 'RECEIVED' }: { status: OrderStatusOptions }) {
+
+
+    const [currentStatusNum, setCurrentStatusNum] = useState(-1)
+
+
+
+    useEffect(() => {
+
+
+        switch (status) {
+            case 'RECEIVED':
+                setCurrentStatusNum(0)
+                break;
+
+            case 'PROCESSING':
+                setCurrentStatusNum(1)
+                break;
+
+            case 'ON_TABLE':
+                setCurrentStatusNum(2)
+                break;
+
+            case 'COMPLETED':
+                setCurrentStatusNum(4)
+                break;
+
+            case 'CANCELED':
+                setCurrentStatusNum(5)
+                break;
+
+            default:
+                break;
+        }
+
+
+        // setCurrentStatusNum(status)
+
+    }, [status])
+
+
+
+    return (
+
+        <div className=' px-1 -z-5'>
+            <div className=' w-full h-0.5 bg-green-500 relative flex justify-between items-center mb-5 mt-3'>
+
+                {
+
+                    ["RECEIVED", "PROCESSING", "ON_TABLE", "COMPLETED"].map((ele, i) => {
+                        return (
+                            <div
+                                key={i}
+                                className={`w-5 h-5 rounded-full relative 
+                                    ${currentStatusNum >= i ? 'bg-green-500' : " border bg-zinc-400 border-zinc-400"}
+                                `}
+                            >
+                                {/* {currentStatusNum} */}
+
+                                <span
+                                    className={` absolute -top-6 border-b  rounded text-white font-semibold -left-[150%] px-1
+                                        ${currentStatusNum === i ? 'inline bg-green-500' : "hidden bg-green-100"}
+                                    `}
+                                >{ele}</span>
+
+                            </div>
+                        )
+                    })
+
+                }
+
+            </div>
+        </div>
+
+
+    )
+}
 
