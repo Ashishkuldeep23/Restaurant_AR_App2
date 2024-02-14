@@ -955,17 +955,11 @@ function SendToKitchenBtnWilLogic({ onClickHandlerSendKitchen }: { onClickHandle
 }
 
 
-
-
 function StatusProgressShowToUser({ status = 'RECEIVED' }: { status: OrderStatusOptions }) {
-
 
     const [currentStatusNum, setCurrentStatusNum] = useState(-1)
 
-
-
     useEffect(() => {
-
 
         switch (status) {
             case 'RECEIVED':
@@ -1005,7 +999,6 @@ function StatusProgressShowToUser({ status = 'RECEIVED' }: { status: OrderStatus
             <div className=' w-full h-0.5 bg-green-500 relative flex justify-between items-center mb-5 mt-3'>
 
                 {
-
                     ["RECEIVED", "PROCESSING", "ON_TABLE", "COMPLETED"].map((ele, i) => {
                         return (
                             <div
@@ -1025,7 +1018,6 @@ function StatusProgressShowToUser({ status = 'RECEIVED' }: { status: OrderStatus
                             </div>
                         )
                     })
-
                 }
 
             </div>

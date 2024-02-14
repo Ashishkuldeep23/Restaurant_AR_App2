@@ -6,6 +6,7 @@ import { OrderDataInterface } from "./orderSlice";
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { gettingTokenInCookieAndLocalHost } from "../App";
 import toast from "react-hot-toast";
+import { setTableNumInCookie } from "../components/BillComp/BillComponent";
 // import { useSelector } from "react-redux";
 
 
@@ -29,7 +30,6 @@ export const getUserDataWithToken = createAsyncThunk("user/verifyToken", async (
 })
 
 
-
 export const updateManyNotiToSeen = createAsyncThunk("user/updateNoti", async () => {
 
     let option: RequestInit = {
@@ -47,7 +47,6 @@ export const updateManyNotiToSeen = createAsyncThunk("user/updateNoti", async ()
 })
 
 
-
 export type TypeUserAddress = {
     id: string;
     city: string,
@@ -55,7 +54,6 @@ export type TypeUserAddress = {
     country: string,
     pincode: string
 }
-
 
 
 export type TypeUserData = {
@@ -73,7 +71,6 @@ export type TypeUserData = {
 }
 
 
-
 export type NotificationSingle = {
     id: string,
     message: string,
@@ -82,7 +79,6 @@ export type NotificationSingle = {
     orderId: string,
     isSeen: boolean
 }
-
 
 
 type TyepUserDataForSlice = {
@@ -98,7 +94,6 @@ type TyepUserDataForSlice = {
     unReadNotification: number;
     clickedNotification: string;
 }
-
 
 
 const initialState: TyepUserDataForSlice = {
@@ -127,7 +122,6 @@ const initialState: TyepUserDataForSlice = {
     unReadNotification: 0,
     clickedNotification: ""
 }
-
 
 
 
@@ -329,6 +323,11 @@ const userSlice = createSlice({
 
                         if (findCurrentSingleOrder.length > 0) {
                             state.userData.singleCurrentOrder = findCurrentSingleOrder[0]
+
+                            // // // Now set here table num in cookei ------>
+                            // // // Consider user sit in same table ----->
+
+                            setTableNumInCookie(1, findCurrentSingleOrder[0].tableNumber)
                         }
 
 

@@ -282,6 +282,25 @@ export function CartData({ removeSingleItem = false, showBilling = false }: { re
 }
 
 
+
+
+export function setTableNumInCookie(h: number, tableNo: string) {
+
+    let hours = h || 1
+    const d = new Date();
+    d.setTime(d.getTime() + (hours * 60 * 60 * 1000));    // // // set new date after 1 h ---->
+    let expires = "expires=" + d.toUTCString();
+
+    let cname = 'tableNO'
+    // let cvalue = `${e.target.value}`
+    let cvalue = `${tableNo || 6}`
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+
+
+}
+
+
+
 export function ConfirmOrderWithTable() {
 
     const totalAvilableTables = [1, 3, 4, 6, 7, 8, 10]    // // // This is avilable tables in restaurent currently.
@@ -347,16 +366,8 @@ export function ConfirmOrderWithTable() {
         setNewTable(+e.target.value)
 
 
-
-        // // // Now setting cooki efor table no. ------->
-        let hours = 1
-        const d = new Date();
-        d.setTime(d.getTime() + (hours * 60 * 60 * 1000));    // // // set new date after 1 h ---->
-        let expires = "expires=" + d.toUTCString();
-
-        let cname = 'tableNO'
-        let cvalue = `${e.target.value}`
-        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+        // // // Now setting cookie efor table no. ------->
+        setTableNumInCookie(1, e.target.value)
 
         // console.log("Done -----> check now")
     }
