@@ -54,7 +54,7 @@ export function SingleCurrentOrderForChef({ ele }: { ele: OrderDataInterface }) 
 
         }
 
-    }, [])
+    }, [timeRemaining])
 
 
 

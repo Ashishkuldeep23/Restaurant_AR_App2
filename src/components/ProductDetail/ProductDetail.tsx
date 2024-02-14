@@ -30,13 +30,9 @@ const ProductDetail = () => {
 
     const { cartData } = cartState()
 
-    const { userData } = userState()
-
     const params = useParams()
 
     const dispatch = useDispatch<AppDispatch>()
-
-    const navigate = useNavigate()
 
 
     // // // This var is only used to show when used click to add into cart -->
@@ -160,27 +156,6 @@ const ProductDetail = () => {
         dispatch(setOpenMoadl(true))
         dispatch(setChildrenModal(innerHTML))
     }
-
-
-
-
-    function currentSingleOrderClick(e: React.MouseEvent<HTMLDivElement, MouseEvent>, orderId?: string) {
-
-        e.stopPropagation()
-
-        if (orderId) {
-            if (userData.currentOrderArr && userData.currentOrderArr.length > 0) {
-
-                navigate("/current-order");
-            } else {
-                navigate("/profile");
-            }
-
-            dispatch(setClickedNotification(orderId))
-        }
-
-    }
-
 
 
     // // Update total price of item ---->
@@ -341,50 +316,10 @@ const ProductDetail = () => {
 
 
                         {/* Curent order info div ----> */}
-                        <div className="my-4 py-4 border-t md:border-b md:border-t-0 hover:cursor-pointer mx-1">
+                        <CurrentSigleOrderDiv />
 
 
-                            {
-                                userData.singleCurrentOrder
-                                &&
-                                <div
-                                    className=' w-full bg-slate-200 py-2 rounded'
-                                    onClick={(e) => { currentSingleOrderClick(e, userData.singleCurrentOrder?.id) }}
-                                >
-
-                                    <StatusProgressShowToUser status={userData.singleCurrentOrder?.status} />
-
-                                    <p className={`border rounded font-semibold border-red-500 inline px-2 ${userData.singleCurrentOrder?.status === "PROCESSING" ? "border-orange-300" : userData.singleCurrentOrder?.status === "ON_TABLE" ? ' border-sky-500' : userData.singleCurrentOrder?.status === 'CANCELED' ? "border-red-500" : "border-green-500"}  `}>{userData.singleCurrentOrder.status}</p>
-
-                                    {/* Data.now isLessThen  display below */}
-                                    {/* <p>{userData.singleCurrentOrder.preparationTime}</p> */}
-                                    <p>
-                                        <span>{makeDateByDbStr(userData.singleCurrentOrder.preparationTime).toLocaleDateString()}</span> |
-                                        <span>{makeDateByDbStr(userData.singleCurrentOrder.preparationTime).toLocaleTimeString()}</span>
-                                    </p>
-                                    <>
-                                        {
-                                            userData.singleCurrentOrder.cartData.map((ele, i) => {
-                                                return <div key={i}
-                                                    className=' capitalize border-b border-slate-100 flex justify-center items-center flex-wrap px-2 gap-2 leading-5'
-                                                >
-                                                    {/* <p>{JSON.stringify(ele)}</p> */}
-                                                    <p><span>{i + 1}.</span> <span>{ele.name}</span> <span>({ele.category})</span></p>
-                                                    <p>{ele.customizations?.sizes[0]?.name || ''}</p>
-                                                    <p>{ele.customizations?.crusts[0]?.name || ""}</p>
-                                                </div>
-                                            })
-                                        }
-                                    </>
-
-                                </div>
-
-                            }
-
-                        </div>
-
-
-                        {/* Main UI with details --> */}
+                        {/* Main UI with details (Option div) --> */}
                         <div className="w-full md:h-60  md:overflow-y-scroll">
 
 
@@ -955,6 +890,87 @@ function SendToKitchenBtnWilLogic({ onClickHandlerSendKitchen }: { onClickHandle
 }
 
 
+
+function CurrentSigleOrderDiv() {
+
+    const { userData } = userState()
+
+    const navigate = useNavigate()
+
+    const dispatch = useDispatch()
+
+
+
+    function currentSingleOrderClick(e: React.MouseEvent<HTMLDivElement, MouseEvent>, orderId?: string) {
+
+        e.stopPropagation()
+
+        if (orderId) {
+            if (userData.currentOrderArr && userData.currentOrderArr.length > 0) {
+
+                navigate("/current-order");
+            } else {
+                navigate("/profile");
+            }
+
+            dispatch(setClickedNotification(orderId))
+        }
+
+    }
+
+
+
+
+
+    return (
+        <div className="my-4 py-4 border-t md:border-b md:border-t-0 hover:cursor-pointer mx-1 md:h-60  md:overflow-y-scroll">
+
+
+            {
+                userData.singleCurrentOrder
+                &&
+                <div
+                    className=' w-full bg-slate-200 py-2 rounded'
+                    onClick={(e) => { currentSingleOrderClick(e, userData.singleCurrentOrder?.id) }}
+                >
+
+                    <StatusProgressShowToUser status={userData.singleCurrentOrder?.status} />
+
+                    <p className={`border rounded font-semibold border-red-500 inline px-2 ${userData.singleCurrentOrder?.status === "PROCESSING" ? "border-orange-300" : userData.singleCurrentOrder?.status === "ON_TABLE" ? ' border-sky-500' : userData.singleCurrentOrder?.status === 'CANCELED' ? "border-red-500" : "border-green-500"}  `}>{userData.singleCurrentOrder.status}</p>
+
+                    {/* Data.now isLessThen  display below */}
+                    {/* <p>{userData.singleCurrentOrder.preparationTime}</p> */}
+                    <p>
+                        <span>{makeDateByDbStr(userData.singleCurrentOrder.preparationTime).toLocaleDateString()}</span> |
+                        <span>{makeDateByDbStr(userData.singleCurrentOrder.preparationTime).toLocaleTimeString()}</span>
+                    </p>
+                    <>
+                        {
+                            userData.singleCurrentOrder.cartData.map((ele, i) => {
+                                return <div key={i}
+                                    className={`capitalize border-b-2 border-slate-100 flex justify-center items-center flex-wrap px-2 gap-2 leading-5
+                                        ${i === 0 && "border-t-2"}
+                                    `}
+                                >
+                                    {/* <p>{JSON.stringify(ele)}</p> */}
+                                    <p><span>{i + 1}.</span> <span>{ele.name}</span> <span>({ele.category})</span></p>
+                                    <p>{ele.customizations?.sizes[0]?.name || ''}</p>
+                                    <p>{ele.customizations?.crusts[0]?.name || ""}</p>
+                                </div>
+                            })
+                        }
+                    </>
+
+                </div>
+
+            }
+
+        </div>
+    )
+}
+
+
+
 function StatusProgressShowToUser({ status = 'RECEIVED' }: { status: OrderStatusOptions }) {
 
     const [currentStatusNum, setCurrentStatusNum] = useState(-1)
@@ -995,23 +1011,28 @@ function StatusProgressShowToUser({ status = 'RECEIVED' }: { status: OrderStatus
 
     return (
 
-        <div className=' px-1 -z-5'>
-            <div className=' w-full h-0.5 bg-green-500 relative flex justify-between items-center mb-5 mt-3'>
+        <div className=' px-1 -z-5 flex justify-center'>
+            <div className=' w-11/12 h-0.5 border border-zinc-400 relative flex justify-between items-center mb-5 mt-3'>
 
                 {
                     ["RECEIVED", "PROCESSING", "ON_TABLE", "COMPLETED"].map((ele, i) => {
                         return (
                             <div
                                 key={i}
-                                className={`w-5 h-5 rounded-full relative 
+                                // style={{left : `${(i+1) * 25}%`}}
+                                className={`w-5 h-5 rounded-full  flex items-center justify-center  px-4 relative 
+                                    ${i == 0 ? " -translate-x-2" : `${i === 3 ? "translate-x-2" : ""}`}
                                     ${currentStatusNum >= i ? 'bg-green-500' : " border bg-zinc-400 border-zinc-400"}
                                 `}
                             >
-                                {/* {currentStatusNum} */}
+                                <span className=' font-semibold text-white'> {i + 1}</span>
 
                                 <span
                                     className={` absolute -top-6 border-b  rounded text-white font-semibold -left-[150%] px-1
                                         ${currentStatusNum === i ? 'inline bg-green-500' : "hidden bg-green-100"}
+
+                                        ${i === 0 ? "-left-[10%]" : `${i === 3 ? "left-[10%]" : "-left-[150%]"}`}
+
                                     `}
                                 >{ele}</span>
 
