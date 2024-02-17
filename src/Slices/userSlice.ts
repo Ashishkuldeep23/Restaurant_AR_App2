@@ -67,7 +67,7 @@ export type TypeUserData = {
     address?: TypeUserAddress[];
     orders?: OrderDataInterface[],
     currentOrderArr?: OrderDataInterface[],
-    singleCurrentOrder?: OrderDataInterface
+    singleCurrentOrder?: OrderDataInterface,
 }
 
 
@@ -501,6 +501,12 @@ const userSlice = createSlice({
                             }
                             else if (newData.status === "ON_TABLE") {
                                 state.userData.orders && state.userData.orders.splice(findOrderIndex, 1)
+                            }
+
+                            else if (newData.status === "CANCELED") {
+
+                                // // This is how we can delete one field from state of redux.
+                                delete state.userData.singleCurrentOrder
                             }
                         }
 

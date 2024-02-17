@@ -217,8 +217,6 @@ export function UpdateUiForChef({ ele, isBgBlack = false }: { ele: OrderDataInte
         e.stopPropagation()
 
 
-
-
         if (updateOrder.status === "RECEIVED" && updateOrder.time === 20 && showOption === true) {
             // setShowOption(!showOption)
             return toast.error("Update something please.")

@@ -17,6 +17,8 @@ import toast from 'react-hot-toast'
 import { setClickedNotification, userState } from '../../Slices/userSlice'
 import { makeDateByDbStr } from '../UserProfile/UserProfile'
 import { OrderStatusOptions } from '../../Slices/orderSlice'
+import { socket } from '../../App'
+import { UpdateOrderChefBody, updateOrderStatusChef } from '../../Slices/chefSlice'
 
 
 
@@ -897,7 +899,7 @@ function CurrentSigleOrderDiv() {
 
     const navigate = useNavigate()
 
-    const dispatch = useDispatch()
+    const dispatch = useDispatch<AppDispatch>()
 
 
 
@@ -921,6 +923,62 @@ function CurrentSigleOrderDiv() {
 
 
 
+    useEffect(() => {
+
+        // console.log(userData.singleCurrentOrder)
+
+        let timeInStr = userData.singleCurrentOrder?.startPreparation
+
+        let status = userData.singleCurrentOrder?.status
+
+        if (userData.singleCurrentOrder && timeInStr && (status !== "CANCELED")) {
+
+            let dateAtPepare = new Date(timeInStr)
+
+            let dateNow = new Date()
+
+            var differenceValue = (dateNow.getTime() - dateAtPepare.getTime()) / 1000;
+            differenceValue /= (60 * 60);
+            let timeGotInHours = Math.round(differenceValue)
+
+
+            let oneDayHours = 24
+
+            if (timeGotInHours > oneDayHours) {
+
+                // alert("disptch to cancel order.")
+
+                // alert("Give notification to cancel.")
+
+                let bodyData: UpdateOrderChefBody = {
+                    whatUpdate: "chefStatus",
+                    orderId: userData.singleCurrentOrder?.id,
+                    // time: time,
+                    status: "CANCELED",
+                    // startPreparation: Date.now(),
+                    endPreparation: Date.now()
+                }
+                dispatch(updateOrderStatusChef(bodyData))
+
+
+                socket.emit("update-order-status", { ...userData.singleCurrentOrder, status: 'CANCELED', preparationTime: userData.singleCurrentOrder.preparationTime })
+
+                // console.log(1)
+
+            }
+
+
+            // console.log(dateAtPepare , dateNow)
+            // console.log(timeGotInHours)
+        }
+
+
+
+
+    }, [userData.singleCurrentOrder])
+
+
+
 
     return (
         <div className="my-4 py-4 border-t md:border-b md:border-t-0 hover:cursor-pointer mx-1 md:h-60  md:overflow-y-scroll">
@@ -941,7 +999,7 @@ function CurrentSigleOrderDiv() {
                     {/* Data.now isLessThen  display below */}
                     {/* <p>{userData.singleCurrentOrder.preparationTime}</p> */}
                     <p>
-                        <span>{makeDateByDbStr(userData.singleCurrentOrder.preparationTime).toLocaleDateString()}</span> |
+                        <span>{makeDateByDbStr(userData.singleCurrentOrder.preparationTime).toLocaleDateString()}</span> | {" "}
                         <span>{makeDateByDbStr(userData.singleCurrentOrder.preparationTime).toLocaleTimeString()}</span>
                     </p>
                     <>

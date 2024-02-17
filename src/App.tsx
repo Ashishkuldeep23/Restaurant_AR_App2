@@ -76,10 +76,6 @@ export const socket = io(`${import.meta.env.VITE_BACKEND_URL}`, {
   auth: {
     token: `${gettingTokenInCookieAndLocalHost()}`
   },
-  query: {
-    "Ashish": "Kuldeep"
-  }
-
 }); // Replace with your server URL
 
 

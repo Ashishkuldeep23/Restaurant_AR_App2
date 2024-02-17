@@ -54,6 +54,7 @@ export interface OrderDataInterface {
     status: OrderStatusOptions,
     id: string
     currentOrder?: boolean
+    startPreparation?: string,
 }
 
 
