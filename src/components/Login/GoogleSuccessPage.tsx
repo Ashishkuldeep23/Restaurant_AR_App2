@@ -9,7 +9,7 @@
 
 import { useDispatch } from "react-redux"
 import { AppDispatch } from "../../store"
-import { useNavigate, useParams } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import { useEffect } from "react"
 import { getUserDataWithToken, userState } from "../../Slices/userSlice"
 import toast from "react-hot-toast"
@@ -24,7 +24,9 @@ const GoogleSuccessPage = () => {
 
     // const limitValue = useSelector((state: RootState) => state.allProductWithCatReducer.onePageLimit)
 
-    const params = useParams()
+    // const params = useParams()
+
+    const location = useLocation()
 
     const navigate = useNavigate()
 
@@ -33,14 +35,19 @@ const GoogleSuccessPage = () => {
 
     useEffect(() => {
 
-        // console.log(params)
+        // console.log(location)
 
-        const { token } = params
+        const tokenByQuery = new URLSearchParams(location.search).get('token');
+
+        // console.log(tokenByQuery)
+
+
+        // const { token } = params
 
         // console.log(token)
 
-        if (token) {
-            dispatch(getUserDataWithToken(token))
+        if (tokenByQuery) {
+            dispatch(getUserDataWithToken(tokenByQuery))
         }
 
         // toast.error("call dispatch here now")
@@ -48,6 +55,8 @@ const GoogleSuccessPage = () => {
     }, [])
 
 
+
+    // // // for navigating user to home --->
     useEffect(() => {
 
         if (isFullFilled) {

@@ -113,7 +113,7 @@ const AllCurrentOrder = () => {
 
                             : [null].map((ele, i) => {
                                 return (
-                                    <div className=" flex flex-col items-center">
+                                    <div key={i} className=" flex flex-col items-center">
                                         <p className=" text-2xl underline text-black my-1">Not Order Found (in {filterBTN === 1 ? "Current Orders" : filterBTN === 2 ? "On Table Orders" : filterBTN === 3 ? "Completed Orders" : "404"})</p>
                                         <SingleDummyOrder data={ele} i={i} key={i} />
                                     </div>

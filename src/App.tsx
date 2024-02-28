@@ -278,8 +278,16 @@ function App() {
           element={<LoginScreen />}
         />
 
-        <Route
+
+        {/* <Route
           path="/user-login/:token/newuser"
+          element={<GoogleSuccessPage />}
+        /> */}
+
+        {/* Now below route using with query data --> */}
+
+        <Route
+          path="/user-login"
           element={<GoogleSuccessPage />}
         />
 
