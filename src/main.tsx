@@ -4,7 +4,7 @@ import App from './App.tsx'
 import './index.css'
 import { Provider } from "react-redux"
 
-import { BrowserRouter , HashRouter } from "react-router-dom"
+import { HashRouter } from "react-router-dom"
 
 import { store } from "./store.ts"
 
