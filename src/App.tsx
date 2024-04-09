@@ -185,7 +185,7 @@ function App() {
   // // // All Event listeners present here ------>
   useEffect(() => {
     socket.on('connect', () => {
-      console.log('Connected to server. 😊');
+      console.log('Connected to server(web socket). 😊');
     });
 
     // // // User events ----->
