@@ -360,8 +360,20 @@ const ProductDetail = () => {
 
                                                 <p
                                                     className="bg-orange-400 inline-flex px-4 py-1 rounded shadow-md text-white border font-bold  font-serif hover:scale-x-125 hover:scale-y-110 hover:cursor-pointer transition-all"
-                                                    onClick={() => { setShowSizingPart(!showSizingPart) }}
-                                                > <span className=" text-xs">₹</span>{totalPriceOfItem || '000'} ADD</p>
+                                                    onClick={() => {
+
+                                                        // setShowSizingPart(!showSizingPart)
+
+                                                    }}
+                                                >
+                                                    {/* <span className=" text-xs">₹</span>
+                                                    {totalPriceOfItem || '000'} ADD */}
+
+
+                                                    <span className=" text-xs">₹</span>
+                                                    {totalPriceOfItem || '000'}
+                                                    {/* ADD */}
+                                                </p>
 
                                             </div>
 
@@ -552,96 +564,21 @@ const ProductDetail = () => {
                     <div className=" w-full md:w-2/4 relative">
 
                         {/* Gas logo ----> */}
-                        <div className="gas_box absolute right-2 -top-1.5  scale-75 -z-10 ">
-                            <div className="group">
-                                <div className="overlap-group">
-                                    <div className="rectangle" />
-                                    <div className="div" />
-                                    <div className="rectangle-2" />
-                                    <div className="rectangle-3" />
-                                    <img className="vector" alt="Vector" src="/images/vector-1.svg" />
-                                </div>
-                            </div>
-                        </div>
+                        <GasLogoFooter className=' hidden' />
 
 
                         {/* Cart items name  */}
-                        <div className="flex overflow-y-auto w-10/12 sm:w-11/12">
-
-
-
-                            {
-
-                                cartData.length > 0
-                                    ?
-                                    <>
-
-                                        {
-                                            cartData.map((ele, i) => {
-                                                return <p
-                                                    className=" mx-0.5 border border-black rounded capitalize px-1.5 hover:cursor-pointer"
-                                                    key={uuid()}
-                                                    style={{ whiteSpace: "nowrap" }}
-                                                    onClick={() => { onClickHandlerSendKitchen(); dispatch(setItemsClicked(i)) }}
-                                                >{cartItemsNameFormate(ele.name)}</p>
-                                            })
-                                        }
-
-                                    </>
-                                    :
-                                    // Below p tag is used to prevent ui only (if no cart items present then pevent the ui)
-                                    <p
-                                        className="  w-11/12 h-8 mx-0.5 rounded capitalize px-1.5 hover:cursor-pointer"
-                                    ></p>
-                            }
-
-                        </div>
+                        <ShowCartItemInFooter
+                            cartData={cartData}
+                            onClickHandlerSendKitchen={onClickHandlerSendKitchen}
+                            cartItemsNameFormate={cartItemsNameFormate}
+                            dispatch={dispatch}
+                            className='hidden'
+                        />
 
 
                         {/* Send order with bill div */}
-                        <div >
-
-                            {/* <SendToKitchenBtnWilLogic onClickHandlerSendKitchen={onClickHandlerSendKitchen} /> */}
-
-                            <div className="flex justify-around items-center flex-wrap md:justify-center">
-
-                                {/* Show below btn after successfull order ---> */}
-
-                                {/* 
-
-                                <button
-                                    className="rounded bg-yellow-400 px-1 uppercase font-semibold text-md mx-1 relative flex"
-                                    onClick={() => {
-                                        // (cartData.length > 0) ? navigate("/billing") : 
-                                        navigate("/billing");
-                                        dispatch(setItemsClicked(-1));
-                                    }}
-                                >
-                                    {
-                                        cartData.length > 0
-                                        &&
-                                        <span className=" bg-red-500 px-0.5 text-white absolute rounded-full -top-2 -left-1.5">{cartData.length}</span>
-                                    }
-
-                                    <img
-                                        loading="lazy"
-                                        src="https://cdn.builder.io/api/v1/image/assets/TEMP/c93b38e740d6c1968ec9ece527f627f0b2678cb8256d0eefc4ac2e546dd9bd33?"
-                                        className="aspect-square object-contain object-center w-full overflow-hidden max-w-[24px]"
-                                    />
-
-                                    <span>VIEW BILL</span>
-
-                                </button> */}
-
-
-                                <SendToKitchenBtnWilLogic onClickHandlerSendKitchen={onClickHandlerSendKitchen} />
-
-                                {/* here create a menu btn component with all logics ---> */}
-                                <MenuWithLogic setShowSizingPart={setShowSizingPart} />
-
-                            </div>
-
-                        </div>
+                        <SendOrderToKitenBtnFooter onClickHandlerSendKitchen={onClickHandlerSendKitchen} setShowSizingPart={setShowSizingPart} />
 
                     </div>
 
@@ -657,6 +594,108 @@ const ProductDetail = () => {
 }
 
 export default ProductDetail
+
+
+
+function GasLogoFooter({
+    className
+}: {
+    className?: string,
+}) {
+    return (
+        <div className={`gas_box absolute right-2 -top-1.5  scale-75 -z-10 ${className} `}>
+            <div className="group">
+                <div className="overlap-group">
+                    <div className="rectangle" />
+                    <div className="div" />
+                    <div className="rectangle-2" />
+                    <div className="rectangle-3" />
+                    <img className="vector" alt="Vector" src="/images/vector-1.svg" />
+                </div>
+            </div>
+        </div>
+    )
+}
+
+
+
+function ShowCartItemInFooter({
+    className,
+    cartData,
+    onClickHandlerSendKitchen,
+    cartItemsNameFormate,
+    dispatch
+}: {
+    className?: string,
+    cartData: CardDataInter[],
+    onClickHandlerSendKitchen: Function,
+    cartItemsNameFormate: any,
+    dispatch: any
+
+}) {
+
+    return (
+        <div className={`flex overflow-y-auto w-10/12 sm:w-11/12 ${className} `}>
+
+            {
+                cartData.length > 0
+                    ?
+                    <>
+
+                        {
+                            cartData.map((ele, i) => {
+                                return <p
+                                    className=" mx-0.5 border border-black rounded capitalize px-1.5 hover:cursor-pointer"
+                                    key={uuid()}
+                                    style={{ whiteSpace: "nowrap" }}
+                                    onClick={() => { onClickHandlerSendKitchen(); dispatch(setItemsClicked(i)) }}
+                                >{cartItemsNameFormate(ele.name)}</p>
+                            })
+                        }
+
+                    </>
+                    :
+                    // Below p tag is used to prevent ui only (if no cart items present then pevent the ui)
+                    <p
+                        className="  w-11/12 h-8 mx-0.5 rounded capitalize px-1.5 hover:cursor-pointer"
+                    ></p>
+            }
+
+        </div>
+    )
+}
+
+
+
+function SendOrderToKitenBtnFooter(
+    {
+        onClickHandlerSendKitchen,
+        setShowSizingPart
+    }:
+        {
+            onClickHandlerSendKitchen: Function,
+            setShowSizingPart: React.Dispatch<React.SetStateAction<boolean>>
+        }
+) {
+    return (
+        <div >
+
+            {/* <SendToKitchenBtnWilLogic onClickHandlerSendKitchen={onClickHandlerSendKitchen} /> */}
+
+            <div className="flex justify-around items-center flex-wrap md:justify-center">
+
+
+                <SendToKitchenBtnWilLogic className='hidden' onClickHandlerSendKitchen={onClickHandlerSendKitchen} />
+
+                {/* here create a menu btn component with all logics ---> */}
+                <MenuWithLogic setShowSizingPart={setShowSizingPart} />
+
+            </div>
+
+        </div>
+    )
+}
+
 
 
 
@@ -856,7 +895,7 @@ function MenuWithLogic({ setShowSizingPart }: { setShowSizingPart: React.Dispatc
 
 
 
-function SendToKitchenBtnWilLogic({ onClickHandlerSendKitchen }: { onClickHandlerSendKitchen: Function }) {
+function SendToKitchenBtnWilLogic({ className, onClickHandlerSendKitchen }: { className?: string, onClickHandlerSendKitchen: Function }) {
 
 
     const dispatch = useDispatch<AppDispatch>()
@@ -869,7 +908,7 @@ function SendToKitchenBtnWilLogic({ onClickHandlerSendKitchen }: { onClickHandle
 
 
             <button
-                className=" my-1 border border-black px-1 rounded text-center font-bold relative"
+                className={`my-1 border border-black px-1 rounded text-center font-bold relative ${className}`}
                 onClick={() => {
                     // // Show the modal 
                     onClickHandlerSendKitchen();
