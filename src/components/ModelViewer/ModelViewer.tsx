@@ -123,7 +123,15 @@ export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string
 
 
                 // // // Models by URL
-                src={`${item.model.src}`}
+                // src={`${item.model.src}`}
+
+
+                // // // SRC experiment (Working ek koi new type ka model hai jo model viewer se chal raha hai ----> ) ------->
+                // // // Only one model for demo --->
+
+                src={'/models/exports/lit1.gltf'}
+                
+
                 // ios-src={`${item.model.iosSrc}`}
                 ios-src={`/models/${item.name}.usdz`}
 
