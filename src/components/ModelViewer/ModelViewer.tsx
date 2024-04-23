@@ -131,9 +131,11 @@ export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string
 
                 src={'/models/exports/lit1.gltf'}
                 
+                // // // Below ios src used but now not using for demo purpose --------->
+                // ios-src={`/models/${item.name}.usdz`}
+
 
                 // ios-src={`${item.model.iosSrc}`}
-                ios-src={`/models/${item.name}.usdz`}
 
                 // // // Loacl Models 
                 // src={`/models/onion.glb`}
