@@ -362,7 +362,7 @@ const ProductDetail = () => {
                                                     className="bg-orange-400 inline-flex px-4 py-1 rounded shadow-md text-white border font-bold  font-serif hover:scale-x-125 hover:scale-y-110 hover:cursor-pointer transition-all"
                                                     onClick={() => {
 
-                                                        // setShowSizingPart(!showSizingPart)
+                                                        setShowSizingPart(!showSizingPart)
 
                                                     }}
                                                 >
@@ -870,7 +870,6 @@ function MenuWithLogic({ setShowSizingPart }: { setShowSizingPart: React.Dispatc
         dispatch(setChildrenModal(innerHTML))
 
     }
-
 
 
     return (
