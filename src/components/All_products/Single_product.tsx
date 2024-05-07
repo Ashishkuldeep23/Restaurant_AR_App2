@@ -1,8 +1,11 @@
 // import React from 'react'
 
 import { TypeSingleProduct } from "../../Slices/productSlice";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ModelViewer } from "../ModelViewer/ModelViewer";
+import { CardDataInter, addItemInCart } from "../../Slices/cartSlice";
+import { useDispatch } from "react-redux";
+
 // import 'focus-visible';
 
 
@@ -19,35 +22,91 @@ export function removerUnderScore(name: string) {
 
 export const Single_Product = ({ item }: { item: TypeSingleProduct }) => {
 
+    const navigate = useNavigate()
+
+    const dispatch = useDispatch()
+
+
+    function addHandler() {
+
+
+        const { id, name, category, isNonVeg } = item
+
+        if (item.customizations) {
+
+            let sendCartData: CardDataInter = {
+                id, name, category,
+                isNonVeg: isNonVeg || false,
+                customizations: { sizes: [{ ...item.customizations.sizes[0] }], crusts: [] },
+                quantity: 1,
+                price: item.price
+            }
+
+            console.log(sendCartData)
+
+            dispatch(addItemInCart(sendCartData))
+        }
+
+
+
+    }
+
 
     return (
-        <>
-
-            <div className=" flex flex-col items-center overflow-hidden border bg-white  border-white rounded mx-1 my-16 sm:w-96 w-72">
 
 
-                {/* <model-viewer
-                    src="/models/pizza.glb"
-                    // alt="A 3D model"
-                    // auto-rotate
-                    // camera-controls
-                ></model-viewer> */}
+        <div
+            className="border-b pb-5 "
+        >
 
-
+            <div
+                className=" flex flex-col items-center overflow-hidden bg-white  rounded mx-1  h-[40vh] w-[40vh]"
+            >
                 <ModelViewer item={item} />
 
 
-                <p className=" capitalize font-bold border-t">{removerUnderScore(item.name)}</p>
+                <div
+                    className="  px-4 mb-2 w-full hover:cursor-pointer"
+                    onClick={() => {
+                        navigate(`/product/${item.id}`);
+                    }}
+                >
 
-                <Link to={`/product/${item.id}`}>
-                    <button
-                        className="border my-1 px-4 rounded font-bold text-white bg-blue-600 hover:bg-blue-400"
-                    >Product details</button>
-                </Link>
-                {/* <p style={{ lineBreak: "anywhere" }} >{item.description}</p> */}
 
+                    <p className=" w-full text-start capitalize font-bold flex flex-wrap items-center gap-1.5">
+
+
+                        <span
+                            className={`h-3 w-3 border flex items-center justify-center ${item.isNonVeg ? " border-red-500" : " border-green-500"} `}
+                        >
+                            <span className={` h-1.5 w-1.5 rounded-full ${item.isNonVeg ? " bg-red-500" : " bg-green-500"}`}></span>
+                        </span>
+
+                        <span>{removerUnderScore(item.name)}</span>
+
+
+                    </p>
+
+                    <div className=" flex items-center justify-between">
+                        <div>
+                            <p className=" font-semibold text-xl">₹{item.price}</p>
+                        </div>
+                        <div>
+
+                            <button
+                                className="bg-gradient-to-r from-orange-400 to-orange-600 hover:from-orange-600 hover:to-orange-400 text-white my-1 py-1 px-6 rounded-full shadow-md font-semibold hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-opacity-50"
+
+                                onClick={(e) => { e.stopPropagation(); addHandler() }}
+                            >
+                                ADD
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
             </div>
+        </div>
 
-        </>
+
     )
 }

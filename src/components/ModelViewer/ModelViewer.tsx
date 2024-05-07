@@ -4,6 +4,7 @@ import "@google/model-viewer/lib/model-viewer";
 // import { useEffect } from "react";
 import { TypeSingleProduct } from "../../Slices/productSlice"
 import "./style.css"
+import { useLocation } from "react-router-dom";
 // import { useEffect, useState } from "react";
 // import { useEffect } from "react";
 
@@ -66,7 +67,6 @@ interface ModelViewerJSX {
 }
 
 
-
 declare global {
     namespace JSX {
         interface IntrinsicElements {
@@ -79,9 +79,11 @@ declare global {
 
 
 
-
 export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string }) => {
 
+
+
+    const location = useLocation()
 
 
 
@@ -123,14 +125,14 @@ export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string
 
 
                 // // // Models by URL
-                // src={`${item.model.src}`}
+                src={`${item.model.src}`}
 
 
                 // // // SRC experiment (Working ek koi new type ka model hai jo model viewer se chal raha hai ----> ) ------->
                 // // // Only one model for demo --->
 
-                src={'/models/exports/lit1.gltf'}
-                
+                // src={'/models/exports/lit1.gltf'}
+
                 // // // Below ios src used but now not using for demo purpose --------->
                 // ios-src={`/models/${item.name}.usdz`}
 
@@ -169,13 +171,28 @@ export const ModelViewer = ({ item }: { item: TypeSingleProduct, height?: string
                     {/* <div className="update-bar"></div> */}
                 </div>
 
-                <button slot="ar-button" id="ar-button">
-                    View <span className=" capitalize font-semibold">{item.name}</span> in your space
-                </button>
 
-                <div id="ar-prompt">
-                    <img src="https://modelviewer.dev/shared-assets/icons/hand.png" />
-                </div>
+                {/* This is ar btn for open model */}
+                {/* This is symbol that shows how we can move model */}
+
+                {
+                    location.pathname !== '/'
+                    &&
+
+                    <>
+                        <button slot="ar-button" id="ar-button">
+                            View <span className=" capitalize font-semibold">{item.name}</span> in your space
+                        </button>
+
+
+
+                        <div id="ar-prompt">
+                            <img src="https://modelviewer.dev/shared-assets/icons/hand.png" />
+                        </div>
+                    </>
+
+
+                }
 
             </model-viewer>
 

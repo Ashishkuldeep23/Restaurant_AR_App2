@@ -103,6 +103,8 @@ const ProductDetail = () => {
 
         let sendCartData: CardDataInter = { id, name, category, isNonVeg: isNonVeg || false, customizations: choossenCustomizations, quantity: quantityOfProduct, price: totalPriceOfItem }
 
+        console.log(sendCartData)
+
         dispatch(addItemInCart(sendCartData))
 
 
@@ -119,7 +121,7 @@ const ProductDetail = () => {
 
         }
 
-
+        // // // These value used for this component only -------------------->
         setSelectedIndex({ sizes: 0, crusts: -1 })
         setTotalPriceOfItem(item.price)
         setQuantityOfProduct(1)
@@ -219,8 +221,6 @@ const ProductDetail = () => {
 
 
 
-
-
         if (item?.customizations?.sizes.length !== 0 && item?.customizations?.crusts.length !== 0) {
 
             // // // Update choosenCat obj --->
@@ -254,34 +254,31 @@ const ProductDetail = () => {
     // // // On page refresh code --->
     useEffect(() => {
 
-
         const { id } = params
 
-        if (item && !item.name) {
+
+        // console.log("LOG", item)
+        // console.log("LOG", id)
 
 
-
+        if (id) {
             // console.log(id)
 
-            if (id) {
+            // // Get single food -->
+            dispatch(fetchOneProduct(id))
 
-                // // Get single food -->
-                dispatch(fetchOneProduct(id))
+            // // Get all foods -->
+            dispatch(fetchAllProduct())
 
-                // // Get all foods -->
-                dispatch(fetchAllProduct())
-
-            } else {
-                toast.error("ID not getting from url bar.")
-            }
-
-
-            // // // Scroll window ---->
-
-            window.scroll(0, 0)
-
-
+        } else {
+            toast.error("ID not getting from url bar.")
         }
+
+
+
+        // // // Scroll window ---->
+        window.scroll(0, 0)
+
 
 
     }, [])
@@ -526,7 +523,6 @@ const ProductDetail = () => {
                                             <div className=" bg-orange-200 w-20 mx-0.5 rounded flex justify-around font-bold">
                                                 <span
                                                     className="text-red-500  rounded px-0.5 active:bg-red-500 active:text-black hover:cursor-pointer"
-
                                                     onClick={() => { quantityOfProduct > 1 && setQuantityOfProduct(quantityOfProduct - 1) }}
 
                                                 >-</span>
@@ -594,108 +590,6 @@ const ProductDetail = () => {
 }
 
 export default ProductDetail
-
-
-
-function GasLogoFooter({
-    className
-}: {
-    className?: string,
-}) {
-    return (
-        <div className={`gas_box absolute right-2 -top-1.5  scale-75 -z-10 ${className} `}>
-            <div className="group">
-                <div className="overlap-group">
-                    <div className="rectangle" />
-                    <div className="div" />
-                    <div className="rectangle-2" />
-                    <div className="rectangle-3" />
-                    <img className="vector" alt="Vector" src="/images/vector-1.svg" />
-                </div>
-            </div>
-        </div>
-    )
-}
-
-
-
-function ShowCartItemInFooter({
-    className,
-    cartData,
-    onClickHandlerSendKitchen,
-    cartItemsNameFormate,
-    dispatch
-}: {
-    className?: string,
-    cartData: CardDataInter[],
-    onClickHandlerSendKitchen: Function,
-    cartItemsNameFormate: any,
-    dispatch: any
-
-}) {
-
-    return (
-        <div className={`flex overflow-y-auto w-10/12 sm:w-11/12 ${className} `}>
-
-            {
-                cartData.length > 0
-                    ?
-                    <>
-
-                        {
-                            cartData.map((ele, i) => {
-                                return <p
-                                    className=" mx-0.5 border border-black rounded capitalize px-1.5 hover:cursor-pointer"
-                                    key={uuid()}
-                                    style={{ whiteSpace: "nowrap" }}
-                                    onClick={() => { onClickHandlerSendKitchen(); dispatch(setItemsClicked(i)) }}
-                                >{cartItemsNameFormate(ele.name)}</p>
-                            })
-                        }
-
-                    </>
-                    :
-                    // Below p tag is used to prevent ui only (if no cart items present then pevent the ui)
-                    <p
-                        className="  w-11/12 h-8 mx-0.5 rounded capitalize px-1.5 hover:cursor-pointer"
-                    ></p>
-            }
-
-        </div>
-    )
-}
-
-
-
-function SendOrderToKitenBtnFooter(
-    {
-        onClickHandlerSendKitchen,
-        setShowSizingPart
-    }:
-        {
-            onClickHandlerSendKitchen: Function,
-            setShowSizingPart: React.Dispatch<React.SetStateAction<boolean>>
-        }
-) {
-    return (
-        <div >
-
-            {/* <SendToKitchenBtnWilLogic onClickHandlerSendKitchen={onClickHandlerSendKitchen} /> */}
-
-            <div className="flex justify-around items-center flex-wrap md:justify-center">
-
-
-                <SendToKitchenBtnWilLogic className='hidden' onClickHandlerSendKitchen={onClickHandlerSendKitchen} />
-
-                {/* here create a menu btn component with all logics ---> */}
-                <MenuWithLogic setShowSizingPart={setShowSizingPart} />
-
-            </div>
-
-        </div>
-    )
-}
-
 
 
 
@@ -775,124 +669,6 @@ function NameWithLeftRight() {
 }
 
 
-// // Menu Will modal code ---->
-function MenuWithLogic({ setShowSizingPart }: { setShowSizingPart: React.Dispatch<React.SetStateAction<boolean>> }) {
-
-    const navigate = useNavigate()
-    const dispatch = useDispatch<AppDispatch>()
-    const allProductData = productState().allProroductData
-    const item = productState().currenProduct
-
-
-    // // // This fn hold everything about Model (Logic , Menu UI).
-    function menuClickHandler(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-
-        e.stopPropagation();
-
-
-        // // // Group products by category ---->
-        const groupByData: any = {}
-
-        for (let item of allProductData) {
-            // console.log(item)
-
-            if (!groupByData[item.category]) {
-                groupByData[item.category] = [item]
-            } else {
-                groupByData[item.category].push(item)
-            }
-
-        }
-
-        // console.log(groupByData)
-
-        // // // category click handler ---->
-        function categoryClickHandler(category: string) {
-
-            // console.log(category)
-
-
-
-            for (let key in groupByData) {
-
-
-                if (category === key) {
-
-                    // console.log(groupByData[key][0])
-
-
-                    // // // Now set state of current product/dispatch the product  and also navigate to page ---->
-
-                    let firstProductIdOfCategory = groupByData[key][0].id
-
-                    dispatch(fetchOneProduct(firstProductIdOfCategory))
-
-                    navigate(`/product/${firstProductIdOfCategory}`)
-
-                    dispatch(setOpenMoadl(false))
-
-                    break
-
-                }
-
-
-            }
-
-
-        }
-
-
-        // // // Model actual UI ---->
-        let innerHTML = <div>
-
-            <ul>
-
-                {
-                    Object.keys(groupByData).map((ele, i) => {
-                        return (
-                            <li
-                                key={i}
-                                className={`capitalize font-bold flex justify-between items-center my-5 text-xl ${(item.category === ele) && 'text-yellow-400'}`}
-                                onClick={() => { categoryClickHandler(ele); setShowSizingPart(false) }}
-                            >
-                                <span className="px-2 w-full text-center" >{ele}</span>
-                                <span>{groupByData[ele].length}</span>
-                            </li>
-                        )
-                    })
-                }
-
-            </ul>
-
-        </div>
-
-        dispatch(setOpenMoadl(true))
-        dispatch(setChildrenModal(innerHTML))
-
-    }
-
-
-    return (
-        <>
-            <button
-                onClick={(e) => { menuClickHandler(e) }}
-                className="rounded bg-yellow-400 px-1 uppercase font-semibold text-md mx-1 flex"
-            >
-
-                <img
-                    loading="lazy"
-                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/d7752c772004441a8bad2226356a475f69d2366b290b52382113297bf4ada2de?"
-                    className="aspect-[0.91] object-contain object-center w-full overflow-hidden max-w-[20px]"
-                />
-
-                MENU CARD
-            </button>
-        </>
-    )
-
-}
-
-
 
 function SendToKitchenBtnWilLogic({ className, onClickHandlerSendKitchen }: { className?: string, onClickHandlerSendKitchen: Function }) {
 
@@ -928,7 +704,6 @@ function SendToKitchenBtnWilLogic({ className, onClickHandlerSendKitchen }: { cl
         </>
     )
 }
-
 
 
 function CurrentSigleOrderDiv() {
@@ -1067,6 +842,37 @@ function CurrentSigleOrderDiv() {
 
 
 
+function SendOrderToKitenBtnFooter(
+    {
+        onClickHandlerSendKitchen,
+        setShowSizingPart
+    }:
+        {
+            onClickHandlerSendKitchen: Function,
+            setShowSizingPart: React.Dispatch<React.SetStateAction<boolean>>
+        }
+) {
+    return (
+        <div >
+
+            {/* <SendToKitchenBtnWilLogic onClickHandlerSendKitchen={onClickHandlerSendKitchen} /> */}
+
+            <div className="flex justify-around items-center flex-wrap md:justify-center">
+
+
+                <SendToKitchenBtnWilLogic className='hidden' onClickHandlerSendKitchen={onClickHandlerSendKitchen} />
+
+                {/* here create a menu btn component with all logics ---> */}
+                <MenuWithLogic setShowSizingPart={setShowSizingPart} />
+
+            </div>
+
+        </div>
+    )
+}
+
+
+
 function StatusProgressShowToUser({ status = 'RECEIVED' }: { status: OrderStatusOptions }) {
 
     const [currentStatusNum, setCurrentStatusNum] = useState(-1)
@@ -1141,6 +947,194 @@ function StatusProgressShowToUser({ status = 'RECEIVED' }: { status: OrderStatus
         </div>
 
 
+    )
+}
+
+
+// // Menu Will modal code ---->
+function MenuWithLogic({ setShowSizingPart }: { setShowSizingPart: React.Dispatch<React.SetStateAction<boolean>> }) {
+
+    const navigate = useNavigate()
+    const dispatch = useDispatch<AppDispatch>()
+    const allProductData = productState().allProroductData
+    const item = productState().currenProduct
+
+
+    // // // This fn hold everything about Model (Logic , Menu UI).
+    function menuClickHandler(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+
+        e.stopPropagation();
+
+
+        // // // Group products by category ---->
+        const groupByData: any = {}
+
+        for (let item of allProductData) {
+            // console.log(item)
+
+            if (!groupByData[item.category]) {
+                groupByData[item.category] = [item]
+            } else {
+                groupByData[item.category].push(item)
+            }
+
+        }
+
+        // console.log(groupByData)
+
+        // // // category click handler ---->
+        function categoryClickHandler(category: string) {
+
+            // console.log(category)
+
+
+
+            for (let key in groupByData) {
+
+
+                if (category === key) {
+
+                    // console.log(groupByData[key][0])
+
+
+                    // // // Now set state of current product/dispatch the product  and also navigate to page ---->
+
+                    let firstProductIdOfCategory = groupByData[key][0].id
+
+                    dispatch(fetchOneProduct(firstProductIdOfCategory))
+
+                    navigate(`/product/${firstProductIdOfCategory}`)
+
+                    dispatch(setOpenMoadl(false))
+
+                    break
+
+                }
+
+
+            }
+
+
+        }
+
+
+        // // // Model actual UI ---->
+        let innerHTML = <div>
+
+            <ul>
+
+                {
+                    Object.keys(groupByData).map((ele, i) => {
+                        return (
+                            <li
+                                key={i}
+                                className={`capitalize font-bold flex justify-between items-center my-5 text-xl ${(item.category === ele) && 'text-yellow-400'}`}
+                                onClick={() => { categoryClickHandler(ele); setShowSizingPart(false) }}
+                            >
+                                <span className="px-2 w-full text-center" >{ele}</span>
+                                <span>{groupByData[ele].length}</span>
+                            </li>
+                        )
+                    })
+                }
+
+            </ul>
+
+        </div>
+
+        dispatch(setOpenMoadl(true))
+        dispatch(setChildrenModal(innerHTML))
+
+    }
+
+
+    return (
+        <>
+            <button
+                onClick={(e) => { menuClickHandler(e) }}
+                className="rounded bg-yellow-400 px-1 uppercase font-semibold text-md mx-1 flex"
+            >
+
+                <img
+                    loading="lazy"
+                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/d7752c772004441a8bad2226356a475f69d2366b290b52382113297bf4ada2de?"
+                    className="aspect-[0.91] object-contain object-center w-full overflow-hidden max-w-[20px]"
+                />
+
+                MENU CARD
+            </button>
+        </>
+    )
+
+}
+
+
+
+function GasLogoFooter({
+    className
+}: {
+    className?: string,
+}) {
+    return (
+        <div className={`gas_box absolute right-2 -top-1.5  scale-75 -z-10 ${className} `}>
+            <div className="group">
+                <div className="overlap-group">
+                    <div className="rectangle" />
+                    <div className="div" />
+                    <div className="rectangle-2" />
+                    <div className="rectangle-3" />
+                    <img className="vector" alt="Vector" src="/images/vector-1.svg" />
+                </div>
+            </div>
+        </div>
+    )
+}
+
+
+
+function ShowCartItemInFooter({
+    className,
+    cartData,
+    onClickHandlerSendKitchen,
+    cartItemsNameFormate,
+    dispatch
+}: {
+    className?: string,
+    cartData: CardDataInter[],
+    onClickHandlerSendKitchen: Function,
+    cartItemsNameFormate: any,
+    dispatch: any
+
+}) {
+
+    return (
+        <div className={`flex overflow-y-auto w-10/12 sm:w-11/12 ${className} `}>
+
+            {
+                cartData.length > 0
+                    ?
+                    <>
+
+                        {
+                            cartData.map((ele, i) => {
+                                return <p
+                                    className=" mx-0.5 border border-black rounded capitalize px-1.5 hover:cursor-pointer"
+                                    key={uuid()}
+                                    style={{ whiteSpace: "nowrap" }}
+                                    onClick={() => { onClickHandlerSendKitchen(); dispatch(setItemsClicked(i)) }}
+                                >{cartItemsNameFormate(ele.name)}</p>
+                            })
+                        }
+
+                    </>
+                    :
+                    // Below p tag is used to prevent ui only (if no cart items present then pevent the ui)
+                    <p
+                        className="  w-11/12 h-8 mx-0.5 rounded capitalize px-1.5 hover:cursor-pointer"
+                    ></p>
+            }
+
+        </div>
     )
 }
 

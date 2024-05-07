@@ -1,5 +1,5 @@
 
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import toast from "react-hot-toast";
@@ -69,8 +69,8 @@ export type TypeSingleProduct = {
     discountPercentage: number,
 
     model: {
-        src : string,
-        iosSrc : string
+        src: string,
+        iosSrc: string
     },
 
     review?: [],
@@ -92,22 +92,9 @@ export type TypeSingleProduct = {
 
     customizations?: TypeCustomizationsObj,
     isNonVeg?: boolean
-    timeRequired ?: string
+    timeRequired?: string
 
 }
-
-
-type TypeProductInitial = {
-    isLoading: boolean,
-    isError: boolean,
-    isFullFilled: boolean,
-    isForgotFullFilled: boolean,
-    errMsg: string,
-    allProroductData: TypeSingleProduct[],
-    singleProduct: TypeSingleProduct,
-    currenProduct: TypeSingleProduct
-}
-
 
 
 const initialOneProducData: TypeSingleProduct = {
@@ -119,11 +106,11 @@ const initialOneProducData: TypeSingleProduct = {
 
     // model: 'https://res.cloudinary.com/dlvq8n2ca/image/upload/v1704005444/hnvnf1bfodpwdinkuccq.glb',
 
-    model:  {
+    model: {
         // src : "https://res.cloudinary.com/dlvq8n2ca/image/upload/v1704005444/hnvnf1bfodpwdinkuccq.glb",
         // iosSrc : "https://res.cloudinary.com/dlvq8n2ca/image/upload/v1704005444/hnvnf1bfodpwdinkuccq.glb"
-        src : "",
-        iosSrc : ""
+        src: "",
+        iosSrc: ""
     },
 
     review: [],
@@ -144,10 +131,22 @@ const initialOneProducData: TypeSingleProduct = {
         crusts: []
     },
 
-    isNonVeg: false ,
-    timeRequired : '10 min'
+    isNonVeg: false,
+    timeRequired: '10 min'
 }
 
+
+type TypeProductInitial = {
+    isLoading: boolean,
+    isError: boolean,
+    isFullFilled: boolean,
+    isForgotFullFilled: boolean,
+    errMsg: string,
+    allProroductData: TypeSingleProduct[],
+    singleProduct: TypeSingleProduct,
+    currenProduct: TypeSingleProduct,
+    unFilteredAllProduct: TypeSingleProduct[],
+}
 
 
 const initialState: TypeProductInitial = {
@@ -157,6 +156,7 @@ const initialState: TypeProductInitial = {
     isForgotFullFilled: false,
     errMsg: "",
     allProroductData: [],
+    unFilteredAllProduct: [],
     singleProduct: initialOneProducData,
     currenProduct: initialOneProducData
 }
@@ -170,6 +170,12 @@ const productSlice = createSlice({
         setCurentProduct: (state, action) => {
 
             state.singleProduct = action.payload
+
+        },
+        setAllProductArr: (state, action: PayloadAction<TypeSingleProduct[]>) => {
+
+            state.allProroductData = action.payload
+
 
         }
 
@@ -214,6 +220,7 @@ const productSlice = createSlice({
 
                 } else {
                     state.allProroductData = action.payload.data
+                    state.unFilteredAllProduct = action.payload.data
                 }
 
 
@@ -303,7 +310,7 @@ const productSlice = createSlice({
 
 
 
-export const { setCurentProduct } = productSlice.actions
+export const { setCurentProduct, setAllProductArr } = productSlice.actions
 
 export const productState = () => useSelector((state: RootState) => state.productReducer)
 

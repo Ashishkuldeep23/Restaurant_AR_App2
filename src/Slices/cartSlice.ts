@@ -1,4 +1,4 @@
-import { createSlice, current } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice, current } from "@reduxjs/toolkit";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
 
@@ -28,7 +28,7 @@ type InitailData = {
     totalPrice: number;
     itemClicked: number;
     // totalItems: number
-
+    openCart: boolean;
 
     GST: 12,   // // GST should present in percent (value like --> 12 and that is 12%) (Now 12 is fixed value for GSt)
 
@@ -42,6 +42,7 @@ const initialState: InitailData = {
     whenCreated: "",
     totalPrice: 0,
     // totalItems: 0,
+    openCart: false,
     GST: 12,
     itemClicked: -1
 }
@@ -55,12 +56,10 @@ const cartSlice = createSlice({
     initialState,
     reducers: {
 
-        addItemInCart(state, action) {
+        addItemInCart(state, action: PayloadAction<CardDataInter>) {
 
 
             const { customizations, quantity } = action.payload as CardDataInter
-
-
 
             let cCartState = current(state)
 
@@ -77,7 +76,7 @@ const cartSlice = createSlice({
                 // console.log(cCartState.cartData[i].verity)
                 let ele = cCartState.cartData[i]
 
-                if ((ele.customizations?.sizes[0]?.name === customizations?.sizes[0]?.name) && (ele.customizations?.crusts[0]?.name === customizations?.crusts[0]?.name)) {
+                if ((ele.id === action.payload.id) && (ele.customizations?.sizes[0]?.name === customizations?.sizes[0]?.name) && (ele.customizations?.crusts[0]?.name === customizations?.crusts[0]?.name)) {
 
                     // console.log(cCartState.cartData[i])
 
@@ -101,12 +100,11 @@ const cartSlice = createSlice({
                 newCartArr.splice(indexOfItem, 1, newItemObject)
 
                 // console.log(newCartArr)
-
                 // // // cart data upadte --->
                 state.cartData = newCartArr
 
                 // // Total price upadte --->
-                state.totalPrice = state.totalPrice + (item.quantity * item.price)
+                state.totalPrice = state.totalPrice + (quantity * item.price)
 
             } else {
                 // // Add --->
@@ -122,9 +120,9 @@ const cartSlice = createSlice({
             }
 
 
+            state.openCart = true
 
             // // // Update clicked index ----->
-
             state.itemClicked = -1
 
         },
@@ -192,6 +190,10 @@ const cartSlice = createSlice({
 
             state.totalPrice = getTotalPrice
 
+        },
+
+        toggleOpenCart(state, action) {
+            state.openCart = action.payload
         }
 
     },
@@ -210,7 +212,7 @@ const cartSlice = createSlice({
 
 
 
-export const { addItemInCart, removeItemsInCart, setItemsClicked, loadCartData } = cartSlice.actions
+export const { addItemInCart, removeItemsInCart, setItemsClicked, loadCartData, toggleOpenCart } = cartSlice.actions
 
 export const cartState = () => useSelector((state: RootState) => state.cartReducer)
 
